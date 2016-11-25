@@ -6,6 +6,7 @@ import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.config.MystoreConfig;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -18,9 +19,11 @@ import java.util.Set;
 @RestController
 public class DBcontroll {
     @GetMapping(value = "/adddb")
-    public String get()
+    public String get(@RequestParam String dbname)
     {
-        String dbname = "hellodb"+(Math.random() * 100) / 3;
+        if (dbname == null) {
+            dbname = "hellodb"+(Math.random() * 100) / 3;
+        }
         MyConfigLoader.getInstance().getSchemaConfigs().put(dbname, getSchemaConfig(dbname));
         updateuserdb(dbname);
         MystoreConfig.saveconfig();
