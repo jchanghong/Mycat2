@@ -68,7 +68,8 @@ public class ConfigInitializer {
 //		XMLConfigLoader configLoader = new XMLConfigLoader(schemaLoader);
 		
 //		schemaLoader = null;
-		MyConfigLoader configLoader = new MyConfigLoader();
+		MyConfigLoader configLoader = MyConfigLoader.getInstance();
+
 		//加载配置
 		this.system = configLoader.getSystemConfig();
 		this.users = configLoader.getUserConfigs();

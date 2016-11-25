@@ -224,6 +224,7 @@ public final class MyReloadConfig {
 		 *  1、载入新的配置， ConfigInitializer 内部完成自检工作, 由于不更新数据源信息,此处不自检 dataHost  dataNode
 		 */
         ConfigInitializer loader = new ConfigInitializer(false);
+		MyConfigLoader.getInstance().load();
         Map<String, UserConfig> users = loader.getUsers();
         Map<String, SchemaConfig> schemas = loader.getSchemas();
         Map<String, PhysicalDBNode> dataNodes = loader.getDataNodes();
