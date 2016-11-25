@@ -23,33 +23,31 @@
  */
 package io.mycat.config.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import io.mycat.config.util.ConfigException;
+import io.mycat.config.util.ConfigUtil;
+import io.mycat.util.SplitUtil;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import io.mycat.config.util.ConfigException;
-import io.mycat.config.util.ConfigUtil;
-import io.mycat.util.SplitUtil;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * @author mycat
  */
-public class ClusterConfig {
+public class ClusterConfig implements Serializable{
+    private static final long serialVersionUID = -6605226933829917213L;
     private final Map<String, MycatNodeConfig> nodes;
     private final Map<String, List<String>> groups;
 
     public ClusterConfig(Element root, int port) {
         nodes = Collections.unmodifiableMap(loadNode(root, port));
         groups = Collections.unmodifiableMap(loadGroup(root, nodes));
+    }
+    public ClusterConfig() {
+        nodes = new HashMap<>();
+        groups = new HashMap<>();
     }
 
     public Map<String, MycatNodeConfig> getNodes() {

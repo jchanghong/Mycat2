@@ -1,12 +1,13 @@
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- - - Licensed under the Apache License, Version 2.0 (the "License"); 
+&lt;!&ndash; - - Licensed under the Apache License, Version 2.0 (the "License");
 	- you may not use this file except in compliance with the License. - You 
 	may obtain a copy of the License at - - http://www.apache.org/licenses/LICENSE-2.0 
 	- - Unless required by applicable law or agreed to in writing, software - 
 	distributed under the License is distributed on an "AS IS" BASIS, - WITHOUT 
 	WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. - See the 
 	License for the specific language governing permissions and - limitations 
-	under the License. -->
+	under the License. &ndash;&gt;
 <!DOCTYPE mycat:rule SYSTEM "rule.dtd">
 <mycat:rule xmlns:mycat="http://io.mycat/">
 	<tableRule name="rule1">
@@ -82,17 +83,17 @@
 
 	<function name="murmur"
 		class="io.mycat.route.function.PartitionByMurmurHash">
-		<property name="seed">0</property><!-- 默认是0 -->
-		<property name="count">2</property><!-- 要分片的数据库节点数量，必须指定，否则没法分片 -->
-		<property name="virtualBucketTimes">160</property><!-- 一个实际的数据库节点被映射为这么多虚拟节点，默认是160倍，也就是虚拟节点数是物理节点数的160倍 -->
-		<!-- <property name="weightMapFile">weightMapFile</property> 节点的权重，没有指定权重的节点默认是1。以properties文件的格式填写，以从0开始到count-1的整数值也就是节点索引为key，以节点权重值为值。所有权重值必须是正整数，否则以1代替 -->
-		<!-- <property name="bucketMapPath">/etc/mycat/bucketMapPath</property> 
-			用于测试时观察各物理节点与虚拟节点的分布情况，如果指定了这个属性，会把虚拟节点的murmur hash值与物理节点的映射按行输出到这个文件，没有默认值，如果不指定，就不会输出任何东西 -->
+		<property name="seed">0</property>&lt;!&ndash; 默认是0 &ndash;&gt;
+		<property name="count">2</property>&lt;!&ndash; 要分片的数据库节点数量，必须指定，否则没法分片 &ndash;&gt;
+		<property name="virtualBucketTimes">160</property>&lt;!&ndash; 一个实际的数据库节点被映射为这么多虚拟节点，默认是160倍，也就是虚拟节点数是物理节点数的160倍 &ndash;&gt;
+		&lt;!&ndash; <property name="weightMapFile">weightMapFile</property> 节点的权重，没有指定权重的节点默认是1。以properties文件的格式填写，以从0开始到count-1的整数值也就是节点索引为key，以节点权重值为值。所有权重值必须是正整数，否则以1代替 &ndash;&gt;
+		&lt;!&ndash; <property name="bucketMapPath">/etc/mycat/bucketMapPath</property>
+			用于测试时观察各物理节点与虚拟节点的分布情况，如果指定了这个属性，会把虚拟节点的murmur hash值与物理节点的映射按行输出到这个文件，没有默认值，如果不指定，就不会输出任何东西 &ndash;&gt;
 	</function>
 
 	<function name="crc32slot"
 			  class="io.mycat.route.function.PartitionByCRC32PreSlot">
-		<property name="count">2</property><!-- 要分片的数据库节点数量，必须指定，否则没法分片 -->
+		<property name="count">2</property>&lt;!&ndash; 要分片的数据库节点数量，必须指定，否则没法分片 &ndash;&gt;
 	</function>
 	<function name="hash-int"
 		class="io.mycat.route.function.PartitionByFileMap">
@@ -103,7 +104,7 @@
 		<property name="mapFile">autopartition-long.txt</property>
 	</function>
 	<function name="mod-long" class="io.mycat.route.function.PartitionByMod">
-		<!-- how many data nodes -->
+		&lt;!&ndash; how many data nodes &ndash;&gt;
 		<property name="count">3</property>
 	</function>
 
@@ -129,3 +130,4 @@
 		<property name="totalBuckets">3</property>
 	</function>
 </mycat:rule>
+-->

@@ -23,13 +23,14 @@
  */
 package io.mycat.config.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * @author mycat
  */
-public class UserConfig {
-
+public class UserConfig implements Serializable{
+	private static final long serialVersionUID = -6605226933829917213L;
     private String name;
     private String password;						//明文
     private String encryptPassword; 				//密文

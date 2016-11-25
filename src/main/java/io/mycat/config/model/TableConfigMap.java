@@ -1,5 +1,6 @@
 package io.mycat.config.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -7,7 +8,7 @@ import java.util.HashMap;
  * 
  * @author BEN GONG
  */
-public class TableConfigMap extends HashMap<String, TableConfig> {
+public class TableConfigMap extends HashMap<String, TableConfig> implements Serializable{
 
 	private static final long serialVersionUID = -6605226933829917213L;
 

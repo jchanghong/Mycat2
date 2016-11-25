@@ -1,5 +1,6 @@
 package io.mycat.config.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,8 +11,8 @@ import java.util.Map;
  * @author zhuam
  *
  */
-public class UserPrivilegesConfig {
-	
+public class UserPrivilegesConfig implements Serializable{
+	private static final long serialVersionUID = -6605226933829917213L;
 	private boolean check = false;
 	
 	private Map<String, SchemaPrivilege> schemaPrivileges = new HashMap<String, SchemaPrivilege>();
@@ -36,8 +37,8 @@ public class UserPrivilegesConfig {
 	/**
 	 * 库级权限
 	 */
-	public static class SchemaPrivilege {
-		
+	public static class SchemaPrivilege implements Serializable{
+		private static final long serialVersionUID = -6605226933829917213L;
 		private String name;
 		private int[] dml = new int[]{0, 0, 0, 0};
 		
@@ -77,8 +78,8 @@ public class UserPrivilegesConfig {
 	/**
 	 * 表级权限
 	 */
-	public static class TablePrivilege {
-
+	public static class TablePrivilege implements Serializable{
+		private static final long serialVersionUID = -6605226933829917213L;
 		private String name;
 		private int[] dml = new int[] { 0, 0, 0, 0 };
 		
