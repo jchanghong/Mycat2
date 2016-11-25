@@ -23,13 +23,15 @@
  */
 package io.mycat.config.model;
 
+import java.io.Serializable;
+
 /**
  * 用于描述一个数据节点的配置
  * 
  * @author mycat
  */
-public final class DataNodeConfig {
-
+public final class DataNodeConfig implements Serializable{
+	private static final long serialVersionUID = -6605226933829917213L;
 	private final String name;
 	private final String database;
 	private final String dataHost;

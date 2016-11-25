@@ -23,17 +23,19 @@
  */
 package io.mycat.config.model;
 
+import javax.annotation.Nullable;
 import java.beans.Expression;
+import java.io.Serializable;
 
 /**
  * @author mycat
  */
-public final class TableRuleConfig {
-
+public final class TableRuleConfig implements Serializable{
+    private static final long serialVersionUID = -6605226933829917213L;
     private final String name;
     private final RuleConfig[] rules;
 
-    public TableRuleConfig(String name, RuleConfig[] rules) {
+    public TableRuleConfig(String name,@Nullable RuleConfig[] rules) {
         this.name = name;
         this.rules = rules;
         if (rules != null) {
@@ -51,7 +53,8 @@ public final class TableRuleConfig {
         return rules;
     }
 
-    public static final class RuleConfig {
+    public static final class RuleConfig implements Serializable{
+        private static final long serialVersionUID = -6605226933829917213L;
         private String tableRuleName;
         /** upper-case */
         private final String[] columns;

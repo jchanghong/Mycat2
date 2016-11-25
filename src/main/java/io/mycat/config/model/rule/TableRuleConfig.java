@@ -29,6 +29,7 @@ import java.io.Serializable;
  * @author mycat
  */
 public class TableRuleConfig implements Serializable {
+    private static final long serialVersionUID = -6605226933829917213L;
     private  String name;
     private final RuleConfig rule;
 

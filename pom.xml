@@ -9,7 +9,11 @@
 	<name>Mycat-server</name>
 	<description>The project of Mycat-server</description>
 	<url>http://io.mycat</url>
-
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.2.RELEASE</version>
+	</parent>
 	<properties>
 		<app.encoding>UTF-8</app.encoding>
 		<!-- maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format> 
@@ -109,7 +113,7 @@
             <artifactId>disruptor</artifactId>
             <version>3.3.4</version>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.5</version>
@@ -123,7 +127,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-1.2-api</artifactId>
             <version>2.5</version>
-        </dependency>
+        </dependency>-->
 		<dependency>
 			<groupId>com.univocity</groupId>
 			<artifactId>univocity-parsers</artifactId>
@@ -225,6 +229,10 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 	</dependencies>
 

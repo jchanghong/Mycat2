@@ -23,13 +23,6 @@
  */
 package io.mycat.config;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-
 import io.mycat.backend.datasource.PhysicalDBNode;
 import io.mycat.backend.datasource.PhysicalDBPool;
 import io.mycat.backend.datasource.PhysicalDatasource;
@@ -37,21 +30,19 @@ import io.mycat.backend.jdbc.JDBCDatasource;
 import io.mycat.backend.mysql.nio.MySQLDataSource;
 import io.mycat.backend.postgresql.PostgreSQLDataSource;
 import io.mycat.config.loader.ConfigLoader;
-import io.mycat.config.loader.SchemaLoader;
-import io.mycat.config.loader.xml.XMLConfigLoader;
-import io.mycat.config.loader.xml.XMLSchemaLoader;
-import io.mycat.config.model.DBHostConfig;
-import io.mycat.config.model.DataHostConfig;
-import io.mycat.config.model.DataNodeConfig;
-import io.mycat.config.model.FirewallConfig;
-import io.mycat.config.model.SchemaConfig;
-import io.mycat.config.model.SystemConfig;
-import io.mycat.config.model.UserConfig;
+import io.mycat.web.config.MyConfigLoader;
+import io.mycat.config.model.*;
 import io.mycat.config.util.ConfigException;
 import io.mycat.route.sequence.handler.DistributedSequenceHandler;
 import io.mycat.route.sequence.handler.IncrSequenceMySQLHandler;
 import io.mycat.route.sequence.handler.IncrSequenceTimeHandler;
 import io.mycat.route.sequence.handler.IncrSequenceZKHandler;
+import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author mycat
@@ -71,13 +62,13 @@ public class ConfigInitializer {
 	public ConfigInitializer(boolean loadDataHost) {
 		
 		//读取rule.xml和schema.xml
-		SchemaLoader schemaLoader = new XMLSchemaLoader();
+//		SchemaLoader schemaLoader = new XMLSchemaLoader();
 		
 		//读取server.xml
-		XMLConfigLoader configLoader = new XMLConfigLoader(schemaLoader);
+//		XMLConfigLoader configLoader = new XMLConfigLoader(schemaLoader);
 		
-		schemaLoader = null;
-		
+//		schemaLoader = null;
+		MyConfigLoader configLoader = new MyConfigLoader();
 		//加载配置
 		this.system = configLoader.getSystemConfig();
 		this.users = configLoader.getUserConfigs();

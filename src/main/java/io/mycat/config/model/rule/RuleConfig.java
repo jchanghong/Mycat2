@@ -32,6 +32,7 @@ import java.io.Serializable;
  * @author mycat
  */
 public class RuleConfig implements Serializable {
+	private static final long serialVersionUID = -6605226933829917213L;
 	private final String column;
 	private final String functionName;
 	private AbstractPartitionAlgorithm ruleAlgorithm;

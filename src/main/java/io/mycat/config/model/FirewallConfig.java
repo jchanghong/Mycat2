@@ -23,18 +23,12 @@
  */
 package io.mycat.config.model;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
+import com.alibaba.druid.wall.WallConfig;
+import com.alibaba.druid.wall.WallProvider;
+import com.alibaba.druid.wall.spi.MySqlWallProvider;
+import io.mycat.MycatServer;
+import io.mycat.config.MycatConfig;
+import io.mycat.config.loader.xml.XMLServerLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -43,13 +37,17 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.alibaba.druid.wall.WallConfig;
-import com.alibaba.druid.wall.WallProvider;
-import com.alibaba.druid.wall.spi.MySqlWallProvider;
-
-import io.mycat.MycatServer;
-import io.mycat.config.MycatConfig;
-import io.mycat.config.loader.xml.XMLServerLoader;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 防火墙配置定义
@@ -57,8 +55,8 @@ import io.mycat.config.loader.xml.XMLServerLoader;
  * @author songwie
  * @author zhuam
  */
-public final class FirewallConfig {
-	
+public final class FirewallConfig implements Serializable{
+	private static final long serialVersionUID = -6605226933829917213L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(FirewallConfig.class);
 	
     private Map<String, List<UserConfig>> whitehost;

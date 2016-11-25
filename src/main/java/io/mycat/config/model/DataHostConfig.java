@@ -23,14 +23,15 @@
  */
 package io.mycat.config.model;
 
+import com.google.common.collect.Iterables;
+import io.mycat.backend.datasource.PhysicalDBPool;
+
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.Iterables;
-import io.mycat.backend.datasource.PhysicalDBPool;
 
 /**
  * Datahost is a group of DB servers which is synchronized with each other
@@ -38,7 +39,8 @@ import io.mycat.backend.datasource.PhysicalDBPool;
  * @author wuzhih
  *
  */
-public class DataHostConfig {
+public class DataHostConfig implements Serializable{
+	private static final long serialVersionUID = -6605226933829917213L;
 	public static final int NOT_SWITCH_DS = -1;
 	public static final int DEFAULT_SWITCH_DS = 1;
 	public static final int SYN_STATUS_SWITCH_DS = 2;
