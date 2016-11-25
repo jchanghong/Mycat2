@@ -27,6 +27,7 @@ package io.mycat;
 
 import io.mycat.config.loader.zkprocess.comm.ZkConfig;
 import io.mycat.config.model.SystemConfig;
+import io.mycat.web.config.MystoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,9 +52,9 @@ public final class MycatStartup {
             // init
             MycatServer server = MycatServer.getInstance();
             server.beforeStart();
-
             // startup
             server.startup();
+            MystoreConfig.saveconfig();
             System.out.println("MyCAT Server startup successfully. see logs in logs/mycat.log");
 
         } catch (Exception e) {

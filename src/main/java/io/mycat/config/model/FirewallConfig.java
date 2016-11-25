@@ -43,9 +43,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.InputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -62,12 +60,15 @@ public final class FirewallConfig implements Serializable{
     private Map<String, List<UserConfig>> whitehost;
     private List<String> blacklist;
     private boolean check = false;
-    
-    private WallConfig wallConfig = new WallConfig();
-     
+transient	private WallConfig wallConfig = new WallConfig();
     private static WallProvider provider ;
     
-    public FirewallConfig() { }
+    public FirewallConfig() {
+        if (check) {
+            provider = new MySqlWallProvider(wallConfig);
+            provider.setBlackListEnable(true);
+        }
+    }
     
     public void init(){
     	if(check){
@@ -75,7 +76,30 @@ public final class FirewallConfig implements Serializable{
     		provider.setBlackListEnable(true);
     	}
     }
-    
+//
+//    /**
+//     * Serialize this instance.
+//     *
+//     * @param out Target to which this instance is written.
+//     * @throws IOException Thrown if exception occurs during serialization.
+//     */
+//    private void writeObject(final ObjectOutputStream out) throws IOException
+//    {
+//
+//    }
+//
+//    /**
+//     * Deserialize this instance from input stream.
+//     *
+//     * @param in Input Stream from which this instance is to be deserialized.
+//     * @throws IOException Thrown if error occurs in deserialization.
+//     * @throws ClassNotFoundException Thrown if expected class is not found.
+//     */
+//    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+//    {
+//
+//    }
+
     public WallProvider getWallProvider(){
     	return provider;
     }
