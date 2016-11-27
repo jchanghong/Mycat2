@@ -60,6 +60,7 @@ public final class MycatStartup {
             System.out.println("Mycat启动成功.日志文件在logs/mycat.log");
             System.out.println("Mycat启动成功.日志文件在logs/mycat.log");
             System.out.println("Mycat启动成功.日志文件在logs/mycat.log");
+            System.out.println("Mycat启动成功.日志文件在logs/mycat.log");
 
         } catch (Exception e) {
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
