@@ -5,6 +5,7 @@ package io.mycat.web.server;
  */
 public class ADDDatabase {
     public void adddatabase() {
+        //ce
 
     }
 }
