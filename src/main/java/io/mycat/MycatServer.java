@@ -295,6 +295,7 @@ public class MycatServer {
 		SocketAcceptor manager = null;
 		SocketAcceptor server = null;
 		aio = (system.getUsingAIO() == 1);
+        aio = true;
 
 		// startup processors
 		int threadPoolSize = system.getProcessorExecutor();

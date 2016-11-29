@@ -147,7 +147,7 @@ public final class SystemConfig implements Serializable{
 	private int mutiNodePatchSize = MUTINODELIMIT_PATCH_SIZE;
 
 	private String defaultSqlParser = DEFAULT_SQL_PARSER;
-	private int usingAIO = 0;
+	private int usingAIO = 1;
 	private int packetHeaderSize = 4;
 	private int maxPacketSize = 16 * 1024 * 1024;
 	private int mycatNodeId=1;
