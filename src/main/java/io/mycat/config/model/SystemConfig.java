@@ -64,8 +64,8 @@ public final class SystemConfig implements Serializable{
 	public static final long DEFAULT_IDLE_TIMEOUT = 30 * 60 * 1000L;
 	private static final long DEFAULT_PROCESSOR_CHECK_PERIOD = 1 * 1000L;
 	private static final long DEFAULT_DATANODE_IDLE_CHECK_PERIOD = 5 * 60 * 1000L;
-	private static final long DEFAULT_DATANODE_HEARTBEAT_PERIOD = 100 * 1000L;
-	private static final long DEFAULT_CLUSTER_HEARTBEAT_PERIOD = 50 * 1000L;
+	private static final long DEFAULT_DATANODE_HEARTBEAT_PERIOD = 10 * 1000L;
+	private static final long DEFAULT_CLUSTER_HEARTBEAT_PERIOD = 5 * 1000L;
 	private static final long DEFAULT_CLUSTER_HEARTBEAT_TIMEOUT = 10 * 1000L;
 	private static final int DEFAULT_CLUSTER_HEARTBEAT_RETRY = 10;
 	private static final int DEFAULT_MAX_LIMIT = 100;
