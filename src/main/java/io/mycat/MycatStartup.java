@@ -30,6 +30,7 @@ import io.mycat.web.config.MystoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -71,11 +72,23 @@ public final class MycatStartup {
     public static void startmain(String[] args) {
         //use zk ?
 //        ZkConfig.getInstance().initZk();
+        FrameUI ui = null;
+        try {
+            ui = new FrameUI();
+        } catch (HeadlessException e) {
+            System.out.println(e);
+            ui = null;
+            e.printStackTrace();
+        }
         try {
             String home = SystemConfig.getHomePath();
             if (home == null) {
+                if (ui != null) {
+
+                    ui.settest(SystemConfig.SYS_HOME + "  is not set.");
+                }
                 System.out.println(SystemConfig.SYS_HOME + "  is not set.");
-                System.exit(-1);
+//                System.exit(-1);
             }
             // init
             MycatServer server = MycatServer.getInstance();
@@ -84,11 +97,18 @@ public final class MycatStartup {
             // startup
             server.startup();
             System.out.println("MyCAT Server startup successfully. see logs in logs/mycat.log");
-
+            if (ui != null) {
+                ui.settest("  MyCAT Server startup successfully. see logs in logs/mycat.log");
+            }
         } catch (Exception e) {
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
             LOGGER.error(sdf.format(new Date()) + " startup error", e);
-            System.exit(-1);
+            if (ui != null) {
+                ui.settest(e.getMessage());
+            }
+        }
+        if (ui != null) {
+            ui.setVisible(true);
         }
     }
 }
