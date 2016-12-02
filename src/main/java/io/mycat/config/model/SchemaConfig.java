@@ -34,34 +34,37 @@ import java.util.Set;
  * @author mycat
  */
 public class SchemaConfig implements Serializable{
-	private static final long serialVersionUID = -6605226933829917213L;
-	private final Random random = new Random();
-	private final String name;
-	private final Map<String, TableConfig> tables;
-	private final boolean noSharding;
-	private final String dataNode;
-	private final Set<String> metaDataNodes;
-	private final Set<String> allDataNodes;
+	private static  long serialVersionUID = -6605226933829917213L;
+	private  Random random = new Random();
+	private String name;
+	private Map<String, TableConfig> tables;
+	private  boolean noSharding;
+	private  String dataNode;
+	private  Set<String> metaDataNodes;
+	private  Set<String> allDataNodes;
 	/**
 	 * when a select sql has no limit condition ,and default max limit to
 	 * prevent memory problem when return a large result set
 	 */
-	private final int defaultMaxLimit;
-	private final boolean checkSQLSchema;
+	private  int defaultMaxLimit;
+	private  boolean checkSQLSchema;
 	private  boolean needSupportMultiDBType=false;
 	private  String defaultDataNodeDbType;
 	/**
 	 * key is join relation ,A.ID=B.PARENT_ID value is Root Table ,if a->b*->c*
 	 * ,then A is root table
 	 */
-	private final Map<String, TableConfig> joinRel2TableMap = new HashMap<String, TableConfig>();
-	private final String[] allDataNodeStrArr;
+	private  Map<String, TableConfig> joinRel2TableMap = new HashMap<String, TableConfig>();
+	private  String[] allDataNodeStrArr;
 
 	private  Map<String,String> dataNodeDbTypeMap=new HashMap<>();
 
+	public SchemaConfig() {
+	}
+
 	public SchemaConfig(String name, String dataNode,
-			Map<String, TableConfig> tables, int defaultMaxLimit,
-			boolean checkSQLschema) {
+						Map<String, TableConfig> tables, int defaultMaxLimit,
+						boolean checkSQLschema) {
 		this.name = name;
 		this.dataNode = dataNode;
 		this.checkSQLSchema = checkSQLschema;
