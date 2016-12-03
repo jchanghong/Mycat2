@@ -4,7 +4,6 @@ import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.TableConfig;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
-import io.mycat.web.config.MystoreConfig;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,20 +14,25 @@ import java.util.Set;
 
 /**
  * Created by 长宏 on 2016/11/25 0025.
+ * 这个文件只是为了演示。
  */
 @RestController
 public class DBcontroll {
-    @GetMapping(value = "/adddb")
+    @GetMapping(value = "/adddb")//浏览器/adddb传dbname
     public String get(@RequestParam String dbname)
     {
         if (dbname == null) {
             dbname = "hellodb"+(Math.random() * 100) / 3;
         }
+//        先得到map，然后再更改map
         MyConfigLoader.getInstance().getSchemaConfigs().put(dbname, getSchemaConfig(dbname));
         updateuserdb(dbname);
-        MystoreConfig.saveconfig();
-        boolean b = MyReloadConfig.reload();
-        if (b) {
+//        最后把map保存到文件
+        MyConfigLoader.getInstance().save();
+//        然后重新加载配置文件
+        String b = MyReloadConfig.reloadconfig(false);
+//        返回null说明成功。不然有错误
+        if (b==null) {
             return "增加数据库成功！！！！";
         }
         return "增加数据库失败";

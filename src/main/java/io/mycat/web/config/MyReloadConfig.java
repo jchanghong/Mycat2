@@ -51,48 +51,54 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
  * 重新加载配置文件
  */
+@SuppressWarnings("Duplicates")
 public final class MyReloadConfig {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MyReloadConfig.class);
 
-	public static void execute(ManagerConnection c, final boolean loadAll) {
+	/**
+	 * 重新加载配置文件，loadall为真表示要改变datahost主机或者mysql主机配置
+	 * 需要重新加载服务器。
+	 *
+	 * @param loadAll the load all
+	 * @return the string 如果返回值不是null那么加载失败！！！
+	 */
+	public static String reloadconfig(final boolean loadAll) {
 		
 		// reload @@config_all 校验前一次的事务完成情况
 		if ( loadAll && !NIOProcessor.backends_old.isEmpty() ) {
-			c.writeErrMessage(ErrorCode.ER_YES, "The before reload @@config_all has an unfinished db transaction, please try again later.");
-			return;
+			return "The before reload @@config_all has an unfinished db transaction, please try again later.";
 		}
-		
 		final ReentrantLock lock = MycatServer.getInstance().getConfig().getLock();		
 		lock.lock();
 		try {
-			ListenableFuture<Boolean> listenableFuture = MycatServer.getInstance().getListeningExecutorService().submit(
-				new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return loadAll ? reload_all() : reload();
-					}
+			boolean ok = loadAll ? reload_all() : reload();
+				if (ok) {
+					return null;
+				} else {
+					return "error";
 				}
-			);
-			Futures.addCallback(listenableFuture, new ReloadCallBack(c), MycatServer.getInstance().getListeningExecutorService());
+
 		} finally {
 			lock.unlock();
 		}
 	}
 
-	public static boolean reload_all() {
+	private static boolean reload_all() {
 		
 		/**
 		 *  1、载入新的配置
 		 *  1.1、ConfigInitializer 初始化，基本自检
 		 *  1.2、DataNode/DataHost 实际链路检测
 		 */
+		MyConfigLoader.getInstance().load();
 		ConfigInitializer loader = new ConfigInitializer(true);
 		Map<String, UserConfig> newUsers = loader.getUsers();
 		Map<String, SchemaConfig> newSchemas = loader.getSchemas();
@@ -218,14 +224,14 @@ public final class MyReloadConfig {
 		}
 	}
 
-    public static boolean reload() {
+    private static boolean reload() {
     	
     	/**
 		 *  1、载入新的配置， ConfigInitializer 内部完成自检工作, 由于不更新数据源信息,此处不自检 dataHost  dataNode
 		 */
-        ConfigInitializer loader = new ConfigInitializer(false);
 		MyConfigLoader.getInstance().load();
-        Map<String, UserConfig> users = loader.getUsers();
+		ConfigInitializer loader = new ConfigInitializer(false);
+		Map<String, UserConfig> users = loader.getUsers();
         Map<String, SchemaConfig> schemas = loader.getSchemas();
         Map<String, PhysicalDBNode> dataNodes = loader.getDataNodes();
         Map<String, PhysicalDBPool> dataHosts = loader.getDataHosts();
@@ -243,36 +249,4 @@ public final class MyReloadConfig {
         MycatServer.getInstance().getCacheService().clearCache();
         return true;
     }
-    
-	/**
-	 * 异步执行回调类，用于回写数据给用户等。
-	 */
-	private static class ReloadCallBack implements FutureCallback<Boolean> {
-
-		private ManagerConnection mc;
-
-		private ReloadCallBack(ManagerConnection c) {
-			this.mc = c;
-		}
-
-		@Override
-		public void onSuccess(Boolean result) {
-			if (result) {
-				LOGGER.warn("send ok package to client " + String.valueOf(mc));
-				OkPacket ok = new OkPacket();
-				ok.packetId = 1;
-				ok.affectedRows = 1;
-				ok.serverStatus = 2;
-				ok.message = "Reload config success".getBytes();
-				ok.write(mc);
-			} else {
-				mc.writeErrMessage(ErrorCode.ER_YES, "Reload config failure");
-			}
-		}
-
-		@Override
-		public void onFailure(Throwable t) {
-			mc.writeErrMessage(ErrorCode.ER_YES, "Reload config failure");
-		}
-	}
 }

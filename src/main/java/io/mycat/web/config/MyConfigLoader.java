@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Created by jiang on 2016/11/24 0024.
- * 这个文件用来读取配置文件，目前是从文件里面读取。
+ * 这个文件用来读取和保存配置文件，目前是从文件里面读取。
  */
 public class MyConfigLoader implements ConfigLoader {
     public static final String SCHEMAKEY = "schemaConfigMap";
@@ -33,7 +33,7 @@ public class MyConfigLoader implements ConfigLoader {
         return install;
     }
     /***把配置保存到文件*/
-    public void save() {
+  synchronized   public void save() {
         map3.put(SYSTEMKEY, getSystemConfig());
         map3.put(SCHEMAKEY, getSchemaConfigs());
         map3.put(DATANODEKEY, getDataNodes());
