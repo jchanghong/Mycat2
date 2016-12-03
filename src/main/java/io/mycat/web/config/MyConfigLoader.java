@@ -164,4 +164,47 @@ public class MyConfigLoader implements ConfigLoader {
         return clusterConfig;
     }
 
+    public Map<String, SchemaConfig> getSchemaConfigMap() {
+        return schemaConfigMap;
+    }
+
+    public void setSchemaConfigMap(Map<String, SchemaConfig> schemaConfigMap) {
+        this.schemaConfigMap = schemaConfigMap;
+    }
+
+    public Map<String, DataNodeConfig> getDataNodeConfigMap() {
+        return dataNodeConfigMap;
+    }
+
+    public void setDataNodeConfigMap(Map<String, DataNodeConfig> dataNodeConfigMap) {
+        this.dataNodeConfigMap = dataNodeConfigMap;
+    }
+
+    public Map<String, DataHostConfig> getDataHostConfigMap() {
+        return dataHostConfigMap;
+    }
+
+    public void setDataHostConfigMap(Map<String, DataHostConfig> dataHostConfigMap) {
+        this.dataHostConfigMap = dataHostConfigMap;
+    }
+
+    public void setSystemConfig(SystemConfig systemConfig) {
+        this.systemConfig = systemConfig;
+    }
+
+    public Map<String, UserConfig> getUserConfigMap() {
+        return userConfigMap;
+    }
+
+    public void setUserConfigMap(Map<String, UserConfig> userConfigMap) {
+        this.userConfigMap = userConfigMap;
+    }
+
+    public void setFirewallConfig(FirewallConfig firewallConfig) {
+        this.firewallConfig = firewallConfig;
+    }
+
+    public void setClusterConfig(ClusterConfig clusterConfig) {
+        this.clusterConfig = clusterConfig;
+    }
 }

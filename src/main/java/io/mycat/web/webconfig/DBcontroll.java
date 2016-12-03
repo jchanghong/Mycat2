@@ -1,4 +1,4 @@
-package io.mycat.web.web;
+package io.mycat.web.webconfig;
 
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.TableConfig;
@@ -51,5 +51,17 @@ public class DBcontroll {
         Set<String> dbs = MyConfigLoader.getInstance().getUserConfig("root").getSchemas();
         dbs.add(dbname);
         MyConfigLoader.getInstance().getUserConfigs().get("root").setSchemas(dbs);
+    }
+
+
+    /**
+     * D string.
+     *
+     * 测试错误发生的时候
+     * @return the string
+     */
+    @GetMapping("/testerror")
+    public String d() {
+        throw new NullPointerException("");
     }
 }

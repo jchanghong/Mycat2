@@ -25,6 +25,7 @@ package io.mycat.config.model;
 
 import io.mycat.config.Isolations;
 
+import javax.validation.constraints.Max;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -58,6 +59,7 @@ public final class SystemConfig implements Serializable{
 	private final static String SPILLS_FILE_BUFFER_SIZE = "2K";
 	private final static String DATANODE_SORTED_TEMP_DIR = "datanode";
 	private int backSocketSoSndbuf = 1024 * 1024;
+	@Max(1111)
 	private int frontSocketNoDelay = 1; // 0=false
 	private int backSocketNoDelay = 1; // 1=true
 	public static final int DEFAULT_POOL_SIZE = 128;// 保持后端数据通道的默认最大值
