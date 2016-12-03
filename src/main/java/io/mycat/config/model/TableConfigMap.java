@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class TableConfigMap extends HashMap<String, TableConfig> implements Serializable{
 
-	private static final long serialVersionUID = -6605226933829917213L;
+	private static  long serialVersionUID = -6605226933829917213L;
 
 	@Override
 	public TableConfig get(Object key) {

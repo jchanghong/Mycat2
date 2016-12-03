@@ -23,6 +23,7 @@
  */
 package io.mycat.config.model;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -30,12 +31,17 @@ import java.io.Serializable;
  * 
  * @author mycat
  */
-public final class DataNodeConfig implements Serializable{
-	private static final long serialVersionUID = -6605226933829917213L;
-	private final String name;
-	private final String database;
-	private final String dataHost;
+public  class DataNodeConfig implements Serializable{
+	private static  long serialVersionUID = -6605226933829917213L;
+	@NotNull
+	private  String name;
+	@NotNull
+	private  String database;
+	@NotNull
+	private  String dataHost;
+	public DataNodeConfig() {
 
+	}
 	public DataNodeConfig(String name, String database, String dataHost) {
 		super();
 		this.name = name;
@@ -55,4 +61,15 @@ public final class DataNodeConfig implements Serializable{
 		return dataHost;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDatabase(String database) {
+		this.database = database;
+	}
+
+	public void setDataHost(String dataHost) {
+		this.dataHost = dataHost;
+	}
 }

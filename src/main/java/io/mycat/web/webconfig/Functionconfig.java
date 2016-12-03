@@ -1,6 +1,8 @@
 package io.mycat.web.webconfig;
 
 import io.mycat.config.model.SystemConfig;
+import io.mycat.web.config.FunctionModel;
+import io.mycat.web.config.Initfunction;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
@@ -28,37 +30,34 @@ public class Functionconfig {
     @GetMapping(value = "/getfunctions")
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
-//        SystemConfig systemConfig = MyConfigLoader.getInstance().getSystemConfig();
-//        returnMessage.setObject(systemConfig);
-//        returnMessage.setError(false);
+        returnMessage.setObject(Initfunction.functionModels);
+        returnMessage.setError(false);
         return returnMessage;
     }
     /**
-     * Sets .增加或者设置分区算法的属性
+     * Sets .增加分区算法
      *
      * @param d      the d
      * @param result the result
      * @return the
      */
-    @PostMapping(value = "/setfunction")
-    public ReturnMessage setsysconfig(@Valid @RequestBody SystemConfig d, BindingResult result) {
+    @PostMapping(value = "/addfunction")
+    public ReturnMessage setsysconfig(@Valid @RequestBody FunctionModel functionModel, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
-//        if (result.hasErrors()) {
-//            returnMessage.setError(true);
-//            returnMessage.setMessage(result.toString());
-//            return returnMessage;
-//        }
-//        MyConfigLoader.getInstance().setSystemConfig(d);
-//        MyConfigLoader.getInstance().save();
-//      String dd=  MyReloadConfig.reloadconfig(false);
-//        if (dd == null) {
-//
-//            returnMessage.setError(false);
-//        }
-//        else {
-//            returnMessage.setMessage(dd);
-//            returnMessage.setError(true);
-//        }
+        if (result.hasErrors()) {
+            returnMessage.setError(true);
+            returnMessage.setMessage(result.toString());
+            return returnMessage;
+        }
+        Initfunction.save();
+      String dd=  MyReloadConfig.reloadconfig(false);
+        if (dd == null) {
+            returnMessage.setError(false);
+        }
+        else {
+            returnMessage.setMessage(dd);
+            returnMessage.setError(true);
+        }
         return returnMessage;
     }
 

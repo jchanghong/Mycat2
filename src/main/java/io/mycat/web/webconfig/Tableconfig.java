@@ -1,5 +1,6 @@
 package io.mycat.web.webconfig;
 
+import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.SystemConfig;
 import io.mycat.config.model.TableConfig;
 import io.mycat.web.config.MyConfigLoader;
@@ -23,10 +24,16 @@ public class Tableconfig {
      *
      * @return the
      */
-    @GetMapping(value = "/gettables")
-    public ReturnMessage getsys() {
+    @GetMapping(value = "/gettables/{dbname}")
+    public ReturnMessage getsys(@PathVariable String dbname) {
         ReturnMessage returnMessage = new ReturnMessage();
+        SchemaConfig schemaConfig = MyConfigLoader.getInstance().getSchemaConfig(dbname);
+        if (schemaConfig == null) {
+            returnMessage.setError(true);
+            returnMessage.setMessage("不存在");
+        }
         returnMessage.setError(false);
+        returnMessage.setObject(schemaConfig.getTables().values().toArray());
         return returnMessage;
     }
     /**
@@ -36,25 +43,25 @@ public class Tableconfig {
      * @param result the result
      * @return the
      */
-    @PostMapping(value = "/{dbname}/addtable")
-    public ReturnMessage setsysconfig(@PathVariable String dbname, @Valid @RequestBody TableConfig d, BindingResult result) {
+    @PostMapping(value = "/addtable/{dbname}")
+    public ReturnMessage setsysconfig(@PathVariable String dbname, @Valid @RequestBody TableConfig tableConfig, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
-//        if (result.hasErrors()) {
-//            returnMessage.setError(true);
-//            returnMessage.setMessage(result.toString());
-//            return returnMessage;
-//        }
-//        MyConfigLoader.getInstance().setSystemConfig(d);
-//        MyConfigLoader.getInstance().save();
-//      String dd=  MyReloadConfig.reloadconfig(false);
-//        if (dd == null) {
-//
-//            returnMessage.setError(false);
-//        }
-//        else {
-//            returnMessage.setMessage(dd);
-//            returnMessage.setError(true);
-//        }
+        if (result.hasErrors()) {
+            returnMessage.setError(true);
+            returnMessage.setMessage(result.toString());
+            return returnMessage;
+        }
+        SchemaConfig schemaConfig = MyConfigLoader.getInstance().getSchemaConfig(dbname);
+        schemaConfig.addtable(tableConfig);
+        MyConfigLoader.getInstance().save();
+      String dd=  MyReloadConfig.reloadconfig(false);
+        if (dd == null) {
+            returnMessage.setError(false);
+        }
+        else {
+            returnMessage.setMessage(dd);
+            returnMessage.setError(true);
+        }
         return returnMessage;
     }
 

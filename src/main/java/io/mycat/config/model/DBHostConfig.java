@@ -23,25 +23,33 @@
  */
 package io.mycat.config.model;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class DBHostConfig implements Serializable{
 
-	private static final long serialVersionUID = -6605226933829917213L;
+	private static  long serialVersionUID = -6605226933829917213L;
 	private long idleTimeout = SystemConfig.DEFAULT_IDLE_TIMEOUT; // 连接池中连接空闲超时时间
-	private final String hostName;
-	private final String ip;
-	private final int port;
-	private final String url;
-	private final String user;
-	private final String password;
-    private final String encryptPassword; //密文
-	private int maxCon ;
-	private int minCon ;
-	private String dbType;
+	private  String hostName;
+	@NotNull
+	private  String ip;
+	@NotNull
+	private  int port;
+	private  String url;
+	@NotNull
+	private  String user;
+	@NotNull
+	private  String password;
+    private  String encryptPassword; //密文
+	private int maxCon=SystemConfig.DEFAULT_POOL_SIZE ;
+	private int minCon=10 ;
+	private String dbType="mysql";
 	private String filters="mergeStat";
 	private long logTime = 300000;
-	private int weight;				
+	private int weight;
+
+	public DBHostConfig() {
+	}
 
 	public String getDbType() {
 		return dbType;
@@ -142,4 +150,34 @@ public class DBHostConfig implements Serializable{
 		return "DBHostConfig [hostName=" + hostName + ", url=" + url + "]";
 	}
 
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+		url = ip + ":" + port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+		url = ip + ":" + port;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+		encryptPassword = password;
+	}
+
+	public void setEncryptPassword(String encryptPassword) {
+		this.encryptPassword = encryptPassword;
+	}
 }

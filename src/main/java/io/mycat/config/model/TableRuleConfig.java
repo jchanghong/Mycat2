@@ -31,9 +31,9 @@ import java.io.Serializable;
  * @author mycat
  */
 public final class TableRuleConfig implements Serializable{
-    private static final long serialVersionUID = -6605226933829917213L;
-    private final String name;
-    private final RuleConfig[] rules;
+    private static  long serialVersionUID = -6605226933829917213L;
+    private  String name;
+    private  RuleConfig[] rules;
 
     public TableRuleConfig(String name,@Nullable RuleConfig[] rules) {
         this.name = name;
@@ -53,12 +53,12 @@ public final class TableRuleConfig implements Serializable{
         return rules;
     }
 
-    public static final class RuleConfig implements Serializable{
-        private static final long serialVersionUID = -6605226933829917213L;
+    public static  class RuleConfig implements Serializable{
+        private static  long serialVersionUID = -6605226933829917213L;
         private String tableRuleName;
         /** upper-case */
-        private final String[] columns;
-        private final Expression algorithm;
+        private  String[] columns;
+        private  Expression algorithm;
 
         public RuleConfig(String[] columns, Expression algorithm) {
             this.columns = columns == null ? new String[0] : columns;

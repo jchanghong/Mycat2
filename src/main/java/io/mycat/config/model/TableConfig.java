@@ -28,6 +28,7 @@ import io.mycat.config.model.rule.RuleConfig;
 import io.mycat.util.SplitUtil;
 
 import javax.annotation.Nonnull;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -36,40 +37,46 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author mycat
  */
 public class TableConfig implements Serializable{
-	private static final long serialVersionUID = -6605226933829917213L;
-	public static final int TYPE_GLOBAL_TABLE = 1;
-	public static final int TYPE_GLOBAL_DEFAULT = 0;
-	private final String name;
-	private final String primaryKey;
-	private final boolean autoIncrement;
-	private final boolean needAddLimit;
-	private final Set<String> dbTypes;
-	private final int tableType;
-	private final ArrayList<String> dataNodes;
-	private final ArrayList<String> distTables;
-	private final RuleConfig rule;
-	private final String partitionColumn;
-	private final boolean ruleRequired;
-	private final TableConfig parentTC;
-	private final boolean childTable;
-	private final String joinKey;
-	private final String parentKey;
-	private final String locateRTableKeySql;
+	private static  long serialVersionUID = -6605226933829917213L;
+	public static  int TYPE_GLOBAL_TABLE = 1;
+	public static  int TYPE_GLOBAL_DEFAULT = 0;
+	@NotNull
+	private  String name;
+	@NotNull
+	private  ArrayList<String> dataNodes;
+	private  String primaryKey;
+	private  boolean autoIncrement;
+	private  boolean needAddLimit;
+	private  Set<String> dbTypes;
+	private  int tableType=TYPE_GLOBAL_TABLE;
+	private  ArrayList<String> distTables;
+	private  RuleConfig rule;
+	private  String partitionColumn;
+	private  boolean ruleRequired;
+	private  TableConfig parentTC;
+	private  boolean childTable;
+	private  String joinKey;
+	private  String parentKey;
+	private  String locateRTableKeySql;
 	// only has one level of parent
-	private final boolean secondLevel;
-	private final boolean partionKeyIsPrimaryKey;
-	private final Random rand = new Random();
+	private  boolean secondLevel;
+	private  boolean partionKeyIsPrimaryKey;
+	private  Random rand = new Random();
 
 	private volatile List<SQLTableElement> tableElementList;
 	private volatile String tableStructureSQL;
 	private volatile Map<String,List<String>> dataNodeTableStructureSQLMap;
 	private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
 
-
-	public TableConfig(String name, @Nonnull String primaryKey, boolean autoIncrement, boolean needAddLimit, int tableType,
-					   String dataNode, Set<String> dbType, RuleConfig rule, boolean ruleRequired,
-					   TableConfig parentTC, boolean isChildTable, String joinKey,
-					   String parentKey, String subTables) {
+    public TableConfig() {
+        if (ruleRequired && rule == null) {
+            throw new IllegalArgumentException("ruleRequired but rule is null");
+        }
+    }
+    public TableConfig(String name, @Nonnull String primaryKey, boolean autoIncrement, boolean needAddLimit, int tableType,
+                       String dataNode, Set<String> dbType, RuleConfig rule, boolean ruleRequired,
+                       TableConfig parentTC, boolean isChildTable, String joinKey,
+                       String parentKey, String subTables) {
 		if (name == null) {
 			throw new IllegalArgumentException("table name is null");
 		} else if (dataNode == null) {
@@ -226,6 +233,91 @@ public class TableConfig implements Serializable{
 
 	public String getJoinKey() {
 		return joinKey;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+        this.name = name.toUpperCase();
+	}
+
+	public void setPrimaryKey(String primaryKey) {
+		this.primaryKey = primaryKey;
+	}
+
+	public void setAutoIncrement(boolean autoIncrement) {
+		this.autoIncrement = autoIncrement;
+	}
+
+	public void setNeedAddLimit(boolean needAddLimit) {
+		this.needAddLimit = needAddLimit;
+	}
+
+	public void setDbTypes(Set<String> dbTypes) {
+		this.dbTypes = dbTypes;
+	}
+
+	public void setTableType(int tableType) {
+		this.tableType = tableType;
+	}
+
+	public void setDataNodes(ArrayList<String> dataNodes) {
+		this.dataNodes = dataNodes;
+	}
+
+	public void setDistTables(ArrayList<String> distTables) {
+		this.distTables = distTables;
+	}
+
+	public void setRule(RuleConfig rule) {
+		this.rule = rule;
+	}
+
+	public void setPartitionColumn(String partitionColumn) {
+		this.partitionColumn = partitionColumn;
+	}
+
+	public void setRuleRequired(boolean ruleRequired) {
+		this.ruleRequired = ruleRequired;
+	}
+
+	public void setParentTC(TableConfig parentTC) {
+		this.parentTC = parentTC;
+	}
+
+	public void setChildTable(boolean childTable) {
+		this.childTable = childTable;
+	}
+
+	public void setJoinKey(String joinKey) {
+		this.joinKey = joinKey;
+	}
+
+	public void setParentKey(String parentKey) {
+		this.parentKey = parentKey;
+	}
+
+	public void setLocateRTableKeySql(String locateRTableKeySql) {
+		this.locateRTableKeySql = locateRTableKeySql;
+	}
+
+	public void setSecondLevel(boolean secondLevel) {
+		this.secondLevel = secondLevel;
+	}
+
+	public boolean isPartionKeyIsPrimaryKey() {
+		return partionKeyIsPrimaryKey;
+	}
+
+	public void setPartionKeyIsPrimaryKey(boolean partionKeyIsPrimaryKey) {
+		this.partionKeyIsPrimaryKey = partionKeyIsPrimaryKey;
+	}
+
+	public Random getRand() {
+		return rand;
+	}
+
+	public void setRand(Random rand) {
+		this.rand = rand;
 	}
 
 	public String getParentKey() {

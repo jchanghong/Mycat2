@@ -35,47 +35,47 @@ import java.io.Serializable;
  *
  * @author mycat
  */
-public final class SystemConfig implements Serializable{
-	private static final long serialVersionUID = -6605226933829917213L;
-	public static final String SYS_HOME = "MYCAT_HOME";
-	private static final int DEFAULT_PORT = 8066;
-	private static final int DEFAULT_MANAGER_PORT = 9066;
-	private static final String DEFAULT_CHARSET = "utf8";
+public  class SystemConfig implements Serializable{
+	private static  long serialVersionUID = -6605226933829917213L;
+	public static  String SYS_HOME = "MYCAT_HOME";
+	private static  int DEFAULT_PORT = 8066;
+	private static  int DEFAULT_MANAGER_PORT = 9066;
+	private static  String DEFAULT_CHARSET = "utf8";
 
-	private static final String DEFAULT_SQL_PARSER = "druidparser";// fdbparser, druidparser
-	private static final short DEFAULT_BUFFER_CHUNK_SIZE = 4096;
-	private static final int DEFAULT_BUFFER_POOL_PAGE_SIZE = 512*1024*4;
-	private static final short DEFAULT_BUFFER_POOL_PAGE_NUMBER = 64;
+	private static  String DEFAULT_SQL_PARSER = "druidparser";// fdbparser, druidparser
+	private static  short DEFAULT_BUFFER_CHUNK_SIZE = 4096;
+	private static  int DEFAULT_BUFFER_POOL_PAGE_SIZE = 512*1024*4;
+	private static  short DEFAULT_BUFFER_POOL_PAGE_NUMBER = 64;
 	private int processorBufferLocalPercent;
-	private static final int DEFAULT_PROCESSORS = Runtime.getRuntime().availableProcessors();
+	private static  int DEFAULT_PROCESSORS = Runtime.getRuntime().availableProcessors();
 	private int frontSocketSoRcvbuf = 1024 * 1024;
 	private int frontSocketSoSndbuf = 4 * 1024 * 1024;
 	private int backSocketSoRcvbuf = 4 * 1024 * 1024;// mysql 5.6
 														// net_buffer_length
 														// defaut 4M
     
-	private final  static String RESERVED_SYSTEM_MEMORY_BYTES = "384m";
-	private final static String MEMORY_PAGE_SIZE = "1m";
-	private final static String SPILLS_FILE_BUFFER_SIZE = "2K";
-	private final static String DATANODE_SORTED_TEMP_DIR = "datanode";
+	private   static String RESERVED_SYSTEM_MEMORY_BYTES = "384m";
+	private  static String MEMORY_PAGE_SIZE = "1m";
+	private  static String SPILLS_FILE_BUFFER_SIZE = "2K";
+	private  static String DATANODE_SORTED_TEMP_DIR = "datanode";
 	private int backSocketSoSndbuf = 1024 * 1024;
 	@Max(1111)
 	private int frontSocketNoDelay = 1; // 0=false
 	private int backSocketNoDelay = 1; // 1=true
-	public static final int DEFAULT_POOL_SIZE = 128;// 保持后端数据通道的默认最大值
-	public static final long DEFAULT_IDLE_TIMEOUT = 30 * 60 * 1000L;
-	private static final long DEFAULT_PROCESSOR_CHECK_PERIOD = 1 * 1000L;
-	private static final long DEFAULT_DATANODE_IDLE_CHECK_PERIOD = 5 * 60 * 1000L;
-	private static final long DEFAULT_DATANODE_HEARTBEAT_PERIOD = 10 * 1000L;
-	private static final long DEFAULT_CLUSTER_HEARTBEAT_PERIOD = 5 * 1000L;
-	private static final long DEFAULT_CLUSTER_HEARTBEAT_TIMEOUT = 10 * 1000L;
-	private static final int DEFAULT_CLUSTER_HEARTBEAT_RETRY = 10;
-	private static final int DEFAULT_MAX_LIMIT = 100;
-	private static final String DEFAULT_CLUSTER_HEARTBEAT_USER = "_HEARTBEAT_USER_";
-	private static final String DEFAULT_CLUSTER_HEARTBEAT_PASS = "_HEARTBEAT_PASS_";
-	private static final int DEFAULT_PARSER_COMMENT_VERSION = 50148;
-	private static final int DEFAULT_SQL_RECORD_COUNT = 10;
-	private static final boolean DEFAULT_USE_ZK_SWITCH = true;
+	public static  int DEFAULT_POOL_SIZE = 128;// 保持后端数据通道的默认最大值
+	public static  long DEFAULT_IDLE_TIMEOUT = 30 * 60 * 1000L;
+	private static  long DEFAULT_PROCESSOR_CHECK_PERIOD = 1 * 1000L;
+	private static  long DEFAULT_DATANODE_IDLE_CHECK_PERIOD = 5 * 60 * 1000L;
+	private static  long DEFAULT_DATANODE_HEARTBEAT_PERIOD = 10 * 1000L;
+	private static  long DEFAULT_CLUSTER_HEARTBEAT_PERIOD = 5 * 1000L;
+	private static  long DEFAULT_CLUSTER_HEARTBEAT_TIMEOUT = 10 * 1000L;
+	private static  int DEFAULT_CLUSTER_HEARTBEAT_RETRY = 10;
+	private static  int DEFAULT_MAX_LIMIT = 100;
+	private static  String DEFAULT_CLUSTER_HEARTBEAT_USER = "_HEARTBEAT_USER_";
+	private static  String DEFAULT_CLUSTER_HEARTBEAT_PASS = "_HEARTBEAT_PASS_";
+	private static  int DEFAULT_PARSER_COMMENT_VERSION = 50148;
+	private static  int DEFAULT_SQL_RECORD_COUNT = 10;
+	private static  boolean DEFAULT_USE_ZK_SWITCH = true;
 	private int maxStringLiteralLength = 65535;
 	private int frontWriteQueueSize = 2048;
 	private String bindIp = "0.0.0.0";
@@ -127,7 +127,7 @@ public final class SystemConfig implements Serializable{
 	private long clearBigSqLResultSetMapMs=10*60*1000;
 
 	private int defaultMaxLimit = DEFAULT_MAX_LIMIT;
-	public static final int SEQUENCEHANDLER_LOCALFILE = 0;
+	public static final   int SEQUENCEHANDLER_LOCALFILE = 0;
 	public static final int SEQUENCEHANDLER_MYSQLDB = 1;
 	public static final int SEQUENCEHANDLER_LOCAL_TIME = 2;
 	public static final int SEQUENCEHANDLER_ZK_DISTRIBUTED = 3;
@@ -136,16 +136,16 @@ public final class SystemConfig implements Serializable{
 	 * 注意！！！ 目前mycat支持的MySQL版本，如果后续有新的MySQL版本,请添加到此数组， 对于MySQL的其他分支，
 	 * 比如MariaDB目前版本号已经到10.1.x，但是其驱动程序仍然兼容官方的MySQL,因此这里版本号只需要MySQL官方的版本号即可。
 	 */
-	public static final String[] MySQLVersions = { "5.5", "5.6", "5.7" };
+	public static  String[] MySQLVersions = { "5.5", "5.6", "5.7" };
 	private int sequnceHandlerType = SEQUENCEHANDLER_LOCALFILE;
 	private String sqlInterceptor = "io.mycat.server.interceptor.impl.DefaultSqlInterceptor";
 	private String sqlInterceptorType = "select";
 	private String sqlInterceptorFile = System.getProperty("user.dir")+"/logs/sql.txt";
-	public static final int MUTINODELIMIT_SMALL_DATA = 0;
-	public static final int MUTINODELIMIT_LAR_DATA = 1;
+	public static  int MUTINODELIMIT_SMALL_DATA = 0;
+	public static  int MUTINODELIMIT_LAR_DATA = 1;
 	private int mutiNodeLimitType = MUTINODELIMIT_SMALL_DATA;
 
-	public static final int MUTINODELIMIT_PATCH_SIZE = 100;
+	public static  int MUTINODELIMIT_PATCH_SIZE = 100;
 	private int mutiNodePatchSize = MUTINODELIMIT_PATCH_SIZE;
 
 	private String defaultSqlParser = DEFAULT_SQL_PARSER;
@@ -165,12 +165,12 @@ public final class SystemConfig implements Serializable{
 
 	private int checkTableConsistency = 0;
 	private long checkTableConsistencyPeriod = CHECKTABLECONSISTENCYPERIOD;
-	private final static long CHECKTABLECONSISTENCYPERIOD = 1 * 60 * 1000;
+	private  static long CHECKTABLECONSISTENCYPERIOD = 1 * 60 * 1000;
 
 	private int processorBufferPoolType = 0;
 
 	// 全局表一致性检测任务，默认24小时调度一次
-	private static final long DEFAULT_GLOBAL_TABLE_CHECK_PERIOD = 24 * 60 * 60 * 1000L;
+	private static  long DEFAULT_GLOBAL_TABLE_CHECK_PERIOD = 24 * 60 * 60 * 1000L;
 	private int useGlobleTableCheck = 1;	// 全局表一致性检查开关
 	
 	private long glableTableCheckPeriod;

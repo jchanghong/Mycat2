@@ -53,9 +53,9 @@ import java.util.Map;
  * @author songwie
  * @author zhuam
  */
-public final class FirewallConfig implements Serializable{
-	private static final long serialVersionUID = -6605226933829917213L;
-	private static final Logger LOGGER = LoggerFactory.getLogger(FirewallConfig.class);
+public  class FirewallConfig implements Serializable{
+	private static  long serialVersionUID = -6605226933829917213L;
+	private static  Logger LOGGER = LoggerFactory.getLogger(FirewallConfig.class);
 	
     private Map<String, List<UserConfig>> whitehost;
     private List<String> blacklist;
@@ -69,8 +69,17 @@ transient	private WallConfig wallConfig = new WallConfig();
             provider.setBlackListEnable(true);
         }
     }
-    
-    public void init(){
+
+	/**
+	 * Addblackhost.
+	 *增加一个黑名单
+	 * @param hostip the hostip
+	 */
+	public void addblackhost(String hostip) {
+		blacklist.add(hostip);
+	}
+
+	public void init(){
     	if(check){
     		provider = new MySqlWallProvider(wallConfig);
     		provider.setBlackListEnable(true);
@@ -83,7 +92,7 @@ transient	private WallConfig wallConfig = new WallConfig();
 //     * @param out Target to which this instance is written.
 //     * @throws IOException Thrown if exception occurs during serialization.
 //     */
-//    private void writeObject(final ObjectOutputStream out) throws IOException
+//    private void writeObject( ObjectOutputStream out) throws IOException
 //    {
 //
 //    }
@@ -95,7 +104,7 @@ transient	private WallConfig wallConfig = new WallConfig();
 //     * @throws IOException Thrown if error occurs in deserialization.
 //     * @throws ClassNotFoundException Thrown if expected class is not found.
 //     */
-//    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+//    private void readObject( ObjectInputStream in) throws IOException, ClassNotFoundException
 //    {
 //
 //    }

@@ -28,7 +28,7 @@ public class MyConfigLoader implements ConfigLoader {
     private ClusterConfig clusterConfig;
     static final String DEFALUT_FILENAME = "map.mapdb";
     private static MyConfigLoader install = new MyConfigLoader();
-    private MyDiscMap3 map3;
+    public MyDiscMap3 map3;
     public static MyConfigLoader getInstance() {
         return install;
     }
@@ -54,6 +54,7 @@ public class MyConfigLoader implements ConfigLoader {
     }
     private MyConfigLoader() {
         map3 = new MyDiscMap3(DEFALUT_FILENAME);
+        Initfunction.init();
         load();
     }
     @Override
@@ -62,7 +63,9 @@ public class MyConfigLoader implements ConfigLoader {
             return schemaConfigMap.get(schema);
         }
         TableConfig tableConfig = new TableConfig("PERSON", "id", false, false,
-                TableConfig.TYPE_GLOBAL_DEFAULT, "dn1", null, null, false, null, false, null, null, null);
+                TableConfig.TYPE_GLOBAL_DEFAULT, "dn1", null,
+                null, false, null,
+                false, null, null, null);
         Map<String, TableConfig> map = new HashMap<>();
         map.put("PERSON", tableConfig);
         SchemaConfig schemaConfig = new SchemaConfig("db", null, map, 100, false);
@@ -101,7 +104,9 @@ public class MyConfigLoader implements ConfigLoader {
         dbHostConfig.setMinCon(10);
         dbHostConfig.setMaxCon(1000);
         DBHostConfig[] dataHostConfigs = new DBHostConfig[]{dbHostConfig};
-        DataHostConfig hostConfig = new DataHostConfig("localhost1", "mysql", "native", dataHostConfigs, new HashMap<Integer,DBHostConfig[]>(), 0, 100, false);
+        DataHostConfig hostConfig = new DataHostConfig("localhost1", "mysql",
+                "native", dataHostConfigs, new HashMap<Integer,DBHostConfig[]>(), 0,
+                100, false);
         hostConfig.setMinCon(10);
         hostConfig.setMaxCon(1000);
         hostConfig.setHearbeatSQL("select user()");

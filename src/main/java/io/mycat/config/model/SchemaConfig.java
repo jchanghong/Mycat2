@@ -23,6 +23,9 @@
  */
 package io.mycat.config.model;
 
+import javafx.scene.media.VideoTrack;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,8 +39,9 @@ import java.util.Set;
 public class SchemaConfig implements Serializable{
 	private static  long serialVersionUID = -6605226933829917213L;
 	private  Random random = new Random();
+	@NotNull
 	private String name;
-	private Map<String, TableConfig> tables;
+	private Map<String, TableConfig> tables=new HashMap<>();
 	private  boolean noSharding;
 	private  String dataNode;
 	private  Set<String> metaDataNodes;
@@ -46,7 +50,7 @@ public class SchemaConfig implements Serializable{
 	 * when a select sql has no limit condition ,and default max limit to
 	 * prevent memory problem when return a large result set
 	 */
-	private  int defaultMaxLimit;
+	private  int defaultMaxLimit=100;
 	private  boolean checkSQLSchema;
 	private  boolean needSupportMultiDBType=false;
 	private  String defaultDataNodeDbType;
@@ -59,7 +63,33 @@ public class SchemaConfig implements Serializable{
 
 	private  Map<String,String> dataNodeDbTypeMap=new HashMap<>();
 
+	/**
+	 * Addtable.
+	 *
+	 * @param tableConfig the table config
+	 */
+	public void addtable(TableConfig tableConfig) {
+		tables.put(tableConfig.getName().toUpperCase(), tableConfig);
+		buildJoinMap(tables);
+		this.noSharding = (tables == null || tables.isEmpty());
+
+		if (noSharding && dataNode == null) {
+			throw new RuntimeException(name
+					+ " in noSharding mode schema must have default dataNode ");
+		}
+		this.metaDataNodes = buildMetaDataNodes();
+		this.allDataNodes = buildAllDataNodes();
+//		this.metaDataNodes = buildAllDataNodes();
+		if (this.allDataNodes != null && !this.allDataNodes.isEmpty()) {
+			String[] dnArr = new String[this.allDataNodes.size()];
+			dnArr = this.allDataNodes.toArray(dnArr);
+			this.allDataNodeStrArr = dnArr;
+		} else {
+			this.allDataNodeStrArr = null;
+		}
+	}
 	public SchemaConfig() {
+
 	}
 
 	public SchemaConfig(String name, String dataNode,
@@ -214,6 +244,50 @@ public class SchemaConfig implements Serializable{
 			}
 		}
 		return set;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setTables(Map<String, TableConfig> tables) {
+		this.tables = tables;
+	}
+
+	public void setNoSharding(boolean noSharding) {
+		this.noSharding = noSharding;
+	}
+
+	public void setDataNode(String dataNode) {
+		this.dataNode = dataNode;
+	}
+
+	public void setMetaDataNodes(Set<String> metaDataNodes) {
+		this.metaDataNodes = metaDataNodes;
+	}
+
+	public void setAllDataNodes(Set<String> allDataNodes) {
+		this.allDataNodes = allDataNodes;
+	}
+
+	public void setDefaultMaxLimit(int defaultMaxLimit) {
+		this.defaultMaxLimit = defaultMaxLimit;
+	}
+
+	public void setCheckSQLSchema(boolean checkSQLSchema) {
+		this.checkSQLSchema = checkSQLSchema;
+	}
+
+	public void setJoinRel2TableMap(Map<String, TableConfig> joinRel2TableMap) {
+		this.joinRel2TableMap = joinRel2TableMap;
+	}
+
+	public String[] getAllDataNodeStrArr() {
+		return allDataNodeStrArr;
+	}
+
+	public void setAllDataNodeStrArr(String[] allDataNodeStrArr) {
+		this.allDataNodeStrArr = allDataNodeStrArr;
 	}
 
 	private static boolean isEmpty(String str) {
