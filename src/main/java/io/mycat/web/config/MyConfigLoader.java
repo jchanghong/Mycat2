@@ -28,7 +28,7 @@ public class MyConfigLoader implements ConfigLoader {
     private ClusterConfig clusterConfig;
     static final String DEFALUT_FILENAME = "map.mapdb";
     private static MyConfigLoader install = new MyConfigLoader();
-    public MyDiscMap3 map3;
+    public static MyDiscMap3 map3;
     public static MyConfigLoader getInstance() {
         return install;
     }
@@ -53,7 +53,9 @@ public class MyConfigLoader implements ConfigLoader {
         clusterConfig = (ClusterConfig) map3.get(CLUSTERKEY);
     }
     private MyConfigLoader() {
-        map3 = new MyDiscMap3(DEFALUT_FILENAME);
+        if (map3 == null) {
+            map3 = new MyDiscMap3(DEFALUT_FILENAME);
+        }
         Initfunction.init();
         load();
     }

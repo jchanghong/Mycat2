@@ -23,6 +23,7 @@
  */
 package io.mycat.config.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Iterables;
 import io.mycat.backend.datasource.PhysicalDBPool;
 
@@ -39,6 +40,7 @@ import java.util.regex.Pattern;
  * @author changhong
  *代表一个主机群，属性不要final
  */
+
 @SuppressWarnings("Duplicates")
 public class DataHostConfig implements Serializable{
 	private static  long serialVersionUID = -6605226933829917213L;

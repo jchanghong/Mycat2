@@ -24,6 +24,7 @@
 package io.mycat.config.model;
 
 import com.alibaba.druid.sql.ast.statement.SQLTableElement;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.mycat.config.model.rule.RuleConfig;
 import io.mycat.util.SplitUtil;
 
@@ -61,11 +62,13 @@ public class TableConfig implements Serializable{
 	// only has one level of parent
 	private  boolean secondLevel;
 	private  boolean partionKeyIsPrimaryKey;
+	@JsonIgnore
 	private  Random rand = new Random();
 
 	private volatile List<SQLTableElement> tableElementList;
 	private volatile String tableStructureSQL;
 	private volatile Map<String,List<String>> dataNodeTableStructureSQLMap;
+	@JsonIgnore
 	private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
 
     public TableConfig() {

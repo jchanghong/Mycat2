@@ -17,14 +17,17 @@ public class Initfunction {
     }
   public static   List<FunctionModel> functionModels = new ArrayList<>();
     public static void init() {
-        if (MyConfigLoader.getInstance().map3.get(KEY) != null) {
+        if (MyConfigLoader.map3 == null) {
+            MyConfigLoader.map3 = new MyDiscMap3(MyConfigLoader.DEFALUT_FILENAME);
+        }
+        if (MyConfigLoader.map3.get(KEY) != null) {
             functionModels = (List<FunctionModel>) MyConfigLoader.getInstance().map3.get(KEY);
             return;
         }
         addfunc1();
         addfunc2();
         addfunc3();
-        MyConfigLoader.getInstance().map3.put(KEY, functionModels);
+        MyConfigLoader.map3.put(KEY, functionModels);
 
     }
 
