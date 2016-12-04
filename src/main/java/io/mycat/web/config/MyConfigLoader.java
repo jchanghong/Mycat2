@@ -2,10 +2,10 @@ package io.mycat.web.config;
 
 import io.mycat.config.loader.ConfigLoader;
 import io.mycat.config.model.*;
+import io.mycat.config.model.rule.*;
+import io.mycat.config.model.rule.TableRuleConfig;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jiang on 2016/11/24 0024.
@@ -19,7 +19,11 @@ public class MyConfigLoader implements ConfigLoader {
     public static final String USERKEY = "userConfigMap";
     public static final String FIREWALLKEY = "firewallConfig";
     public static final String CLUSTERKEY = "clusterConfig";
+    public static final String TABLE_RULEKEY = "TABLERULEKEY";
+    public static final String RULE_KEY = "RULEKEYS";
     private Map<String, SchemaConfig> schemaConfigMap;
+    private List<RuleConfig> ruleConfigs;
+    private Map<String, io.mycat.config.model.rule.TableRuleConfig> tableRuleConfigMap;
     private Map<String, DataNodeConfig> dataNodeConfigMap;
     private Map<String, DataHostConfig> dataHostConfigMap;
     private SystemConfig systemConfig;
@@ -44,6 +48,8 @@ public class MyConfigLoader implements ConfigLoader {
         map3.put(USERKEY, getUserConfigs());
         map3.put(FIREWALLKEY, getFirewallConfig());
         map3.put(CLUSTERKEY, getClusterConfig());
+      map3.put(TABLE_RULEKEY, getTableRuleConfigMap());
+      map3.put(RULE_KEY, getRuleConfigs());
     }
     /***把配置从文件读出或者重新加载*/
   synchronized   public void load() {
@@ -54,6 +60,8 @@ public class MyConfigLoader implements ConfigLoader {
         userConfigMap = (Map<String, UserConfig>) map3.get(USERKEY);
         firewallConfig = (FirewallConfig) map3.get(FIREWALLKEY);
         clusterConfig = (ClusterConfig) map3.get(CLUSTERKEY);
+      tableRuleConfigMap = (Map<String, TableRuleConfig>) map3.get(TABLE_RULEKEY);
+      ruleConfigs = (List<RuleConfig>) map3.get(RULE_KEY);
     }
     private MyConfigLoader() {
         if (map3 == null) {
@@ -207,6 +215,28 @@ public class MyConfigLoader implements ConfigLoader {
     }
 
     public void setClusterConfig(ClusterConfig clusterConfig) {
+
         this.clusterConfig = clusterConfig;
+    }
+    public Map<String, TableRuleConfig> getTableRuleConfigMap() {
+        if (tableRuleConfigMap == null) {
+            tableRuleConfigMap = new HashMap<>();
+        }
+        return tableRuleConfigMap;
+    }
+
+    public void setTableRuleConfigMap(Map<String, TableRuleConfig> tableRuleConfigMap) {
+        this.tableRuleConfigMap = tableRuleConfigMap;
+    }
+
+    public List<RuleConfig> getRuleConfigs() {
+        if (ruleConfigs == null) {
+            ruleConfigs = new ArrayList<>();
+        }
+        return ruleConfigs;
+    }
+
+    public void setRuleConfigs(List<RuleConfig> ruleConfigs) {
+        this.ruleConfigs = ruleConfigs;
     }
 }

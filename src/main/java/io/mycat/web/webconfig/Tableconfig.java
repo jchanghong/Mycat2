@@ -29,7 +29,7 @@ public class Tableconfig {
         SchemaConfig schemaConfig = MyConfigLoader.getInstance().getSchemaConfig(dbname);
         if (schemaConfig == null) {
             returnMessage.setError(true);
-            returnMessage.setMessage("不存在");
+            returnMessage.setMessage("数据库不存在");
             return returnMessage;
         }
         returnMessage.setError(false);

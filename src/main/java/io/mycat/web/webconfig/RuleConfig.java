@@ -1,6 +1,6 @@
 package io.mycat.web.webconfig;
 
-import io.mycat.config.model.rule.TableRuleConfig;
+import io.mycat.web.config.Initfunction;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
@@ -11,52 +11,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 /**
  * Created by jiang on 2016/12/3 0003.
- *表规则的功能
+ * 分区规则功能
+ *
  */
 @SuppressWarnings("Duplicates")
 @RestController
-public class TableRulesconfig {
+public class RuleConfig {
     /**
      * Gets .
-     * 得打所有的表规则让用户选择
+     * 得到所有的分区g规则
      *
      * @return the
      */
-    @GetMapping(value = "/gettablerules")
+    @GetMapping(value = "/getrules")
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
+        returnMessage.setObject(MyConfigLoader.getInstance().getRuleConfigs().toArray());
         returnMessage.setError(false);
-        returnMessage.setObject(MyConfigLoader.getInstance().getTableRuleConfigMap().values().toArray());
         return returnMessage;
     }
+
     /**
-     * Sets .增加一个表规则或者设置一个表规则
+     * Sets .增加分区规则
      *
      * @param d      the d
      * @param result the result
      * @return the
      */
-    @PostMapping(value = "/addtablerule")
-    public ReturnMessage setsysconfig(@Valid @RequestBody TableRuleConfig tableRuleConfig, BindingResult result) {
+    @PostMapping(value = "/addrule")
+    public ReturnMessage setsysconfig(@Valid @RequestBody io.mycat.config.model.rule.RuleConfig functionModel, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
         if (result.hasErrors()) {
             returnMessage.setError(true);
             returnMessage.setMessage(result.toString());
             return returnMessage;
         }
-        Map<String, TableRuleConfig> map = MyConfigLoader.getInstance().getTableRuleConfigMap();
-        map.put(tableRuleConfig.getName(), tableRuleConfig);
+        MyConfigLoader.getInstance().getRuleConfigs().add(functionModel);
         MyConfigLoader.getInstance().save();
-      String dd=  MyReloadConfig.reloadconfig(false);
+        String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {
-
             returnMessage.setError(false);
-        }
-        else {
+        } else {
             returnMessage.setMessage(dd);
             returnMessage.setError(true);
         }

@@ -52,14 +52,8 @@ public class RuleConfig implements Serializable {
 		if (column != null && functionName != null) {
 			try {
 				ruleAlgorithm = createFunction(column, functionName);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -68,6 +62,13 @@ public class RuleConfig implements Serializable {
 		this.functionName = functionName;
 		if (functionName == null) {
 			throw new IllegalArgumentException("functionName is null");
+		}
+		if (column != null && functionName != null) {
+			try {
+				ruleAlgorithm = createFunction(column, functionName);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

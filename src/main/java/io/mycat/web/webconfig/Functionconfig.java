@@ -28,7 +28,7 @@ public class Functionconfig {
     @GetMapping(value = "/getfunctions")
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
-        returnMessage.setObject(Initfunction.functionModels);
+        returnMessage.setObject(Initfunction.functionModels.toArray());
         returnMessage.setError(false);
         return returnMessage;
     }
@@ -48,6 +48,7 @@ public class Functionconfig {
             returnMessage.setMessage(result.toString());
             return returnMessage;
         }
+        Initfunction.functionModels.add(functionModel);
         Initfunction.save();
         String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {
