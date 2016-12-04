@@ -11,8 +11,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class Application {
+    static boolean startmycat = true;
+    static boolean startweb = true;
     public static void main(String[] args) {
-//        MycatStartup.startmain(args);//启动mycat服务器
-        SpringApplication.run(Application.class, args);//启动tomcat，web服务器
+        if (startmycat) {
+            MycatStartup.startmain(args);//启动mycat服务器
+        }
+        if (startweb) {
+            SpringApplication.run(Application.class, args);//启动tomcat，web服务器
+        }
     }
 }

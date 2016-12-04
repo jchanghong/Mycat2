@@ -43,6 +43,7 @@ import io.mycat.util.LongUtil;
  * @author mycat
  * @author mycat
  */
+@SuppressWarnings("Duplicates")
 public final class ShowCommand {
 
     private static final int FIELD_COUNT = 10;
