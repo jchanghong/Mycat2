@@ -23,7 +23,7 @@
  */
 package io.mycat.config.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterables;
 import io.mycat.backend.datasource.PhysicalDBPool;
 
@@ -38,68 +38,70 @@ import java.util.regex.Pattern;
  *
  * @author wuzhih
  * @author changhong
- *代表一个主机群，属性不要final
+ *         代表一个主机群，属性不要final
  */
 
 @SuppressWarnings("Duplicates")
-public class DataHostConfig implements Serializable{
-	private static  long serialVersionUID = -6605226933829917213L;
-	public static  int NOT_SWITCH_DS = -1;
-	public static  int DEFAULT_SWITCH_DS = 1;
-	public static  int SYN_STATUS_SWITCH_DS = 2;
-	public static  int CLUSTER_STATUS_SWITCH_DS = 3;
-    private static  Pattern pattern = Pattern.compile("\\s*show\\s+slave\\s+status\\s*",Pattern.CASE_INSENSITIVE);
-    private static  Pattern patternCluster = Pattern.compile("\\s*show\\s+status\\s+like\\s+'wsrep%'",Pattern.CASE_INSENSITIVE);
+public class DataHostConfig implements Serializable {
+    private static long serialVersionUID = -6605226933829917213L;
+    public static int NOT_SWITCH_DS = -1;
+    public static int DEFAULT_SWITCH_DS = 1;
+    public static int SYN_STATUS_SWITCH_DS = 2;
+    public static int CLUSTER_STATUS_SWITCH_DS = 3;
+    private static Pattern pattern = Pattern.compile("\\s*show\\s+slave\\s+status\\s*", Pattern.CASE_INSENSITIVE);
+    private static Pattern patternCluster = Pattern.compile("\\s*show\\s+status\\s+like\\s+'wsrep%'", Pattern.CASE_INSENSITIVE);
     @NotNull
     private String hearbeatSQL;
     @NotNull
-	private String name;
+    private String name;
     @NotNull
-    private  String dbType="mysql";//不能为空，但是可以不设置，默认为mysql
+    private String dbType = "mysql";//不能为空，但是可以不设置，默认为mysql
     @NotNull
-    private  String dbDriver="native";
+    private String dbDriver = "native";
     @NotNull
-    private  int switchType=0;
+    private int switchType = 0;
     private int maxCon = SystemConfig.DEFAULT_POOL_SIZE;
     private int minCon = 10;
     private int balance = PhysicalDBPool.BALANCE_NONE;
     private int writeType = PhysicalDBPool.WRITE_ONLYONE_NODE;
-    private  DBHostConfig[] writeHosts;
-    private  Map<Integer, DBHostConfig[]> readHosts;
-    private boolean isShowSlaveSql=false;
-    private boolean isShowClusterSql=false;
+    private DBHostConfig[] writeHosts = new DBHostConfig[0];
+    private Map<Integer, DBHostConfig[]> readHosts = new HashMap<>();
+    private boolean isShowSlaveSql = false;
+    private boolean isShowClusterSql = false;
     private String connectionInitSql;
     private int slaveThreshold = -1;//?
-	private String filters="mergeStat";
-	private long logTime=300000;
-	private boolean tempReadHostAvailable = false;  //如果写服务挂掉, 临时读服务是否继续可用
-	private  Set<String> dataNodes; //包含的所有dataNode名字
-	private String slaveIDs;//?
+    private String filters = "mergeStat";
+    private long logTime = 300000;
+    private boolean tempReadHostAvailable = false;  //如果写服务挂掉, 临时读服务是否继续可用
+    private Set<String> dataNodes = new HashSet<>(); //包含的所有dataNode名字
+    private String slaveIDs;//?
 
     /**
      * Addwhost 增加一个写主机
-     * @author changhong
+     *
      * @param dbHostConfig the db host config
+     * @author changhong
      */
     public void addwhost(DBHostConfig dbHostConfig) {
-        if (this.writeHosts == null) {
+        if (this.writeHosts.length == 0) {
             this.writeHosts = new DBHostConfig[1];
             writeHosts[0] = dbHostConfig;
 
-        }
-        else {
+        } else {
             DBHostConfig[] temp = new DBHostConfig[writeHosts.length + 1];
-            for (int i = 0; i < temp.length-1; i++) {
+            for (int i = 0; i < temp.length - 1; i++) {
                 temp[i] = writeHosts[i];
             }
             temp[temp.length - 1] = dbHostConfig;
             writeHosts = temp;
         }
     }
+
     /**
      * Addwhost remove一个主机
-     * @author changhong
+     *
      * @param dbHostConfig the db host config
+     * @author changhong
      */
     public void removehost(String name) {
         List<DBHostConfig> list = Arrays.asList(writeHosts);
@@ -128,10 +130,9 @@ public class DataHostConfig implements Serializable{
             hostConfigs = new DBHostConfig[1];
             hostConfigs[0] = dbHostConfig;
             readHosts.put(index, hostConfigs);
-        }
-        else {
+        } else {
             DBHostConfig[] temp = new DBHostConfig[hostConfigs.length + 1];
-            for (int i = 0; i < temp.length-1; i++) {
+            for (int i = 0; i < temp.length - 1; i++) {
                 temp[i] = hostConfigs[i];
             }
             temp[temp.length - 1] = dbHostConfig;
@@ -139,10 +140,11 @@ public class DataHostConfig implements Serializable{
             readHosts.put(index, hostConfigs);
         }
     }
+
     /**
      * Addrhost.&#x589e;&#x52a0;&#x4e00;&#x4e2a;&#x4ece;&#x673a;&#x3002;&#x8bfb;&#x673a;
      *
-     * @param index    the writename&#x4e3b;&#x673a;&#x7684;index
+     * @param index        the writename&#x4e3b;&#x673a;&#x7684;index
      * @param dbHostConfig the db host config
      */
     public void addrhost(int index, DBHostConfig dbHostConfig) {
@@ -151,10 +153,9 @@ public class DataHostConfig implements Serializable{
             hostConfigs = new DBHostConfig[1];
             hostConfigs[0] = dbHostConfig;
             readHosts.put(index, hostConfigs);
-        }
-        else {
+        } else {
             DBHostConfig[] temp = new DBHostConfig[hostConfigs.length + 1];
-            for (int i = 0; i < temp.length-1; i++) {
+            for (int i = 0; i < temp.length - 1; i++) {
                 temp[i] = hostConfigs[i];
             }
             temp[temp.length - 1] = dbHostConfig;
@@ -162,189 +163,184 @@ public class DataHostConfig implements Serializable{
             readHosts.put(index, hostConfigs);
         }
     }
+
     /**
      * Instantiates a new Data host config.
-     * @auther changhong
      *
+     * @auther changhong
      */
     public DataHostConfig() {
-        this.dataNodes = new HashSet<>();
-        readHosts = new HashMap<>();
     }
 
     public DataHostConfig(String name, String dbType, String dbDriver,
                           DBHostConfig[] writeHosts, Map<Integer, DBHostConfig[]> readHosts, int switchType, int slaveThreshold, boolean tempReadHostAvailable) {
-		super();
-		this.name = name;
-		this.dbType = dbType;
-		this.dbDriver = dbDriver;
-		this.writeHosts = writeHosts;
-		this.readHosts = readHosts;
-		this.switchType=switchType;
-		this.slaveThreshold=slaveThreshold;
-		this.tempReadHostAvailable = tempReadHostAvailable;
-		this.dataNodes = new HashSet<>();
-	}
+        super();
+        this.name = name;
+        this.dbType = dbType;
+        this.dbDriver = dbDriver;
+        this.writeHosts = writeHosts;
+        this.readHosts = readHosts;
+        this.switchType = switchType;
+        this.slaveThreshold = slaveThreshold;
+        this.tempReadHostAvailable = tempReadHostAvailable;
+        this.dataNodes = new HashSet<>();
+    }
 
-	public boolean isTempReadHostAvailable() {
-		return this.tempReadHostAvailable;
-	}
+    public boolean isTempReadHostAvailable() {
+        return this.tempReadHostAvailable;
+    }
 
-	public int getSlaveThreshold() {
-		return slaveThreshold;
-	}
+    public int getSlaveThreshold() {
+        return slaveThreshold;
+    }
 
-	public void setSlaveThreshold(int slaveThreshold) {
-		this.slaveThreshold = slaveThreshold;
-	}
+    public void setSlaveThreshold(int slaveThreshold) {
+        this.slaveThreshold = slaveThreshold;
+    }
 
-	public int getSwitchType() {
-		return switchType;
-	}
+    public int getSwitchType() {
+        return switchType;
+    }
 
-	public String getConnectionInitSql()
-	{
-		return connectionInitSql;
-	}
+    public String getConnectionInitSql() {
+        return connectionInitSql;
+    }
 
-	public void setConnectionInitSql(String connectionInitSql)
-	{
-		this.connectionInitSql = connectionInitSql;
-	}
+    public void setConnectionInitSql(String connectionInitSql) {
+        this.connectionInitSql = connectionInitSql;
+    }
 
-	public int getWriteType() {
-		return writeType;
-	}
+    public int getWriteType() {
+        return writeType;
+    }
 
-	public void setWriteType(int writeType) {
-		this.writeType = writeType;
-	}
+    public void setWriteType(int writeType) {
+        this.writeType = writeType;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public boolean isShowSlaveSql()
-    {
+    public boolean isShowSlaveSql() {
         return isShowSlaveSql;
     }
 
     public int getMaxCon() {
-		return maxCon;
-	}
+        return maxCon;
+    }
 
-	public void setMaxCon(int maxCon) {
-		this.maxCon = maxCon;
-	}
+    public void setMaxCon(int maxCon) {
+        this.maxCon = maxCon;
+    }
 
-	public int getMinCon() {
-		return minCon;
-	}
+    public int getMinCon() {
+        return minCon;
+    }
 
-	public void setMinCon(int minCon) {
-		this.minCon = minCon;
-	}
+    public void setMinCon(int minCon) {
+        this.minCon = minCon;
+    }
 
-	public String getSlaveIDs() {
-		return slaveIDs;
-	}
+    public String getSlaveIDs() {
+        return slaveIDs;
+    }
 
-	public void setSlaveIDs(String slaveIDs) {
-		this.slaveIDs = slaveIDs;
-	}
+    public void setSlaveIDs(String slaveIDs) {
+        this.slaveIDs = slaveIDs;
+    }
 
-	public int getBalance() {
-		return balance;
-	}
+    public int getBalance() {
+        return balance;
+    }
 
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
-	public String getDbType() {
-		return dbType;
-	}
+    public String getDbType() {
+        return dbType;
+    }
 
-	public String getDbDriver() {
-		return dbDriver;
-	}
+    public String getDbDriver() {
+        return dbDriver;
+    }
 
-	public DBHostConfig[] getWriteHosts() {
-		return writeHosts;
-	}
+    public DBHostConfig[] getWriteHosts() {
+        return writeHosts;
+    }
 
-	public Map<Integer, DBHostConfig[]> getReadHosts() {
-		return readHosts;
-	}
+    public Map<Integer, DBHostConfig[]> getReadHosts() {
+        return readHosts;
+    }
 
-	public String getHearbeatSQL() {
-		return hearbeatSQL;
-	}
+    public String getHearbeatSQL() {
+        return hearbeatSQL;
+    }
 
-	public void setHearbeatSQL(String heartbeatSQL) {
-		this.hearbeatSQL = heartbeatSQL;
+    public void setHearbeatSQL(String heartbeatSQL) {
+        this.hearbeatSQL = heartbeatSQL;
         Matcher matcher = pattern.matcher(heartbeatSQL);
-        if (matcher.find())
-        {
-            isShowSlaveSql=true;
+        if (matcher.find()) {
+            isShowSlaveSql = true;
         }
         Matcher matcher2 = patternCluster.matcher(heartbeatSQL);
-        if (matcher2.find())
-        {
-        	isShowClusterSql=true;
+        if (matcher2.find()) {
+            isShowClusterSql = true;
         }
-	}
+    }
 
-	public String getFilters() {
-		return filters;
-	}
+    public String getFilters() {
+        return filters;
+    }
 
-	public void setFilters(String filters) {
-		this.filters = filters;
-	}
+    public void setFilters(String filters) {
+        this.filters = filters;
+    }
 
-	public long getLogTime() {
-		return logTime;
-	}
+    public long getLogTime() {
+        return logTime;
+    }
 
-	public boolean isShowClusterSql() {
-		return this.isShowClusterSql;
-	}
+    public boolean isShowClusterSql() {
+        return this.isShowClusterSql;
+    }
 
-	public void setLogTime(long logTime) {
-		this.logTime = logTime;
-	}
+    public void setLogTime(long logTime) {
+        this.logTime = logTime;
+    }
 
-	public void addDataNode(String name){
-		this.dataNodes.add(name);
-	}
+    public void addDataNode(String name) {
+        this.dataNodes.add(name);
+    }
 
-	public String getRandomDataNode() {
-		int index = (int) (Math.random() * dataNodes.size());
-		return Iterables.get(dataNodes,index);
-	}
+    @JsonIgnore
+    public String getRandomDataNode() {
+        int index = (int) (Math.random() * dataNodes.size());
+        return Iterables.get(dataNodes, index);
+    }
 
-	public void setShowSlaveSql(boolean showSlaveSql) {
-		isShowSlaveSql = showSlaveSql;
-	}
+    public void setShowSlaveSql(boolean showSlaveSql) {
+        isShowSlaveSql = showSlaveSql;
+    }
 
-	public void setShowClusterSql(boolean showClusterSql) {
-		isShowClusterSql = showClusterSql;
-	}
+    public void setShowClusterSql(boolean showClusterSql) {
+        isShowClusterSql = showClusterSql;
+    }
 
-	public void setTempReadHostAvailable(boolean tempReadHostAvailable) {
-		this.tempReadHostAvailable = tempReadHostAvailable;
-	}
+    public void setTempReadHostAvailable(boolean tempReadHostAvailable) {
+        this.tempReadHostAvailable = tempReadHostAvailable;
+    }
 
-	public Set<String> getDataNodes() {
-		return dataNodes;
-	}
+    public Set<String> getDataNodes() {
+        return dataNodes;
+    }
 
-	public boolean containDataNode(String randomDn) {
+    public boolean containDataNode(String randomDn) {
         return dataNodes.contains(randomDn);
     }
 

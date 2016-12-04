@@ -4,33 +4,33 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * 支持表名中包含引号[`] 
- * 
+ * 支持表名中包含引号[`]
+ *
  * @author BEN GONG
  */
-public class TableConfigMap extends HashMap<String, TableConfig> implements Serializable{
+public class TableConfigMap extends HashMap<String, TableConfig> implements Serializable {
 
-	private static  long serialVersionUID = -6605226933829917213L;
+    private static long serialVersionUID = -6605226933829917213L;
 
-	@Override
-	public TableConfig get(Object key) {
-		String tableName = key.toString();
-		// 忽略表名中的引号。
-		if(tableName.contains("`")) {
-			tableName = tableName.replaceAll("`", "");
-		}
-		
-		return super.get(tableName);
-	}
+    @Override
+    public TableConfig get(Object key) {
+        String tableName = key.toString();
+        // 忽略表名中的引号。
+        if (tableName.contains("`")) {
+            tableName = tableName.replaceAll("`", "");
+        }
 
-	@Override
-	public boolean containsKey(Object key) {
-		String tableName = key.toString();
-		// 忽略表名中的引号。
-		if(tableName.contains("`")) {
-			tableName = tableName.replaceAll("`", "");
-		}
-		
-		return super.containsKey(tableName);
-	}
+        return super.get(tableName);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        String tableName = key.toString();
+        // 忽略表名中的引号。
+        if (tableName.contains("`")) {
+            tableName = tableName.replaceAll("`", "");
+        }
+
+        return super.containsKey(tableName);
+    }
 }

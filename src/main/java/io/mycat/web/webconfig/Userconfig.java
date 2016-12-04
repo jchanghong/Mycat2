@@ -29,7 +29,7 @@ public class Userconfig {
     @GetMapping(value = "/getuserconfigs")
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
-        Map<String, UserConfig> systemConfig = MyConfigLoader.getInstance().getUserConfigMap();
+        Map<String, UserConfig> systemConfig = MyConfigLoader.getInstance().getUserConfigs();
         returnMessage.setObject(systemConfig);
         returnMessage.setError(false);
         return returnMessage;
@@ -50,7 +50,7 @@ public class Userconfig {
             returnMessage.setMessage(result.toString());
             return returnMessage;
         }
-        Map<String, UserConfig> userConfigMap = MyConfigLoader.getInstance().getUserConfigMap();
+        Map<String, UserConfig> userConfigMap = MyConfigLoader.getInstance().getUserConfigs();
         userConfigMap.put(d.getName(), d);
         MyConfigLoader.getInstance().save();
         String dd = MyReloadConfig.reloadconfig(false);

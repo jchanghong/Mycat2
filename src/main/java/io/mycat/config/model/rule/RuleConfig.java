@@ -23,19 +23,56 @@
  */
 package io.mycat.config.model.rule;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.mycat.route.function.AbstractPartitionAlgorithm;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 分片规则，column是用于分片的数据库物理字段
  * @author mycat
+ * @author changhong
  */
 public class RuleConfig implements Serializable {
 	private static final long serialVersionUID = -6605226933829917213L;
-	private final String column;
-	private final String functionName;
+	@NotNull
+	private  String column;
+	@NotNull
+	private  String functionName;
+	@JsonIgnore
 	private AbstractPartitionAlgorithm ruleAlgorithm;
+
+	public void setColumn(String column) {
+		this.column = column;
+		if (column == null || column.length() <= 0) {
+			throw new IllegalArgumentException("no rule column is found");
+		}
+		if (column != null && functionName != null) {
+			try {
+				ruleAlgorithm = createFunction(column, functionName);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+		if (functionName == null) {
+			throw new IllegalArgumentException("functionName is null");
+		}
+	}
+
+	public RuleConfig() {
+	}
 
 	public RuleConfig(String column, String functionName) {
 		if (functionName == null) {
@@ -72,7 +109,17 @@ public class RuleConfig implements Serializable {
 	public String getFunctionName() {
 		return functionName;
 	}
-
+	private AbstractPartitionAlgorithm createFunction(String name, String clazz)
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, InvocationTargetException {
+		Class<?> clz = Class.forName(clazz);
+		//判断是否继承AbstractPartitionAlgorithm
+		if (!AbstractPartitionAlgorithm.class.isAssignableFrom(clz)) {
+			throw new IllegalArgumentException("rule function must implements "
+					+ AbstractPartitionAlgorithm.class.getName() + ", name=" + name);
+		}
+		return (AbstractPartitionAlgorithm) clz.newInstance();
+	}
 	
 
 }

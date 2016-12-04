@@ -27,7 +27,7 @@ public class DataHostCconfig {
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
         returnMessage.setError(false);
-        returnMessage.setObject(MyConfigLoader.getInstance().getDataHostConfigMap().values().toArray());
+        returnMessage.setObject(MyConfigLoader.getInstance().getDataHosts().values().toArray());
         return returnMessage;
     }
 
@@ -47,7 +47,7 @@ public class DataHostCconfig {
             return returnMessage;
         }
         String name = dataHostConfig.getName();
-        MyConfigLoader.getInstance().getDataHostConfigMap().put(name, dataHostConfig);
+        MyConfigLoader.getInstance().getDataHosts().put(name, dataHostConfig);
         MyConfigLoader.getInstance().save();
         String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {
@@ -69,7 +69,7 @@ public class DataHostCconfig {
     @PostMapping(value = "/removedatahost/{name}")
     public ReturnMessage removedatahoast(@PathVariable String name) {
         ReturnMessage returnMessage = new ReturnMessage();
-        Map<String, DataHostConfig> hostConfigMap = MyConfigLoader.getInstance().getDataHostConfigMap();
+        Map<String, DataHostConfig> hostConfigMap = MyConfigLoader.getInstance().getDataHosts();
         if (hostConfigMap.keySet().contains(name)) {
             returnMessage.setError(false);
             hostConfigMap.remove(name);

@@ -30,6 +30,7 @@ public class DBHostConfig implements Serializable{
 
 	private static  long serialVersionUID = -6605226933829917213L;
 	private long idleTimeout = SystemConfig.DEFAULT_IDLE_TIMEOUT; // 连接池中连接空闲超时时间
+	@NotNull
 	private  String hostName;
 	@NotNull
 	private  String ip;

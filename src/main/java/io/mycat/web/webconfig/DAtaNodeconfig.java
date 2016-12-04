@@ -1,8 +1,6 @@
 package io.mycat.web.webconfig;
 
-import io.mycat.config.model.DataHostConfig;
 import io.mycat.config.model.DataNodeConfig;
-import io.mycat.config.model.SystemConfig;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
@@ -25,21 +23,23 @@ public class DAtaNodeconfig {
     /**
      * Gets .
      * 得到所有的数据库节点
-     *json
+     * json
+     *
      * @return the
      */
     @GetMapping(value = "/getdatanodes")
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
-        Map<String, DataNodeConfig> systemConfig = MyConfigLoader.getInstance().getDataNodeConfigMap();
+        Map<String, DataNodeConfig> systemConfig = MyConfigLoader.getInstance().getDataNodes();
         returnMessage.setObject(systemConfig.values().toArray());
         returnMessage.setError(false);
         return returnMessage;
     }
+
     /**
      * Sets .增加一个数据库节点
      *
-     * @param dataNodeConfig      the d
+     * @param dataNodeConfig the d
      * @return the
      */
     @PostMapping(value = "/addnode")
@@ -50,18 +50,18 @@ public class DAtaNodeconfig {
             returnMessage.setMessage(result.toString());
             return returnMessage;
         }
-        MyConfigLoader.getInstance().getDataNodeConfigMap().put(dataNodeConfig.getName(), dataNodeConfig);
+        MyConfigLoader.getInstance().getDataNodes().put(dataNodeConfig.getName(), dataNodeConfig);
         MyConfigLoader.getInstance().save();
-      String dd=  MyReloadConfig.reloadconfig(false);
+        String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {
             returnMessage.setError(false);
-        }
-        else {
+        } else {
             returnMessage.setMessage(dd);
             returnMessage.setError(true);
         }
         return returnMessage;
     }
+
     /**
      * Sets .remove一个数据库节点
      *
@@ -72,7 +72,7 @@ public class DAtaNodeconfig {
     @PostMapping(value = "/removenode/{name}")
     public ReturnMessage setsysconfig(String name) {
 
-        Map<String, DataNodeConfig> hostConfigMap = MyConfigLoader.getInstance().getDataNodeConfigMap();
+        Map<String, DataNodeConfig> hostConfigMap = MyConfigLoader.getInstance().getDataNodes();
         ReturnMessage returnMessage = new ReturnMessage();
         if (hostConfigMap.keySet().contains(name)) {
             returnMessage.setError(false);
@@ -86,7 +86,7 @@ public class DAtaNodeconfig {
                 returnMessage.setError(true);
             }
             return returnMessage;
-        }else {
+        } else {
             returnMessage.setMessage("数据库node不存在");
             returnMessage.setError(true);
             return returnMessage;

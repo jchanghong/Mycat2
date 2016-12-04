@@ -1,9 +1,7 @@
 package io.mycat.web.webconfig;
 
-import io.mycat.config.model.SystemConfig;
 import io.mycat.web.config.FunctionModel;
 import io.mycat.web.config.Initfunction;
-import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
 import org.springframework.validation.BindingResult;
@@ -34,6 +32,7 @@ public class Functionconfig {
         returnMessage.setError(false);
         return returnMessage;
     }
+
     /**
      * Sets .增加分区算法
      *
@@ -50,11 +49,10 @@ public class Functionconfig {
             return returnMessage;
         }
         Initfunction.save();
-      String dd=  MyReloadConfig.reloadconfig(false);
+        String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {
             returnMessage.setError(false);
-        }
-        else {
+        } else {
             returnMessage.setMessage(dd);
             returnMessage.setError(true);
         }

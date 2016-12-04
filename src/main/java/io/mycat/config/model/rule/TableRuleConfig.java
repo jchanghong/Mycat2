@@ -23,6 +23,7 @@
  */
 package io.mycat.config.model.rule;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -30,8 +31,13 @@ import java.io.Serializable;
  */
 public class TableRuleConfig implements Serializable {
     private static final long serialVersionUID = -6605226933829917213L;
+    @NotNull
     private  String name;
-    private final RuleConfig rule;
+    @NotNull
+    private  RuleConfig rule;
+
+    public TableRuleConfig() {
+    }
 
     public TableRuleConfig(String name, RuleConfig rule) {
         if (name == null) {

@@ -1,7 +1,6 @@
 package io.mycat.web.webconfig;
 
 import io.mycat.config.model.SchemaConfig;
-import io.mycat.config.model.SystemConfig;
 import io.mycat.config.model.TableConfig;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
@@ -31,11 +30,13 @@ public class Tableconfig {
         if (schemaConfig == null) {
             returnMessage.setError(true);
             returnMessage.setMessage("不存在");
+            return returnMessage;
         }
         returnMessage.setError(false);
         returnMessage.setObject(schemaConfig.getTables().values().toArray());
         return returnMessage;
     }
+
     /**
      * Sets .增加一个表。
      *
@@ -54,11 +55,10 @@ public class Tableconfig {
         SchemaConfig schemaConfig = MyConfigLoader.getInstance().getSchemaConfig(dbname);
         schemaConfig.addtable(tableConfig);
         MyConfigLoader.getInstance().save();
-      String dd=  MyReloadConfig.reloadconfig(false);
+        String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {
             returnMessage.setError(false);
-        }
-        else {
+        } else {
             returnMessage.setMessage(dd);
             returnMessage.setError(true);
         }

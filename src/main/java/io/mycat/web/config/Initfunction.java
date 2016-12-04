@@ -13,7 +13,7 @@ public class Initfunction {
     public static final String KEY = "functions";
 
     public static void save() {
-        MyConfigLoader.getInstance().map3.put(KEY, functionModels);
+        MyConfigLoader.map3.put(KEY, functionModels);
     }
   public static   List<FunctionModel> functionModels = new ArrayList<>();
     public static void init() {
@@ -21,7 +21,7 @@ public class Initfunction {
             MyConfigLoader.map3 = new MyDiscMap3(MyConfigLoader.DEFALUT_FILENAME);
         }
         if (MyConfigLoader.map3.get(KEY) != null) {
-            functionModels = (List<FunctionModel>) MyConfigLoader.getInstance().map3.get(KEY);
+            functionModels = (List<FunctionModel>) MyConfigLoader.map3.get(KEY);
             return;
         }
         addfunc1();

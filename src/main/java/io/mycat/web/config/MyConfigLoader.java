@@ -27,9 +27,12 @@ public class MyConfigLoader implements ConfigLoader {
     private FirewallConfig firewallConfig;
     private ClusterConfig clusterConfig;
     static final String DEFALUT_FILENAME = "map.mapdb";
-    private static MyConfigLoader install = new MyConfigLoader();
+    private static MyConfigLoader install = null;
     public static MyDiscMap3 map3;
     public static MyConfigLoader getInstance() {
+        if (install == null) {
+            install = new MyConfigLoader();
+        }
         return install;
     }
     /***把配置保存到文件*/
@@ -55,6 +58,9 @@ public class MyConfigLoader implements ConfigLoader {
     private MyConfigLoader() {
         if (map3 == null) {
             map3 = new MyDiscMap3(DEFALUT_FILENAME);
+        }
+        if (map3.size() <7) {
+            save();
         }
         Initfunction.init();
         load();
@@ -171,25 +177,17 @@ public class MyConfigLoader implements ConfigLoader {
         return clusterConfig;
     }
 
-    public Map<String, SchemaConfig> getSchemaConfigMap() {
-        return schemaConfigMap;
-    }
 
     public void setSchemaConfigMap(Map<String, SchemaConfig> schemaConfigMap) {
         this.schemaConfigMap = schemaConfigMap;
     }
 
-    public Map<String, DataNodeConfig> getDataNodeConfigMap() {
-        return dataNodeConfigMap;
-    }
 
     public void setDataNodeConfigMap(Map<String, DataNodeConfig> dataNodeConfigMap) {
         this.dataNodeConfigMap = dataNodeConfigMap;
     }
 
-    public Map<String, DataHostConfig> getDataHostConfigMap() {
-        return dataHostConfigMap;
-    }
+
 
     public void setDataHostConfigMap(Map<String, DataHostConfig> dataHostConfigMap) {
         this.dataHostConfigMap = dataHostConfigMap;
@@ -199,9 +197,6 @@ public class MyConfigLoader implements ConfigLoader {
         this.systemConfig = systemConfig;
     }
 
-    public Map<String, UserConfig> getUserConfigMap() {
-        return userConfigMap;
-    }
 
     public void setUserConfigMap(Map<String, UserConfig> userConfigMap) {
         this.userConfigMap = userConfigMap;

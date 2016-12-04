@@ -1,5 +1,6 @@
 package io.mycat.web.webconfig;
 
+import io.mycat.config.model.ClusterConfig;
 import io.mycat.config.model.SystemConfig;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
@@ -28,7 +29,7 @@ public class clusterconfig {
     @GetMapping(value = "/getcluster")
     public ReturnMessage getsys() {
         ReturnMessage returnMessage = new ReturnMessage();
-        SystemConfig systemConfig = MyConfigLoader.getInstance().getSystemConfig();
+        ClusterConfig systemConfig = MyConfigLoader.getInstance().getClusterConfig();
         returnMessage.setObject(systemConfig);
         returnMessage.setError(false);
         return returnMessage;

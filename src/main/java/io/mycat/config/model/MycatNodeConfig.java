@@ -37,6 +37,9 @@ public  class MycatNodeConfig implements Serializable{
     private int port;
     private int weight;
 
+    public MycatNodeConfig() {
+    }
+
     public MycatNodeConfig(String name, String host, int port, int weight) {
         this.name = name;
         this.host = host;
