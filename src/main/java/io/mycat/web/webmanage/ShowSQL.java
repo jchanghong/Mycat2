@@ -57,6 +57,12 @@ import java.util.Map;
 @SuppressWarnings({"UnusedAssignment", "Duplicates"})
 public final class ShowSQL {
 
+
+    /**
+     * 查询用户最近执行的SQL记录
+     *
+     * @author changhong
+     */
     @GetMapping("/getuserlastsqls")
     public ReturnMessage execute(/*ManagerConnection c, boolean isClear*/) {
         ReturnMessage returnMessage = new ReturnMessage();

@@ -52,6 +52,10 @@ import java.util.*;
 @RestController
 public class ShowHeartbeat {
 
+    /**
+     * @author changhong
+     * 得到心跳状态，也就是服务器是不是死机了等等
+     */
     @GetMapping("/getheartbeatstatus")
     public ReturnMessage response() {
         ReturnMessage returnMessage = new ReturnMessage();

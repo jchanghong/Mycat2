@@ -33,11 +33,11 @@ public class DBconfig {
         return returnMessage;
     }
     /**
-     * Sets .增加一个数据库
-     *
+     * Sets .删除一个数据库
+     *dbname为需要删除的数据库的名字
      * @param d      the d
      * @param result the result
-     * @return the
+     * @return
      */
     @PostMapping(value = "/removedb/{dbname}")
     public ReturnMessage setsysconfig(@PathVariable String dbname) {

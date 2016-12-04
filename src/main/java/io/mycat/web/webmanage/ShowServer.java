@@ -42,6 +42,7 @@ import java.util.Map;
 @SuppressWarnings("Duplicates")
 @RestController
 public final class ShowServer {
+    //得到服务器的状态信息
     @GetMapping("/getserverstatus")
     public ReturnMessage execute() {
         ReturnMessage returnMessage = new ReturnMessage();

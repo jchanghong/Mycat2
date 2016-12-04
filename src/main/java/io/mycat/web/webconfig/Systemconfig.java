@@ -33,7 +33,12 @@ public class Systemconfig {
         returnMessage.setError(false);
         return returnMessage;
     }
-
+    /**
+     * Gets .
+     * 设置属性。
+     *
+     * @return the
+     */
     @PostMapping(value = "/setsysconfig")
     public ReturnMessage setsysconfig(@Valid @RequestBody SystemConfig d, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
