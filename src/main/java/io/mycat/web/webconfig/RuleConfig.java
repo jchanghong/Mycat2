@@ -1,6 +1,5 @@
 package io.mycat.web.webconfig;
 
-import io.mycat.web.config.Initfunction;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
