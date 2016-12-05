@@ -64,7 +64,7 @@ public class ShowHeartbeat {
     }
     private static List<Map<String, String>> getRows() {
         List<Map<String, String>> maps = new ArrayList<>();
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         // host nodes
         Map<String, PhysicalDBPool> dataHosts = conf.getDataHosts();
         for (PhysicalDBPool pool : dataHosts.values()) {

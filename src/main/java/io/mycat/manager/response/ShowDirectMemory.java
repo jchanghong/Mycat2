@@ -108,7 +108,7 @@ public class ShowDirectMemory {
         // write rows
         byte packetId = detailEof.packetId;
 
-        int useOffHeapForMerge = MycatServer.getInstance().getConfig().getSystem().getUseOffHeapForMerge();
+        int useOffHeapForMerge = MycatServer.config.getSystem().getUseOffHeapForMerge();
 
         ConcurrentHashMap<Long,Long> networkbufferpool = MycatServer.getInstance().
                 getBufferPool().getNetDirectMemoryUsage();
@@ -182,7 +182,7 @@ public class ShowDirectMemory {
         // write rows
         byte packetId = totalEof.packetId;
 
-        int useOffHeapForMerge = MycatServer.getInstance().getConfig().
+        int useOffHeapForMerge = MycatServer.config.
                 getSystem().getUseOffHeapForMerge();
 
         ConcurrentHashMap<Long,Long> networkbufferpool = MycatServer.getInstance().

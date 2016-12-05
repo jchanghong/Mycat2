@@ -102,8 +102,7 @@ public class MultiNodeQueryHandler extends MultiNodeHandler implements LoadDataR
 		}
 		
 		this.rrs = rrs;
-		isOffHeapuseOffHeapForMerge = MycatServer.getInstance().
-				getConfig().getSystem().getUseOffHeapForMerge();
+		isOffHeapuseOffHeapForMerge = MycatServer.config.getSystem().getUseOffHeapForMerge();
 		if (ServerParse.SELECT == sqlType && rrs.needMerge()) {
 			/**
 			 * 使用Off Heap
@@ -165,7 +164,7 @@ public class MultiNodeQueryHandler extends MultiNodeHandler implements LoadDataR
 		} finally {
 			lock.unlock();
 		}
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 		startTime = System.currentTimeMillis();
 		LOGGER.debug("rrs.getRunOnSlave()-" + rrs.getRunOnSlave());
 		for (final RouteResultsetNode node : rrs.getNodes()) {
@@ -375,7 +374,7 @@ public class MultiNodeQueryHandler extends MultiNodeHandler implements LoadDataR
 		}
 		execCount++;
 		if (execCount == rrs.getNodes().length) {
-			int resultSize = source.getWriteQueue().size()*MycatServer.getInstance().getConfig().getSystem().getBufferPoolPageSize();
+			int resultSize = source.getWriteQueue().size()*MycatServer.config.getSystem().getBufferPoolPageSize();
 			//TODO: add by zhuam
 			//查询结果派发
 			QueryResult queryResult = new QueryResult(session.getSource().getUser(), 

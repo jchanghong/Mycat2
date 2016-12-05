@@ -50,7 +50,7 @@ public final class StopHeartbeat {
         Pair<String[], Integer> keys = ManagerParseStop.getPair(stmt);
         if (keys.getKey() != null && keys.getValue() != null) {
             long time = keys.getValue().intValue() * 1000L;
-            Map<String, PhysicalDBPool> dns = MycatServer.getInstance().getConfig().getDataHosts();
+            Map<String, PhysicalDBPool> dns = MycatServer.config.getDataHosts();
             for (String key : keys.getKey()) {
             	PhysicalDBPool dn = dns.get(key);
                 if (dn != null) {

@@ -50,7 +50,7 @@ public class ShowFullTables
 	public static void response(ServerConnection c,String stmt,int type) {
        String showSchemal= SchemaUtil.parseShowTableSchema(stmt) ;
         String cSchema =showSchemal==null? c.getSchema():showSchemal;
-        SchemaConfig schema = MycatServer.getInstance().getConfig().getSchemas().get(cSchema);
+        SchemaConfig schema = MycatServer.config.getSchemas().get(cSchema);
         if(schema != null) {
         	//不分库的schema，show tables从后端 mysql中查
             String node = schema.getDataNode();
@@ -120,7 +120,7 @@ public class ShowFullTables
     private static Set<String> getTableSet(ServerConnection c, Map<String, String> parm)
     {
         TreeSet<String> tableSet = new TreeSet<String>();
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
 
         Map<String, UserConfig> users = conf.getUsers();
         UserConfig user = users == null ? null : users.get(c.getUser());

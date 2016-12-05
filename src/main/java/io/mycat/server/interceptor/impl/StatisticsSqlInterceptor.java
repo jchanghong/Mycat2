@@ -31,7 +31,7 @@ private final class StatisticsSqlRunner implements Runnable {
         
         public void run() {
             try {
-                SystemConfig sysconfig = MycatServer.getInstance().getConfig().getSystem();
+                SystemConfig sysconfig = MycatServer.config.getSystem();
                 String sqlInterceptorType = sysconfig.getSqlInterceptorType();
                 String sqlInterceptorFile = sysconfig.getSqlInterceptorFile();
                 

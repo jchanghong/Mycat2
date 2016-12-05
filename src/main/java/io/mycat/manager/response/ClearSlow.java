@@ -38,7 +38,7 @@ import io.mycat.net.mysql.OkPacket;
 public class ClearSlow {
 
     public static void dataNode(ManagerConnection c, String name) {
-    	PhysicalDBNode dn = MycatServer.getInstance().getConfig().getDataNodes().get(name);
+    	PhysicalDBNode dn = MycatServer.config.getDataNodes().get(name);
     	PhysicalDBPool ds = null;
         if (dn != null && ((ds = dn.getDbPool())!= null)) {
            // ds.getSqlRecorder().clear();
@@ -49,7 +49,7 @@ public class ClearSlow {
     }
 
     public static void schema(ManagerConnection c, String name) {
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         SchemaConfig schema = conf.getSchemas().get(name);
         if (schema != null) {
 //            Map<String, MySQLDataNode> dataNodes = conf.getDataNodes();

@@ -36,7 +36,7 @@ public class DruidSequenceHandler {
                 sequenceHandler = IncrSequenceTimeHandler.getInstance();
                 break;
             case SystemConfig.SEQUENCEHANDLER_ZK_DISTRIBUTED:
-                sequenceHandler = DistributedSequenceHandler.getInstance(MycatServer.getInstance().getConfig().getSystem());
+                sequenceHandler = DistributedSequenceHandler.getInstance(MycatServer.config.getSystem());
                 break;
             case SystemConfig.SEQUENCEHANDLER_ZK_GLOBAL_INCREMENT:
                 sequenceHandler = IncrSequenceZKHandler.getInstance();

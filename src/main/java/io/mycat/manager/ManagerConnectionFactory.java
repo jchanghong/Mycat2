@@ -39,7 +39,7 @@ public class ManagerConnectionFactory extends FrontendConnectionFactory {
     @Override
     protected FrontendConnection getConnection(NetworkChannel channel) throws IOException {
         ManagerConnection c = new ManagerConnection(channel);
-        MycatServer.getInstance().getConfig().setSocketParams(c, true);
+        MycatServer.config.setSocketParams(c, true);
         c.setPrivileges(MycatPrivileges.instance());
         c.setQueryHandler(new ManagerQueryHandler(c));
         return c;

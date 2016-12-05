@@ -46,7 +46,7 @@ public class QueryResultDispatcher {
 		
 		
 		// 是否派发 QueryResult 事件
-		int useSqlStat = MycatServer.getInstance().getConfig().getSystem().getUseSqlStat();
+		int useSqlStat = MycatServer.config.getSystem().getUseSqlStat();
 		if ( useSqlStat == 0 ) {
 			return;
 		}

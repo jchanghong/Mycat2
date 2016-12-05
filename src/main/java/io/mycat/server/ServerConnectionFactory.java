@@ -41,9 +41,9 @@ public class ServerConnectionFactory extends FrontendConnectionFactory {
 
     @Override
     protected FrontendConnection getConnection(NetworkChannel channel) throws IOException {
-        SystemConfig sys = MycatServer.getInstance().getConfig().getSystem();
+        SystemConfig sys = MycatServer.config.getSystem();
         ServerConnection c = new ServerConnection(channel);
-        MycatServer.getInstance().getConfig().setSocketParams(c, true);
+        MycatServer.config.setSocketParams(c, true);
         c.setPrivileges(MycatPrivileges.instance());
         c.setQueryHandler(new ServerQueryHandler(c));
         c.setLoadDataInfileHandler(new ServerLoadDataInfileHandler(c));

@@ -77,7 +77,7 @@ public final class ShowDatabase {
 
         // write rows
         byte packetId = eof.packetId;
-        Map<String, SchemaConfig> schemas = MycatServer.getInstance().getConfig().getSchemas();
+        Map<String, SchemaConfig> schemas = MycatServer.config.getSchemas();
         for (String name : new TreeSet<String>(schemas.keySet())) {
             RowDataPacket row = new RowDataPacket(FIELD_COUNT);
             row.add(StringUtil.encode(name, c.getCharset()));

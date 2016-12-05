@@ -47,7 +47,7 @@ public final class RollbackConfig {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RollbackConfig.class);
 
 	public static void execute(ManagerConnection c) {
-		final ReentrantLock lock = MycatServer.getInstance().getConfig()
+		final ReentrantLock lock = MycatServer.config
 				.getLock();
 		lock.lock();
 		try {
@@ -70,7 +70,7 @@ public final class RollbackConfig {
 	}
 
 	private static boolean rollback() {
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 		Map<String, UserConfig> users = conf.getBackupUsers();
 		Map<String, SchemaConfig> schemas = conf.getBackupSchemas();
 		Map<String, PhysicalDBNode> dataNodes = conf.getBackupDataNodes();

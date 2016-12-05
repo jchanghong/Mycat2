@@ -63,7 +63,7 @@ public class UserStat {
 	public UserStat(String user) {
 		super();
 
-		int size = MycatServer.getInstance().getConfig().getSystem().getSqlRecordCount();
+		int size = MycatServer.config.getSystem().getSqlRecordCount();
 		
 		this.user = user;		
 		this.sqlRwStat = new UserSqlRWStat();
@@ -184,7 +184,7 @@ public class UserStat {
 			}
 			
 			//记录超过阈值的大结果集sql
-			if(rseultSetSize>=MycatServer.getInstance().getConfig().getSystem().getMaxResultSet()){
+			if(rseultSetSize>=MycatServer.config.getSystem().getMaxResultSet()){
 			    this.sqlResultSizeRecorder.addSql(sql, rseultSetSize);
 			}
 			

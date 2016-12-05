@@ -25,7 +25,7 @@ public class PostgreSQLBackendConnectionFactory extends
 
 		final PostgreSQLBackendConnection c = new PostgreSQLBackendConnection(
 				channel, pool.isReadNode());
-		MycatServer.getInstance().getConfig().setSocketParams(c, false);
+		MycatServer.config.setSocketParams(c, false);
 		// 设置NIOHandler
 		c.setHandler(new PostgreSQLBackendConnectionHandler(c));
 		c.setHost(dsc.getIp());

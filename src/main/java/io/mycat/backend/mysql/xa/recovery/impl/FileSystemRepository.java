@@ -34,7 +34,7 @@ public class FileSystemRepository implements Repository{
 //        ConfigProperties configProperties = Configuration.getConfigProperties();
 //        String baseDir = configProperties.getLogBaseDir();
 //        String baseName = configProperties.getLogBaseName();
-        MycatConfig mycatconfig = MycatServer.getInstance().getConfig();
+        MycatConfig mycatconfig = MycatServer.config;
         SystemConfig systemConfig = mycatconfig.getSystem();
 
         String baseDir =systemConfig.getXARecoveryLogBaseDir();

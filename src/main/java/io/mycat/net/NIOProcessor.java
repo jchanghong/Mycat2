@@ -192,7 +192,7 @@ public final class NIOProcessor {
 
 	// 后端连接检查
 	private void backendCheck() {
-		long sqlTimeout = MycatServer.getInstance().getConfig().getSystem().getSqlExecuteTimeout() * 1000L;
+		long sqlTimeout = MycatServer.config.getSystem().getSqlExecuteTimeout() * 1000L;
 		Iterator<Entry<Long, BackendConnection>> it = backends.entrySet().iterator();
 		while (it.hasNext()) {
 			BackendConnection c = it.next().getValue();

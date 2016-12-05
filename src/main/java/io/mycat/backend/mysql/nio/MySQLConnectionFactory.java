@@ -48,7 +48,7 @@ public class MySQLConnectionFactory extends BackendConnectionFactory {
 				.isAIO());
 
 		MySQLConnection c = new MySQLConnection(channel, pool.isReadNode());
-		MycatServer.getInstance().getConfig().setSocketParams(c, false);
+		MycatServer.config.setSocketParams(c, false);
 		c.setHost(dsc.getIp());
 		c.setPort(dsc.getPort());
 		c.setUser(dsc.getUser());

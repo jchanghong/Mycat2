@@ -75,7 +75,7 @@ public class MySQLConnectionAuthenticator implements NIOHandler {
 				source.setHandler(new MySQLConnectionHandler(source));
 				source.setAuthenticated(true);
 				boolean clientCompress = Capabilities.CLIENT_COMPRESS==(Capabilities.CLIENT_COMPRESS & packet.serverCapabilities);
-				boolean usingCompress= MycatServer.getInstance().getConfig().getSystem().getUseCompression()==1 ;
+				boolean usingCompress= MycatServer.config.getSystem().getUseCompression()==1 ;
 				if(clientCompress&&usingCompress)
 				{
 					source.setSupportCompress(true);

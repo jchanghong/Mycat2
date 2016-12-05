@@ -119,7 +119,7 @@ public class ShowHeartbeatDetail {
 	}
 	private static List<RowDataPacket> getRows(String name,String charset) {
 		List<RowDataPacket> list = new LinkedList<RowDataPacket>();
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 		// host nodes
 		String type = "";
 		String ip = "";

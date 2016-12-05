@@ -74,7 +74,7 @@ public class ShowDatabases {
 
         // write rows
         byte packetId = eof.packetId;
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         Map<String, UserConfig> users = conf.getUsers();
         UserConfig user = users == null ? null : users.get(c.getUser());
         if (user != null) {

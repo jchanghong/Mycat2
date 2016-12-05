@@ -67,7 +67,7 @@ public class MySQLConnection extends BackendAIOConnection {
 		flag |= Capabilities.CLIENT_LONG_FLAG;
 		flag |= Capabilities.CLIENT_CONNECT_WITH_DB;
 		// flag |= Capabilities.CLIENT_NO_SCHEMA;
-		boolean usingCompress=MycatServer.getInstance().getConfig().getSystem().getUseCompression()==1 ;
+		boolean usingCompress=MycatServer.config.getSystem().getUseCompression()==1 ;
 		if(usingCompress)
 		{
 			 flag |= Capabilities.CLIENT_COMPRESS;
@@ -153,7 +153,7 @@ public class MySQLConnection extends BackendAIOConnection {
 		this.autocommit = true;
 		this.fromSlaveDB = fromSlaveDB;
 		// 设为默认值，免得每个初始化好的连接都要去同步一下
-		this.txIsolation = MycatServer.getInstance().getConfig().getSystem().getTxIsolation();
+		this.txIsolation = MycatServer.config.getSystem().getTxIsolation();
 	}
 
 	public int getXaStatus() {

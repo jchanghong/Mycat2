@@ -61,7 +61,7 @@ public class ShowSysParam {
         // write rows
         byte packetId = eof.packetId;
         
-        SystemConfig sysConfig = MycatServer.getInstance().getConfig().getSystem();
+        SystemConfig sysConfig = MycatServer.config.getSystem();
         
         List<String> paramValues = new ArrayList<String>();
         paramValues.add(sysConfig.getProcessors() + "");

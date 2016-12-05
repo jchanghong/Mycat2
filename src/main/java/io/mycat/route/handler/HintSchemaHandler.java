@@ -46,7 +46,7 @@ public class HintSchemaHandler implements HintHandler {
 			int sqlType, String realSQL, String charset, ServerConnection sc,
 			LayerCachePool cachePool, String hintSQLValue,int hintSqlType, Map hintMap)
 			throws SQLNonTransientException {
-	    SchemaConfig tempSchema = MycatServer.getInstance().getConfig().getSchemas().get(hintSQLValue);
+	    SchemaConfig tempSchema = MycatServer.config.getSchemas().get(hintSQLValue);
 		if (tempSchema != null) {
 			return routeStrategy.route(sysConfig, tempSchema, sqlType, realSQL, charset, sc, cachePool);
 		} else {

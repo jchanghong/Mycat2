@@ -103,7 +103,7 @@ public class MycatServer {
 	private static final long DEFAULT_SQL_STAT_RECYCLE_PERIOD = 5 * 1000L;
 	private static final long DEFAULT_OLD_CONNECTION_CLEAR_PERIOD = 5 * 1000L;
 	
-	private static final MycatServer INSTANCE = new MycatServer();
+	private static  MycatServer INSTANCE = new MycatServer();
 	private static final Logger LOGGER = LoggerFactory.getLogger("MycatServer");
 	private static final Repository fileRepository = new FileSystemRepository();
 	private final RouteService routerService;
@@ -138,7 +138,7 @@ public class MycatServer {
 		return INSTANCE;
 	}
 
-	private final MycatConfig config;
+	public static  MycatConfig config ;
 	private final ScheduledExecutorService scheduler;
 	private final SQLRecorder sqlRecorder;
 	private final AtomicBoolean isOnline;
@@ -230,7 +230,7 @@ public class MycatServer {
 				seq = xaIDInc.incrementAndGet();
 			}
 		}
-		return "'Mycat." + this.getConfig().getSystem().getMycatNodeId() + "." + seq + "'";
+		return "'Mycat." + this.config.getSystem().getMycatNodeId() + "." + seq + "'";
 	}
 
 	public String getXATXIDGLOBAL(){
@@ -268,9 +268,9 @@ public class MycatServer {
 		}
 	}
 
-	public MycatConfig getConfig() {
-		return config;
-	}
+//	private MycatConfig getConfig() {
+//		return config;
+//	}
 
 	public void beforeStart() {
 		String home = SystemConfig.getHomePath();
@@ -536,7 +536,7 @@ public class MycatServer {
 					@Override
 					public void run() {		
 						
-						long sqlTimeout = MycatServer.getInstance().getConfig().getSystem().getSqlExecuteTimeout() * 1000L;
+						long sqlTimeout = MycatServer.config.getSystem().getSqlExecuteTimeout() * 1000L;
 						
 						//根据 lastTime 确认事务的执行， 超过 sqlExecuteTimeout 阀值 close connection 
 						long currentTime = TimeUtil.currentTimeMillis();
@@ -884,10 +884,10 @@ public class MycatServer {
 					String xacmd = "XA ROLLBACK "+ coordinatorLogEntry.id +';';
 					OneRawSQLQueryResultHandler resultHandler = new OneRawSQLQueryResultHandler( new String[0], new XARollbackCallback());
 					outloop:
-					for (SchemaConfig schema : MycatServer.getInstance().getConfig().getSchemas().values()) {
+					for (SchemaConfig schema : MycatServer.config.getSchemas().values()) {
 						for (TableConfig table : schema.getTables().values()) {
 							for (String dataNode : table.getDataNodes()) {
-								PhysicalDBNode dn = MycatServer.getInstance().getConfig().getDataNodes().get(dataNode);
+								PhysicalDBNode dn = MycatServer.config.getDataNodes().get(dataNode);
 								if (dn.getDbPool().getSource().getConfig().getIp().equals(participantLogEntry.uri)
 										&& dn.getDatabase().equals(participantLogEntry.resourceName)) {
 									//XA STATE ROLLBACK

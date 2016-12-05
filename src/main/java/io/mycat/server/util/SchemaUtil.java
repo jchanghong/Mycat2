@@ -27,7 +27,7 @@ public class SchemaUtil
     public static String detectDefaultDb(String sql, int type)
     {
         String db=null;
-        Map<String, SchemaConfig> schemaConfigMap = MycatServer.getInstance().getConfig()
+        Map<String, SchemaConfig> schemaConfigMap = MycatServer.config
                 .getSchemas();
         if(ServerParse.SELECT==type)
         {
