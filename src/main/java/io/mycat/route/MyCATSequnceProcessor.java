@@ -64,7 +64,7 @@ public class MyCATSequnceProcessor {
 		try {
 			/*// @micmiu 扩展NodeToString实现自定义全局序列号
 			NodeToString strHandler = new ExtNodeToString4SEQ(MycatServer
-					.getInstance().getConfig().getSystem()
+					.config.getSystem()
 					.getSequnceHandlerType());
 			// 如果存在sequence 转化sequence为实际数值
 			String charset = pair.session.getSource().getCharset();
@@ -79,7 +79,7 @@ public class MyCATSequnceProcessor {
 			
 			//使用Druid解析器实现sequence处理  @兵临城下
 			DruidSequenceHandler sequenceHandler = new DruidSequenceHandler(MycatServer
-					.getInstance().getConfig().getSystem().getSequnceHandlerType());
+					.config.getSystem().getSequnceHandlerType());
 			
 			String charset = pair.session.getSource().getCharset();
 			String executeSql = sequenceHandler.getExecuteSql(pair.sql,charset == null ? "utf-8":charset);

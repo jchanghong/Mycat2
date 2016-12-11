@@ -62,7 +62,7 @@ public final class ShowWhiteHost {
         // write rows
         byte packetId = eof.packetId;  
         
-		Map<String, List<UserConfig>> map=MycatServer.getInstance().getConfig().getFirewall().getWhitehost();
+		Map<String, List<UserConfig>> map=MycatServer.config.getFirewall().getWhitehost();
 		for (String key : map.keySet()) {  
 			List<UserConfig> userConfigs=map.get(key);
 			String users="";
@@ -118,7 +118,7 @@ public final class ShowWhiteHost {
           }
           else {
         	i++;  
-        	UserConfig uc = MycatServer.getInstance().getConfig().getUsers().get(user);
+        	UserConfig uc = MycatServer.config.getUsers().get(user);
             if (null == uc) {
             	c.writeErrMessage(ErrorCode.ER_YES, "user doesn't exist in host.");
                 return; 
@@ -130,7 +130,7 @@ public final class ShowWhiteHost {
             userConfigs.add(uc);
           }   
         }  
-       if (MycatServer.getInstance().getConfig().getFirewall().addWhitehost(host, userConfigs)) {
+       if (MycatServer.config.getFirewall().addWhitehost(host, userConfigs)) {
     	   try{
                FirewallConfig.updateToFile(host, userConfigs);
            }catch(Exception e){

@@ -126,7 +126,7 @@ public class ShowDatasourceSynDetail {
 	 
 	private static List<RowDataPacket> getRows(String name,String charset) {
 		List<RowDataPacket> list = new LinkedList<RowDataPacket>();
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 		// host nodes
 		Map<String, PhysicalDBPool> dataHosts = conf.getDataHosts();
 		for (PhysicalDBPool pool : dataHosts.values()) {

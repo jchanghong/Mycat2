@@ -192,7 +192,7 @@ public class ServerConnection extends FrontendConnection {
 			}
 		}
 		
-		SchemaConfig schema = MycatServer.getInstance().getConfig().getSchemas().get(db);
+		SchemaConfig schema = MycatServer.config.getSchemas().get(db);
 		if (schema == null) {
 			writeErrMessage(ErrorCode.ERR_BAD_LOGICDB,
 					"Unknown MyCAT Database '" + db + "'");
@@ -213,7 +213,7 @@ public class ServerConnection extends FrontendConnection {
 		if (isDefault && schema.isCheckSQLSchema() && isNormalSql(type)) {
 			SchemaUtil.SchemaInfo schemaInfo = SchemaUtil.parseSchema(sql);
 			if (schemaInfo != null && schemaInfo.schema != null && !schemaInfo.schema.equals(db)) {
-				SchemaConfig schemaConfig = MycatServer.getInstance().getConfig().getSchemas().get(schemaInfo.schema);
+				SchemaConfig schemaConfig = MycatServer.config.getSchemas().get(schemaInfo.schema);
 				if (schemaConfig != null)
 					schema = schemaConfig;
 			}
@@ -236,7 +236,7 @@ public class ServerConnection extends FrontendConnection {
 					"No MyCAT Database selected");
 			return null;
 		}
-		SchemaConfig schema = MycatServer.getInstance().getConfig()
+		SchemaConfig schema = MycatServer.config
 				.getSchemas().get(db);
 		if (schema == null) {
 			writeErrMessage(ErrorCode.ERR_BAD_LOGICDB,
@@ -250,7 +250,7 @@ public class ServerConnection extends FrontendConnection {
 			rrs = MycatServer
 					.getInstance()
 					.getRouterservice()
-					.route(MycatServer.getInstance().getConfig().getSystem(),
+					.route(MycatServer.config.getSystem(),
 							schema, type, sql, this.charset, this);
 
 		} catch (Exception e) {
@@ -273,7 +273,7 @@ public class ServerConnection extends FrontendConnection {
 			rrs = MycatServer
 					.getInstance()
 					.getRouterservice()
-					.route(MycatServer.getInstance().getConfig().getSystem(),
+					.route(MycatServer.config.getSystem(),
 							schema, type, sql, this.charset, this);
 
 		} catch (Exception e) {

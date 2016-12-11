@@ -132,8 +132,8 @@ public final class ShowServer {
 		row.add(LongUtil.toBytes(used));
 		row.add(LongUtil.toBytes(total));
 		row.add(LongUtil.toBytes(max));
-		row.add(LongUtil.toBytes(server.getConfig().getReloadTime()));
-		row.add(LongUtil.toBytes(server.getConfig().getRollbackTime()));
+		row.add(LongUtil.toBytes(server.config.getReloadTime()));
+		row.add(LongUtil.toBytes(server.config.getRollbackTime()));
 		row.add(StringUtil.encode(charset, charset));
 		row.add(StringUtil.encode(MycatServer.getInstance().isOnline() ? "ON"
 				: "OFF", charset));

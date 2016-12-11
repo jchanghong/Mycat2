@@ -20,7 +20,7 @@ public class RouteStrategyFactory {
 	private static volatile boolean isInit = false;
 	private static ConcurrentMap<String,RouteStrategy> strategyMap = new ConcurrentHashMap<String,RouteStrategy>();
 	public static void init() {
-		SystemConfig config = MycatServer.getInstance().getConfig().getSystem();
+		SystemConfig config = MycatServer.config.getSystem();
 
 		String defaultSqlParser = config.getDefaultSqlParser();
 		defaultSqlParser = defaultSqlParser == null ? "" : defaultSqlParser;

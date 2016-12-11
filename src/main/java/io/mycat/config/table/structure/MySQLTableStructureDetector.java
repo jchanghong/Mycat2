@@ -33,7 +33,7 @@ public class MySQLTableStructureDetector implements Runnable {
 
     @Override
     public void run() {
-        for (SchemaConfig schema : MycatServer.getInstance().getConfig().getSchemas().values()) {
+        for (SchemaConfig schema : MycatServer.config.getSchemas().values()) {
             for (TableConfig table : schema.getTables().values()) {
                 for (String dataNode : table.getDataNodes()) {
                     try {
@@ -45,7 +45,7 @@ public class MySQLTableStructureDetector implements Runnable {
                     }
                     OneRawSQLQueryResultHandler resultHandler = new OneRawSQLQueryResultHandler(MYSQL_SHOW_CREATE_TABLE_COLMS, new MySQLTableStructureListener(dataNode, table));
                     resultHandler.setMark("Table Structure");
-                    PhysicalDBNode dn = MycatServer.getInstance().getConfig().getDataNodes().get(dataNode);
+                    PhysicalDBNode dn = MycatServer.config.getDataNodes().get(dataNode);
                     SQLJob sqlJob = new SQLJob(sqlPrefix + table.getName(), dn.getDatabase(), resultHandler, dn.getDbPool().getSource());
                     sqlJob.run();
                 }

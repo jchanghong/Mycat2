@@ -151,7 +151,7 @@ public class FirewallConfig implements Serializable {
 
     public boolean canConnect(String host, String user) {
         if (whitehost == null || whitehost.size() == 0) {
-            MycatConfig config = MycatServer.getInstance().getConfig();
+            MycatConfig config = MycatServer.config;
             Map<String, UserConfig> users = config.getUsers();
             return users.containsKey(user);
         } else {

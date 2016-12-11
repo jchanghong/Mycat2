@@ -130,7 +130,7 @@ public final class ShowDataNode {
 
 		// write rows
 		byte packetId = eof.packetId;
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 		Map<String, PhysicalDBNode> dataNodes = conf.getDataNodes();
 		List<String> keys = new ArrayList<String>();
 		if (StringUtil.isEmpty(name)) {

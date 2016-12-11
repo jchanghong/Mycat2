@@ -518,7 +518,7 @@ public class GlobalTableUtil{
 	}
 	
 	private static void getGlobalTable(){
-		MycatConfig config = MycatServer.getInstance().getConfig();
+		MycatConfig config = MycatServer.config;
 		Map<String, SchemaConfig> schemaMap = config.getSchemas();
 		SchemaConfig schemaMconfig = null;
 		for(String key : schemaMap.keySet()){
@@ -542,7 +542,7 @@ public class GlobalTableUtil{
 	 * @param tableName
 	 */
 	private static void reGetColumnsForTable(String tableName){
-		MycatConfig config = MycatServer.getInstance().getConfig();
+		MycatConfig config = MycatServer.config;
 		if(globalTableMap != null 
 						&& globalTableMap.get(tableName.toUpperCase()) != null){
 			
@@ -573,7 +573,7 @@ public class GlobalTableUtil{
 	}
 	
 	public static void consistencyCheck() {
-		MycatConfig config = MycatServer.getInstance().getConfig();
+		MycatConfig config = MycatServer.config;
 		for(String key : globalTableMap.keySet()){
 			TableConfig table = globalTableMap.get(key);
 			// <table name="travelrecord" dataNode="dn1,dn2,dn3"

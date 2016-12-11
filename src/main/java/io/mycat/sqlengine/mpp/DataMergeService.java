@@ -165,8 +165,8 @@ public class DataMergeService extends AbstractDataNodeMerge {
 			sorter = tmp;
 		}
 
-		if (MycatServer.getInstance().
-				getConfig().getSystem().
+		if (MycatServer.config
+				.getSystem().
 				getUseStreamOutput() == 1
 				&& grouper == null
 				&& sorter == null) {

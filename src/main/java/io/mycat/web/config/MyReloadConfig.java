@@ -76,7 +76,7 @@ public final class MyReloadConfig {
 		if ( loadAll && !NIOProcessor.backends_old.isEmpty() ) {
 			return "The before reload @@config_all has an unfinished db transaction, please try again later.";
 		}
-		final ReentrantLock lock = MycatServer.getInstance().getConfig().getLock();		
+		final ReentrantLock lock = MycatServer.config.getLock();		
 		lock.lock();
 		try {
 			boolean ok = loadAll ? reload_all() : reload();
@@ -121,7 +121,7 @@ public final class MyReloadConfig {
 		 *  2.5、老的 dataSource 超过阀值的，强制关闭
 		 */
 		
-		MycatConfig config = MycatServer.getInstance().getConfig();
+		MycatConfig config = MycatServer.config;
 		
 		/**
 		 * 2.1 、老的 dataSource 继续承接新建请求， 此处什么也不需要做
@@ -241,7 +241,7 @@ public final class MyReloadConfig {
         /**
          * 2、在老的配置上，应用新的配置
          */
-        MycatServer.getInstance().getConfig().reload(users, schemas, dataNodes, dataHosts, cluster, firewall, false);
+        MycatServer.config.reload(users, schemas, dataNodes, dataHosts, cluster, firewall, false);
 
         /**
          * 3、清理缓存

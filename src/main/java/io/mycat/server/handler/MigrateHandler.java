@@ -78,7 +78,7 @@ public final class MigrateHandler {
 
         try
         {
-            SchemaConfig schemaConfig = MycatServer.getInstance().getConfig().getSchemas().get(c.getSchema());
+            SchemaConfig schemaConfig = MycatServer.config.getSchemas().get(c.getSchema());
             TableConfig tableConfig = schemaConfig.getTables().get(table.toUpperCase());
             AbstractPartitionAlgorithm algorithm = tableConfig.getRule().getRuleAlgorithm();
             if (!(algorithm instanceof PartitionByCRC32PreSlot)) {
@@ -126,7 +126,7 @@ public final class MigrateHandler {
 
     private  static int   getSlaveIdFromZKForDataNode(String dataNode)
     {
-        PhysicalDBNode dbNode= MycatServer.getInstance().getConfig().getDataNodes().get(dataNode);
+        PhysicalDBNode dbNode= MycatServer.config.getDataNodes().get(dataNode);
          String slaveIDs= dbNode.getDbPool().getSlaveIDs();
         if(Strings.isNullOrEmpty(slaveIDs))
             throw new RuntimeException("dataHost:"+dbNode.getDbPool().getHostName()+" do not config the salveIDs field");

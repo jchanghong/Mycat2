@@ -132,7 +132,7 @@ public class ExplainHandler {
                 return null;
             }
 		}
-		SchemaConfig schema = MycatServer.getInstance().getConfig()
+		SchemaConfig schema = MycatServer.config
 				.getSchemas().get(db);
 		if (schema == null) {
 			c.writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '"
@@ -146,7 +146,7 @@ public class ExplainHandler {
                 c.writeErrMessage(ErrorCode.ER_PARSE_ERROR, "insert sql using mycat seq,you must provide primaryKey value for explain");
                 return null;
             }
-            SystemConfig system = MycatServer.getInstance().getConfig().getSystem();
+            SystemConfig system = MycatServer.config.getSystem();
             return MycatServer.getInstance().getRouterservice()
 					.route(system,schema, sqlType, stmt, c.getCharset(), c);
 		} catch (Exception e) {

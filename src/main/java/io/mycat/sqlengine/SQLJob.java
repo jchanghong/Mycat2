@@ -62,7 +62,7 @@ public class SQLJob implements ResponseHandler, Runnable {
 				RouteResultsetNode node = new RouteResultsetNode(
 						dataNodeOrDatabase, ServerParse.SELECT, sql);
 				// create new connection
-				MycatConfig conf = MycatServer.getInstance().getConfig();
+				MycatConfig conf = MycatServer.config;
 				PhysicalDBNode dn = conf.getDataNodes().get(node.getName());
 				dn.getConnection(dn.getDatabase(), true, node, this, node);
 			} else {

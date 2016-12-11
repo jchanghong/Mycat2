@@ -101,7 +101,7 @@ public class SingleNodeHandler implements ResponseHandler, Terminatable, LoadDat
 		ServerConnection source = session.getSource();
 		String schema = source.getSchema();
 		if (schema != null && ServerParse.SHOW == rrs.getSqlType()) {
-			SchemaConfig schemaConfig = MycatServer.getInstance().getConfig().getSchemas().get(schema);
+			SchemaConfig schemaConfig = MycatServer.config.getSchemas().get(schema);
 			int type = ServerParseShow.tableCheck(rrs.getStatement(), 0);
 			isDefaultNodeShowTable = (ServerParseShow.TABLES == type && !Strings.isNullOrEmpty(schemaConfig.getDataNode()));
 			isDefaultNodeShowFullTable = (ServerParseShow.FULLTABLES == type && !Strings.isNullOrEmpty(schemaConfig.getDataNode()));
@@ -171,7 +171,7 @@ public class SingleNodeHandler implements ResponseHandler, Terminatable, LoadDat
 		} else {
 			// create new connection
 
-			MycatConfig conf = MycatServer.getInstance().getConfig();
+			MycatConfig conf = MycatServer.config;
 						
 			LOGGER.debug("node.getRunOnSlave() " + node.getRunOnSlave());
 			node.setRunOnSlave(rrs.getRunOnSlave());	// 实现 master/slave注解
@@ -345,7 +345,7 @@ public class SingleNodeHandler implements ResponseHandler, Terminatable, LoadDat
 
 		eof[3] = ++packetId;
 		buffer = source.writeToBuffer(eof, allocBuffer());
-		int resultSize = source.getWriteQueue().size()*MycatServer.getInstance().getConfig().getSystem().getBufferPoolPageSize();
+		int resultSize = source.getWriteQueue().size()*MycatServer.config.getSystem().getBufferPoolPageSize();
 		resultSize=resultSize+buffer.position();
 		source.write(buffer);
 		//TODO: add by zhuam

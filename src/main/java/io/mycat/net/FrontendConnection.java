@@ -435,7 +435,7 @@ public abstract class FrontendConnection extends AbstractConnection {
 			this.seed = seed;
 
 			// 发送握手数据包
-			boolean useHandshakeV10 = MycatServer.getInstance().getConfig().getSystem().getUseHandshakeV10() == 1;
+			boolean useHandshakeV10 = MycatServer.config.getSystem().getUseHandshakeV10() == 1;
 			if(useHandshakeV10) {
 				HandshakeV10Packet hs = new HandshakeV10Packet();
 				hs.packetId = 0;
@@ -507,7 +507,7 @@ public abstract class FrontendConnection extends AbstractConnection {
 		flag |= Capabilities.CLIENT_LONG_FLAG;
 		flag |= Capabilities.CLIENT_CONNECT_WITH_DB;
 		// flag |= Capabilities.CLIENT_NO_SCHEMA;
-		boolean usingCompress= MycatServer.getInstance().getConfig().getSystem().getUseCompression()==1 ;
+		boolean usingCompress= MycatServer.config.getSystem().getUseCompression()==1 ;
 		if (usingCompress) {
 			flag |= Capabilities.CLIENT_COMPRESS;
 		}
@@ -524,7 +524,7 @@ public abstract class FrontendConnection extends AbstractConnection {
 		flag |= Capabilities.CLIENT_SECURE_CONNECTION;
         flag |= Capabilities.CLIENT_MULTI_STATEMENTS;
         flag |= Capabilities.CLIENT_MULTI_RESULTS;
-        boolean useHandshakeV10 = MycatServer.getInstance().getConfig().getSystem().getUseHandshakeV10() == 1;
+        boolean useHandshakeV10 = MycatServer.config.getSystem().getUseHandshakeV10() == 1;
         if(useHandshakeV10) {
         	flag |= Capabilities.CLIENT_PLUGIN_AUTH;
         }

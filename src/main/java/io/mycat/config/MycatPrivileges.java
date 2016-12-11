@@ -74,7 +74,7 @@ public class MycatPrivileges implements FrontendPrivileges {
     
     @Override
     public boolean schemaExists(String schema) {
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         return conf.getSchemas().containsKey(schema);
     }
 
@@ -86,7 +86,7 @@ public class MycatPrivileges implements FrontendPrivileges {
 
     @Override
     public String getPassword(String user) {
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         if (user != null && user.equals(conf.getSystem().getClusterHeartbeatUser())) {
             return conf.getSystem().getClusterHeartbeatPass();
         } else {
@@ -101,7 +101,7 @@ public class MycatPrivileges implements FrontendPrivileges {
 
     @Override
     public Set<String> getUserSchemas(String user) {
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         UserConfig uc = conf.getUsers().get(user);
         if (uc != null) {
             return uc.getSchemas();
@@ -112,7 +112,7 @@ public class MycatPrivileges implements FrontendPrivileges {
     
     @Override
     public Boolean isReadOnly(String user) {
-        MycatConfig conf = MycatServer.getInstance().getConfig();
+        MycatConfig conf = MycatServer.config;
         UserConfig uc = conf.getUsers().get(user);
         if (uc != null) {
             return uc.isReadOnly();
@@ -123,7 +123,7 @@ public class MycatPrivileges implements FrontendPrivileges {
 
 	@Override
 	public int getBenchmark(String user) {
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
         UserConfig uc = conf.getUsers().get(user);
         if (uc != null) {
             return uc.getBenchmark();
@@ -135,7 +135,7 @@ public class MycatPrivileges implements FrontendPrivileges {
 	@Override
 	public boolean checkFirewallWhiteHostPolicy(String user, String host) {
 		
-		MycatConfig mycatConfig = MycatServer.getInstance().getConfig();
+		MycatConfig mycatConfig = MycatServer.config;
         FirewallConfig firewallConfig = mycatConfig.getFirewall();
         
         //防火墙 白名单处理
@@ -176,7 +176,7 @@ public class MycatPrivileges implements FrontendPrivileges {
 		boolean isPassed = true;
 		
 		if( contextLocal.get() == null ){
-			FirewallConfig firewallConfig = MycatServer.getInstance().getConfig().getFirewall();
+			FirewallConfig firewallConfig = MycatServer.config.getFirewall();
 			if ( firewallConfig != null) {
 				if ( firewallConfig.isCheck() ) {
 					contextLocal.set(firewallConfig.getProvider());
@@ -214,7 +214,7 @@ public class MycatPrivileges implements FrontendPrivileges {
 		
 		boolean isPassed = false;
 
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 		UserConfig userConfig = conf.getUsers().get(user);
 		if (userConfig != null) {
 			

@@ -61,7 +61,7 @@ public class MigrateTaskWatch {
     {
         Set<String> dataHostSet= Sets.newConcurrentHashSet(dataHosts) ;
         Set<String> dataNodes = new HashSet<>();
-        Map<String, PhysicalDBNode> dataNodesMap= MycatServer.getInstance().getConfig().getDataNodes();
+        Map<String, PhysicalDBNode> dataNodesMap= MycatServer.config.getDataNodes();
         for (Map.Entry<String, PhysicalDBNode> stringPhysicalDBNodeEntry : dataNodesMap.entrySet()) {
             String key=stringPhysicalDBNodeEntry.getKey();
             PhysicalDBNode value=stringPhysicalDBNodeEntry.getValue();

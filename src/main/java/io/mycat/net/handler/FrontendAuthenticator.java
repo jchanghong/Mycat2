@@ -197,7 +197,7 @@ public class FrontendAuthenticator implements NIOHandler {
         ByteBuffer buffer = source.allocate();
         source.write(source.writeToBuffer(AUTH_OK, buffer));
         boolean clientCompress = Capabilities.CLIENT_COMPRESS==(Capabilities.CLIENT_COMPRESS & auth.clientFlags);
-        boolean usingCompress= MycatServer.getInstance().getConfig().getSystem().getUseCompression()==1 ;
+        boolean usingCompress= MycatServer.config.getSystem().getUseCompression()==1 ;
         if(clientCompress&&usingCompress)
         {
             source.setSupportCompress(true);

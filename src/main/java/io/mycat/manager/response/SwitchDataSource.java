@@ -42,7 +42,7 @@ public final class SwitchDataSource {
     public static void response(String stmt, ManagerConnection c) {
         int count = 0;
         Pair<String[], Integer> pair = ManagerParseSwitch.getPair(stmt);
-        Map<String, PhysicalDBPool> dns = MycatServer.getInstance().getConfig().getDataHosts();
+        Map<String, PhysicalDBPool> dns = MycatServer.config.getDataHosts();
         Integer idx = pair.getValue();
         for (String key : pair.getKey()) {
         	PhysicalDBPool dn = dns.get(key);

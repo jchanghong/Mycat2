@@ -69,7 +69,7 @@ public class FetchStoreNodeOfChildTableHandler implements ResponseHandler {
 		int totalCount = dataNodes.size();
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + 5 * 60 * 1000L;
-		MycatConfig conf = MycatServer.getInstance().getConfig();
+		MycatConfig conf = MycatServer.config;
 
 		LOGGER.debug("find child node with sql:" + sql);
 		for (String dn : dataNodes) {

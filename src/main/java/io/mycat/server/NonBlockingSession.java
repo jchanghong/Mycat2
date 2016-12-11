@@ -161,7 +161,7 @@ public class NonBlockingSession implements Session {
     }
 
     private void checkDistriTransaxAndExecute(RouteResultset rrs, int type,boolean autocommit) throws Exception {
-        switch(MycatServer.getInstance().getConfig().getSystem().getHandleDistributedTransactions()) {
+        switch(MycatServer.config.getSystem().getHandleDistributedTransactions()) {
             case 1:
                 source.writeErrMessage(ErrorCode.ER_NOT_ALLOWED_COMMAND, "Distributed transaction is disabled!");
                 if(!autocommit){
@@ -189,7 +189,7 @@ public class NonBlockingSession implements Session {
 
     private void checkDistriTransaxAndExecute() {
         if(!isALLGlobal()){
-            switch(MycatServer.getInstance().getConfig().getSystem().getHandleDistributedTransactions()) {
+            switch(MycatServer.config.getSystem().getHandleDistributedTransactions()) {
                 case 1:
 //                        rollback();
                     source.writeErrMessage(ErrorCode.ER_NOT_ALLOWED_COMMAND, "Distributed transaction is disabled!Please rollback!");
@@ -475,7 +475,7 @@ public class NonBlockingSession implements Session {
                     .entrySet()) {
                 KillConnectionHandler kill = new KillConnectionHandler(
                         en.getValue(), this);
-                MycatConfig conf = MycatServer.getInstance().getConfig();
+                MycatConfig conf = MycatServer.config;
                 PhysicalDBNode dn = conf.getDataNodes().get(
                         en.getKey().getName());
                 try {

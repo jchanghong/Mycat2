@@ -524,11 +524,11 @@ public class RouterUtil {
 	}
 
 	public static void processSQL(ServerConnection sc,SchemaConfig schema,String sql,int sqlType){
-//		int sequenceHandlerType = MycatServer.getInstance().getConfig().getSystem().getSequnceHandlerType();
+//		int sequenceHandlerType = MycatServer.config.getSystem().getSequnceHandlerType();
 		SessionSQLPair sessionSQLPair = new SessionSQLPair(sc.getSession2(), schema, sql, sqlType);
 //		if(sequenceHandlerType == 3 || sequenceHandlerType == 4){
 //			DruidSequenceHandler sequenceHandler = new DruidSequenceHandler(MycatServer
-//					.getInstance().getConfig().getSystem().getSequnceHandlerType());
+//					.config.getSystem().getSequnceHandlerType());
 //			String charset = sessionSQLPair.session.getSource().getCharset();
 //			String executeSql = null;
 //			try {
@@ -776,13 +776,12 @@ public class RouterUtil {
         //写节点不可用，意味着读节点也不可用。
         //直接使用下一个 dataHost
         String randomDn = tc.getRandomDataNode();
-        MycatConfig mycatConfig = MycatServer.getInstance().getConfig();
+        MycatConfig mycatConfig = MycatServer.config;
         if (mycatConfig != null) {
             PhysicalDBNode physicalDBNode = mycatConfig.getDataNodes().get(randomDn);
             if (physicalDBNode != null) {
                 if (physicalDBNode.getDbPool().getSource().isAlive()) {
-                    for (PhysicalDBPool pool : MycatServer.getInstance()
-                            .getConfig()
+                    for (PhysicalDBPool pool : MycatServer.config
                             .getDataHosts()
                             .values()) {
                         if (pool.getSource().getHostConfig().containDataNode(randomDn)) {
