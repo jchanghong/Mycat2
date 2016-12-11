@@ -81,6 +81,4 @@ public final class ShowSQL {
         returnMessage.setObject(list.toArray());
         return returnMessage;
     }
-
-
 }
