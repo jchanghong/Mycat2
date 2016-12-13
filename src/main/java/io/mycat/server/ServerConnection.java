@@ -26,6 +26,9 @@ package io.mycat.server;
 import java.io.IOException;
 import java.nio.channels.NetworkChannel;
 
+import io.mycat.serverproxy.Getconhander;
+import io.mycat.serverproxy.MySessionList;
+import io.mycat.serverproxy.Mysession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,13 +54,14 @@ public class ServerConnection extends FrontendConnection {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServerConnection.class);
 	private static final long AUTH_TIMEOUT = 15 * 1000L;
-
+	public static MySessionList mySessionList = new MySessionList();
 	private volatile int txIsolation;
 	private volatile boolean autocommit;
 	private volatile boolean txInterrupted;
 	private volatile String txInterrputMsg = "";
 	private long lastInsertId;
 	private NonBlockingSession session;
+	public Mysession mysession;
 	/**
 	 * 标志是否执行了lock tables语句，并处于lock状态
 	 */
@@ -66,6 +70,10 @@ public class ServerConnection extends FrontendConnection {
 	public ServerConnection(NetworkChannel channel)
 			throws IOException {
 		super(channel);
+		mysession = new Mysession(this);
+		mySessionList.add(mysession);
+		Getconhander getconhander = new Getconhander(this);
+		getconhander.getSource(false);
 		this.txInterrupted = false;
 		this.autocommit = true;
 	}
@@ -382,4 +390,12 @@ public class ServerConnection extends FrontendConnection {
 				+ ", autocommit=" + autocommit + ", schema=" + schema + "]";
 	}
 
+	@Override
+	public void handle(byte[] data) {
+		if (mysession.valit()) {
+			mysession.sendtomysql(data);
+			return;
+		}
+		super.handle(data);
+	}
 }

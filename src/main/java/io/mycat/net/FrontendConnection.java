@@ -72,7 +72,9 @@ public abstract class FrontendConnection extends AbstractConnection {
 	protected LoadDataInfileHandler loadDataInfileHandler;
 	protected boolean isAccepted;
 	protected boolean isAuthenticated;
-
+	public boolean isAuthenticated() {
+		return isAuthenticated;
+	}
 	public FrontendConnection(NetworkChannel channel) throws IOException {
 		super(channel);
 		InetSocketAddress localAddr = (InetSocketAddress) channel.getLocalAddress();
