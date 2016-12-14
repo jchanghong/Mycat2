@@ -33,7 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import io.mycat.buffer.BufferPool;
 
-import org.slf4j.Logger; 
+import io.mycat.serverproxy.MySessionList;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.mycat.MycatServer;
@@ -54,6 +55,7 @@ public final class NIOProcessor {
 	private final NameableExecutor executor;
 	private final ConcurrentMap<Long, FrontendConnection> frontends;
 	private final ConcurrentMap<Long, BackendConnection> backends;
+	public final static MySessionList mySessionList = new MySessionList();
 	private final CommandCount commands;
 	private long netInBytes;
 	private long netOutBytes;
@@ -147,6 +149,16 @@ public final class NIOProcessor {
 	 */
 	public void checkBackendCons() {
 		backendCheck();
+		sessionCheck();
+	}
+
+	private void sessionCheck() {
+		mySessionList.list.stream().forEach(a->{
+			if (a.mySQLConnection!=null&&(a.mySQLConnection.isClosed()||!a.mySQLConnection.isBorrowed()))
+			{
+				a.mySQLConnection=null;
+			}
+		});
 	}
 
 	/**

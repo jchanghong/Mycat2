@@ -235,6 +235,13 @@ public class SystemConfig implements Serializable {
         this.defaultSqlParser = defaultSqlParser;
     }
 
+    /**
+     * The Pureproxy.
+     * 如果为真，那么就是纯代理模式，不用设置逻辑数据库和表。只需要设置数据库群和数据库主机。
+     * 只支持读写分离。主从配置。
+     * 不支持分片。
+     */
+    boolean pureproxy = true;
     public SystemConfig() {
         this.serverPort = DEFAULT_PORT;
         this.managerPort = DEFAULT_MANAGER_PORT;
@@ -928,5 +935,11 @@ public class SystemConfig implements Serializable {
         this.useHandshakeV10 = useHandshakeV10;
     }
 
+    public boolean isPureproxy() {
+        return pureproxy;
+    }
 
+    public void setPureproxy(boolean pureproxy) {
+        this.pureproxy = pureproxy;
+    }
 }

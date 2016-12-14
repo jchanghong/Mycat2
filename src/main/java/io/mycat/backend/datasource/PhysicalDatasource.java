@@ -36,6 +36,8 @@ import io.mycat.backend.mysql.nio.handler.ResponseHandler;
 import io.mycat.config.Alarms;
 import io.mycat.config.model.DBHostConfig;
 import io.mycat.config.model.DataHostConfig;
+import io.mycat.server.ServerConnection;
+import io.mycat.serverproxy.Mysession;
 import io.mycat.util.TimeUtil;
 
 import java.io.IOException;
@@ -429,9 +431,7 @@ public abstract class PhysicalDatasource {
 		} else {
 			ok = queue.getManCommitCons().offer(c);
 		}
-		
 		if (!ok) {
-
 			LOGGER.warn("can't return to pool ,so close con " + c);
 			c.close("can't return to pool ");
 		}
