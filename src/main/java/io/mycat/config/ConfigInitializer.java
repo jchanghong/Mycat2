@@ -66,7 +66,7 @@ public class ConfigInitializer {
 		
 		//读取server.xml
 //		XMLConfigLoader configLoader = new XMLConfigLoader(schemaLoader);
-		
+
 //		schemaLoader = null;
 		MyConfigLoader configLoader = MyConfigLoader.getInstance();
 
@@ -74,34 +74,34 @@ public class ConfigInitializer {
 		this.system = configLoader.getSystemConfig();
 		this.users = configLoader.getUserConfigs();
 		this.schemas = configLoader.getSchemaConfigs();
-		
+
 		//是否重新加载DataHost和对应的DataNode
 		if (loadDataHost) {
 			this.dataHosts = initDataHosts(configLoader);
 			this.dataNodes = initDataNodes(configLoader);
 		}
-		
+
 		//权限管理
 		this.firewall = configLoader.getFirewallConfig();
 		this.cluster = initCobarCluster(configLoader);
-		
+
 		//不同类型的全局序列处理器的配置加载
 		if (system.getSequnceHandlerType() == SystemConfig.SEQUENCEHANDLER_MYSQLDB) {
 			IncrSequenceMySQLHandler.getInstance().load();
 		}
-		
+
 		if (system.getSequnceHandlerType() == SystemConfig.SEQUENCEHANDLER_LOCAL_TIME) {
 			IncrSequenceTimeHandler.getInstance().load();
 		}
-		
+
 		if (system.getSequnceHandlerType() == SystemConfig.SEQUENCEHANDLER_ZK_DISTRIBUTED) {
 			DistributedSequenceHandler.getInstance(system).load();
 		}
-		
+
 		if (system.getSequnceHandlerType() == SystemConfig.SEQUENCEHANDLER_ZK_GLOBAL_INCREMENT) {
 			IncrSequenceZKHandler.getInstance().load();
 		}
-		
+
 		/**
 		 * 配置文件初始化， 自检
 		 */

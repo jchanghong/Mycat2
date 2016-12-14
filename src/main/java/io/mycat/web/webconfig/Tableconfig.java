@@ -66,7 +66,7 @@ public class Tableconfig {
     }
 
     @PostMapping(value = "/{dbname}/settable/{tablename}")
-    public ReturnMessage settableconfig(@PathVariable("tablename") String tablename,@PathVariable ("dbname")String dbname, @Valid @RequestBody TableConfig tableConfig, BindingResult result) {
+    public ReturnMessage settableconfig(@PathVariable("tablename") String tablename, @PathVariable("dbname") String dbname, @Valid @RequestBody TableConfig tableConfig, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
         if (result.hasErrors()) {
             returnMessage.setError(true);
@@ -74,22 +74,38 @@ public class Tableconfig {
             return returnMessage;
         }
         SchemaConfig schemaConfig = MyConfigLoader.getInstance().getSchemaConfig(dbname);
-        TableConfig table=schemaConfig.getTables().get(tablename.toUpperCase());
-        if (table!=null)
-        {
-            schemaConfig.getTables().remove(tablename.toUpperCase(),table);
+        TableConfig table = schemaConfig.getTables().get(tablename.toUpperCase());
+        if (table != null) {
+            schemaConfig.getTables().remove(tablename.toUpperCase(), table);
             schemaConfig.addtable(tableConfig);
         }
 
         MyConfigLoader.getInstance().save();
         String dd = MyReloadConfig.reloadconfig(false);
-        if (dd == null&&table!=null) {
+        if (dd == null && table != null) {
             returnMessage.setError(false);
         } else {
-            if(dd==null)
-                returnMessage.setMessage(returnMessage.getMessage()+dd);
-            if (table==null)
-                returnMessage.setMessage(returnMessage.getMessage()+"can not find the table");
+            if (dd == null)
+                returnMessage.setMessage(returnMessage.getMessage() + dd);
+            if (table == null)
+                returnMessage.setMessage(returnMessage.getMessage() + "can not find the table");
+            returnMessage.setError(true);
+        }
+        return returnMessage;
+    }
+
+    @DeleteMapping(value = "/{dbname}/droptable/{tablename}")
+    public ReturnMessage droptableconfig(@PathVariable("tablename") String tablename, @PathVariable("dbname") String dbname) {
+        ReturnMessage returnMessage = new ReturnMessage();
+
+        SchemaConfig schemaConfig = MyConfigLoader.getInstance().getSchemaConfig(dbname);
+        schemaConfig.getTables().remove(tablename.toUpperCase());
+        MyConfigLoader.getInstance().save();
+        String dd = MyReloadConfig.reloadconfig(false);
+        if (dd == null) {
+            returnMessage.setError(false);
+        } else {
+            returnMessage.setMessage(dd);
             returnMessage.setError(true);
         }
         return returnMessage;
