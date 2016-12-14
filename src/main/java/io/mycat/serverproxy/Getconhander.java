@@ -52,13 +52,9 @@ public class Getconhander extends ResponseHandlerAdapter {
 	public void connectionAcquired(BackendConnection conn) {
 		super.connectionAcquired(conn);
 		MySQLConnection mySQLConnection = (MySQLConnection) conn;
-		boolean onread = (boolean) mySQLConnection.getAttachment();
-		if (onread) {
-			serverConnection.mysession.read = (MySQLConnection) conn;
-		}
-		else {
-			serverConnection.mysession.write = (MySQLConnection) conn;
-		}
+//		boolean onread = (boolean) mySQLConnection.getAttachment();
+		serverConnection.mysession.mySQLConnection = mySQLConnection;
+		serverConnection.mysession.sendtomysql_queue();
 //		System.out.println(mySQLConnection.getAttachment() + "con attaicve");
 	}
 
@@ -78,7 +74,7 @@ public class Getconhander extends ResponseHandlerAdapter {
 		if (onlyread)
 		{
 			try {
-				physicalDBPool.getRWBanlanceCon(null, true, this, onlyread, "changhong");
+				physicalDBPool.getRWBanlanceCon("db", true, this, onlyread, "changhong");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

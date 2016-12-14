@@ -24,6 +24,7 @@
 package io.mycat.backend.mysql.nio;
 
 import io.mycat.backend.mysql.xa.TxState;
+import io.mycat.net.NIOProcessor;
 import io.mycat.serverproxy.Mysession;
 import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
@@ -668,11 +669,11 @@ public class MySQLConnection extends BackendAIOConnection {
 
 	@Override
 	public void handle(byte[] data) {
-		Mysession mysession = ServerConnection.mySessionList.findbycon(this);
-		if (mysession != null && mysession.valit()) {
+		Mysession mysession = NIOProcessor.mySessionList.findbycon(this);
+		if (mysession != null && mysession.frontendConnection.isAuthenticated() && MycatServer.config.pureproxy) {
 			mysession.sendtoclient(data);
 			return;
 		}
-		super.handle(data);
+			super.handle(data);
 	}
 }

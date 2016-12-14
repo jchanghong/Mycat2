@@ -24,11 +24,16 @@
 package io.mycat.server;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.channels.NetworkChannel;
 
+import io.mycat.backend.mysql.MySQLMessage;
+import io.mycat.net.NIOProcessor;
+import io.mycat.net.mysql.MySQLPacket;
 import io.mycat.serverproxy.Getconhander;
 import io.mycat.serverproxy.MySessionList;
 import io.mycat.serverproxy.Mysession;
+import io.mycat.statistic.CommandCount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +59,6 @@ public class ServerConnection extends FrontendConnection {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServerConnection.class);
 	private static final long AUTH_TIMEOUT = 15 * 1000L;
-	public static MySessionList mySessionList = new MySessionList();
 	private volatile int txIsolation;
 	private volatile boolean autocommit;
 	private volatile boolean txInterrupted;
@@ -71,7 +75,7 @@ public class ServerConnection extends FrontendConnection {
 			throws IOException {
 		super(channel);
 		mysession = new Mysession(this);
-		mySessionList.add(mysession);
+		NIOProcessor.mySessionList.add(mysession);
 		Getconhander getconhander = new Getconhander(this);
 		getconhander.getSource(false);
 		this.txInterrupted = false;
@@ -375,6 +379,7 @@ public class ServerConnection extends FrontendConnection {
 
 	@Override
 	public void close(String reason) {
+		NIOProcessor.mySessionList.remove(mysession);
 		super.close(reason);
 		session.terminate();
 		if(getLoadDataInfileHandler()!=null)
@@ -392,10 +397,82 @@ public class ServerConnection extends FrontendConnection {
 
 	@Override
 	public void handle(byte[] data) {
-		if (mysession.valit()) {
-			mysession.sendtomysql(data);
+		if (MycatServer.config.pureproxy&&isAuthenticated) {
+			myhander(data);
 			return;
 		}
 		super.handle(data);
+	}
+
+	private void myhander(byte[] data) {
+		CommandCount commands = processor.getCommands();
+		switch (data[4])
+		{
+			case MySQLPacket.COM_INIT_DB:
+				commands.doInitDB();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_QUERY:
+				commands.doQuery();
+				// 取得语句
+				String sql = null;
+				try {
+					MySQLMessage mm = new MySQLMessage(data);
+					mm.position(5);
+					sql = mm.readString(charset).toLowerCase().trim();
+					if (sql.startsWith("select") || sql.startsWith("show")) {
+						mysession.sendtomysql(data, true);
+					}
+					else
+					{
+						mysession.sendtomysql(data, false);
+					}
+				} catch (UnsupportedEncodingException e) {
+					writeErrMessage(ErrorCode.ER_UNKNOWN_CHARACTER_SET, "Unknown charset '" + charset + "'");
+//					return;
+				}
+				break;
+			case MySQLPacket.COM_PING:
+				commands.doPing();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_QUIT:
+				commands.doQuit();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_PROCESS_KILL:
+				commands.doKill();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_STMT_PREPARE:
+				commands.doStmtPrepare();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_STMT_SEND_LONG_DATA:
+				commands.doStmtSendLongData();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_STMT_RESET:
+				commands.doStmtReset();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_STMT_EXECUTE:
+				commands.doStmtExecute();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_STMT_CLOSE:
+				commands.doStmtClose();
+				mysession.sendtomysql(data, true);
+				break;
+			case MySQLPacket.COM_HEARTBEAT:
+				commands.doHeartbeat();
+				mysession.sendtomysql(data, true);
+				break;
+			default:
+				commands.doOther();
+				mysession.sendtomysql(data, true);
+
+		}
+
 	}
 }

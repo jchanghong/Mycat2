@@ -96,7 +96,7 @@ import com.google.common.util.concurrent.MoreExecutors;
  * @author mycat
  */
 public class MycatServer {
-	
+
 	public static final String NAME = "MyCat";
 	private static final long LOG_WATCH_DELAY = 60000L;
 	private static final long TIME_UPDATE_PERIOD = 20L;
@@ -154,7 +154,7 @@ public class MycatServer {
 		
 		//读取文件配置
 		this.config = new MycatConfig();
-		
+
 		//定时线程池，单线程线程池
 		scheduler = Executors.newSingleThreadScheduledExecutor();
 		

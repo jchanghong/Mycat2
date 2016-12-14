@@ -431,17 +431,6 @@ public abstract class PhysicalDatasource {
 		} else {
 			ok = queue.getManCommitCons().offer(c);
 		}
-		Mysession mysession = ServerConnection.mySessionList.findbycon(c);
-		if (mysession != null) {
-			MySQLConnection mySQLConnection = (MySQLConnection) c;
-			boolean attachment = (boolean) mySQLConnection.getAttachment();
-			if (attachment == true) {
-				mysession.read = null;
-			}
-			else {
-				mysession.write = null;
-			}
-		}
 		if (!ok) {
 			LOGGER.warn("can't return to pool ,so close con " + c);
 			c.close("can't return to pool ");

@@ -3,38 +3,58 @@ package io.mycat.serverproxy;
 import io.mycat.backend.mysql.nio.MySQLConnection;
 import io.mycat.server.ServerConnection;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * Created by jiang on 2016/12/13 0013.
  */
 public class Mysession{
     public ServerConnection frontendConnection;
-    public MySQLConnection read;
-    public MySQLConnection write;
-
-    public void releaseall() {
-        if (read != null) {
-            read.release();
-
-        }
-        if (write != null) {
-            write.release();
-
+    public MySQLConnection mySQLConnection;
+    public void sendtomysql_queue() {
+        byte[] data = (byte[]) writes.poll();
+        if (data != null && mySQLConnection != null) {
+            mySQLConnection.write(data);
         }
     }
-
+    ConcurrentLinkedQueue writes = new ConcurrentLinkedQueue();
     public void sendtomysql(byte[] data,boolean onlyread) {
         if (onlyread) {
-            if (read != null) {
-                read.write(data);
-            }
-
-        }
-        else {
-
-            if (write != null) {
-                write.write(data);
+            if (mySQLConnection != null) {
+                mySQLConnection.write(data);
                 return;
             }
+            else {
+                writes.offer(data);
+                Getconhander getconhander = new Getconhander(frontendConnection);
+                getconhander.getSource(true);
+//                mySQLConnection.write(data);
+                return;
+            }
+        }
+        else {
+            if (mySQLConnection == null) {
+                writes.offer(data);
+                Getconhander getconhander = new Getconhander(frontendConnection);
+                getconhander.getSource(false);
+                return;
+            }
+            boolean  onlyread1 = (boolean) mySQLConnection.getAttachment();
+            if (!onlyread1) {
+                mySQLConnection.write(data);
+                return;
+            }
+            else {
+                if (mySQLConnection != null) {
+                    mySQLConnection.release();
+                    mySQLConnection = null;
+                }
+                writes.offer(data);
+                Getconhander getconhander = new Getconhander(frontendConnection);
+                getconhander.getSource(false);
+
+            }
+
         }
     }
 
@@ -44,8 +64,8 @@ public class Mysession{
     }
     public Mysession(ServerConnection frontendConnection) {
         this.frontendConnection = frontendConnection;
-        Getconhander getconhander = new Getconhander(frontendConnection);
-        getconhander.getSource(false);
+//        Getconhander getconhander = new Getconhander(frontendConnection);
+//        getconhander.getSource(true);
     }
 
     @Override
