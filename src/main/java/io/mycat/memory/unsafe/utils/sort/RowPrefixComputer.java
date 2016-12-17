@@ -6,9 +6,6 @@ import io.mycat.memory.unsafe.row.UnsafeRow;
 import io.mycat.memory.unsafe.utils.BytesTools;
 import io.mycat.sqlengine.mpp.ColMeta;
 import io.mycat.sqlengine.mpp.OrderCol;
-import io.mycat.util.ByteUtil;
-import io.mycat.util.IntegerUtil;
-import io.mycat.util.LongUtil;
 
 import javax.annotation.Nonnull;
 import java.io.UnsupportedEncodingException;

@@ -23,7 +23,6 @@
  */
 package io.mycat.server.handler;
 
-import io.mycat.config.ErrorCode;
 import io.mycat.server.ServerConnection;
 import io.mycat.server.parser.ServerParse;
 import io.mycat.server.parser.ServerParseStart;

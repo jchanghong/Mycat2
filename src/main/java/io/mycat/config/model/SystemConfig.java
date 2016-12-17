@@ -241,7 +241,7 @@ public class SystemConfig implements Serializable {
      * 只支持读写分离。主从配置。
      * 不支持分片。
      */
-    boolean pureproxy = true;
+    boolean pureproxy = false;
     public SystemConfig() {
         this.serverPort = DEFAULT_PORT;
         this.managerPort = DEFAULT_MANAGER_PORT;

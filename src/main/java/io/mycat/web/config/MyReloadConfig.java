@@ -23,9 +23,6 @@
  */
 package io.mycat.web.config;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import io.mycat.MycatServer;
 import io.mycat.backend.BackendConnection;
 import io.mycat.backend.datasource.PhysicalDBNode;
@@ -34,24 +31,19 @@ import io.mycat.backend.datasource.PhysicalDatasource;
 import io.mycat.backend.jdbc.JDBCConnection;
 import io.mycat.backend.mysql.nio.MySQLConnection;
 import io.mycat.config.ConfigInitializer;
-import io.mycat.config.ErrorCode;
 import io.mycat.config.MycatCluster;
 import io.mycat.config.MycatConfig;
 import io.mycat.config.model.FirewallConfig;
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.UserConfig;
 import io.mycat.config.util.DnPropertyUtil;
-import io.mycat.manager.ManagerConnection;
 import io.mycat.net.NIOProcessor;
-import io.mycat.net.mysql.OkPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**

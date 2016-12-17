@@ -27,21 +27,11 @@ import io.mycat.MycatServer;
 import io.mycat.backend.datasource.PhysicalDBPool;
 import io.mycat.backend.datasource.PhysicalDatasource;
 import io.mycat.backend.heartbeat.DBHeartbeat;
-import io.mycat.backend.mysql.PacketUtil;
-import io.mycat.config.Fields;
 import io.mycat.config.MycatConfig;
-import io.mycat.manager.ManagerConnection;
-import io.mycat.net.mysql.EOFPacket;
-import io.mycat.net.mysql.FieldPacket;
-import io.mycat.net.mysql.ResultSetHeaderPacket;
-import io.mycat.net.mysql.RowDataPacket;
-import io.mycat.util.IntegerUtil;
-import io.mycat.util.LongUtil;
 import io.mycat.web.model.ReturnMessage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.ByteBuffer;
 import java.util.*;
 
 /**

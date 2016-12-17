@@ -11,24 +11,22 @@ import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Created by jiang on 2016/12/16 0016.
- */
 public class test implements Log{
     ODatabaseDocumentTx db;
 
     public test() {
+
         db = new ODatabaseDocumentTx
-                ("plocal:database/petshop")
-                .create();
-//                .open("admin", "admin");
-//        ODocument oDocument = new ODocument("my");
-//        oDocument.field("id", "id1");
-//
-//        oDocument.save();
-//        for (ODocument animal : db.browseClass("my")) {
-//            System.out.println(animal.field("1").toString());
-//        }
+                ("plocal:database/petshop1")
+//                .create();
+                .open("admin", "admin");
+        ODocument oDocument = new ODocument("aaata");
+        oDocument.field("id", 1+"");
+        oDocument.field("name", "changhong");
+        oDocument.save();
+        for (ODocument animal : db.browseClass("aaata")) {
+            System.out.println(animal.field("id").toString());
+        }
 
 //        info(db.countClass("my"));
 //        info(db.countClass("my1"));
@@ -40,15 +38,15 @@ public class test implements Log{
 //                new OCommandSQL("UPDATE my SET id = 'ddddd'"
 //                ));
 
-//        db.close();
+        db.close();
 
     }
 
     public static void main(String[] args) {
 
         test dmoe1 = new test();
-        dmoe1.tests();
-        dmoe1.comtest();
+//        dmoe1.tests();
+//        dmoe1.comtest();
 
     }
 

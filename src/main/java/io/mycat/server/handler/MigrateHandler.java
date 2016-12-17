@@ -31,7 +31,6 @@ import io.mycat.MycatServer;
 import io.mycat.backend.datasource.PhysicalDBNode;
 import io.mycat.config.ErrorCode;
 import io.mycat.migrate.TaskNode;
-import io.mycat.util.StringUtil;
 import io.mycat.util.ZKUtils;
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.TableConfig;

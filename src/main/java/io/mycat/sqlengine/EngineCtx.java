@@ -10,7 +10,6 @@ import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import io.mycat.manager.handler.ConfFileHandler;
 import io.mycat.net.mysql.EOFPacket;
-import io.mycat.net.mysql.EmptyPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
 import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.server.NonBlockingSession;

@@ -1,7 +1,6 @@
 package io.mycat.web;
 
 import io.mycat.MycatStartup;
-import io.mycat.config.MycatConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

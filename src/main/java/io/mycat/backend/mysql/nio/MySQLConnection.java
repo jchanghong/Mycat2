@@ -669,11 +669,17 @@ public class MySQLConnection extends BackendAIOConnection {
 
 	@Override
 	public void handle(byte[] data) {
-		Mysession mysession = NIOProcessor.mySessionList.findbycon(this);
-		if (mysession != null && mysession.frontendConnection.isAuthenticated() && MycatServer.config.pureproxy) {
-			mysession.sendtoclient(data);
+		try {
+			Mysession mysession = NIOProcessor.mySessionList.findbycon(this);
+			if (mysession != null && mysession.frontendConnection.isAuthenticated() && MycatServer.config.pureproxy) {
+                mysession.sendtoclient(data);
+                return;
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+			super.handle(data);
 			return;
 		}
-			super.handle(data);
+		super.handle(data);
 	}
 }

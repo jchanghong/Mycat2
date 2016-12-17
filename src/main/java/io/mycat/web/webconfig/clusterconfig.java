@@ -3,7 +3,6 @@ package io.mycat.web.webconfig;
 import io.mycat.config.model.ClusterConfig;
 import io.mycat.config.model.SystemConfig;
 import io.mycat.web.config.MyConfigLoader;
-import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

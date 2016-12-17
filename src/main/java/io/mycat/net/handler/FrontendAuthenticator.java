@@ -27,6 +27,7 @@ import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 
+import io.mycat.databaseorient.adapter.DBadapter;
 import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import io.mycat.MycatServer;
@@ -84,7 +85,12 @@ public class FrontendAuthenticator implements NIOHandler {
         	 failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "', because service be degraded ");
              return;
         }
-        
+
+        if (DBadapter.isorient) {
+            DBadapter.currentDB = auth.database;
+            success(auth);
+            return;
+        }
         // check schema
         switch (checkSchema(auth.database, auth.user)) {
         case ErrorCode.ER_BAD_DB_ERROR:

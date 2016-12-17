@@ -1,7 +1,6 @@
 package io.mycat.statistic.stat;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import io.mycat.MycatServer;
 import io.mycat.server.parser.ServerParse;

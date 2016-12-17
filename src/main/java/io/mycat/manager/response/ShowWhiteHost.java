@@ -14,7 +14,6 @@ import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
 import io.mycat.config.model.FirewallConfig;
 import io.mycat.config.model.UserConfig;
-import io.mycat.config.util.ConfigException;
 import io.mycat.manager.ManagerConnection;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;

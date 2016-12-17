@@ -3,7 +3,6 @@ package io.mycat.manager.response;
 import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Map;
 
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.Fields;

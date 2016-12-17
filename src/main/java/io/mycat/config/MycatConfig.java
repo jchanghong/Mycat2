@@ -71,7 +71,7 @@ public class MycatConfig {
 		//读取schema.xml，rule.xml和server.xml
 		ConfigInitializer confInit = new ConfigInitializer(true);
 		this.system = confInit.getSystem();
-		pureproxy = this.system.isPureproxy();
+//		pureproxy = this.system.isPureproxy();
 		this.users = confInit.getUsers();
 		this.schemas = confInit.getSchemas();
 		this.dataHosts = confInit.getDataHosts();

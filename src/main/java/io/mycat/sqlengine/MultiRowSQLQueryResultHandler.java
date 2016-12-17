@@ -7,8 +7,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
-
 /**
  * 当SQLJob的结果有多行时，利用该处理器进行处理
  * @author digdeep@126.com

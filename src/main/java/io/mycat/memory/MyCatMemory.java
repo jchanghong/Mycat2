@@ -4,7 +4,6 @@ package io.mycat.memory;
 import com.google.common.annotations.VisibleForTesting;
 import io.mycat.config.model.SystemConfig;
 import io.mycat.memory.unsafe.Platform;
-import io.mycat.memory.unsafe.memory.mm.DataNodeMemoryManager;
 import io.mycat.memory.unsafe.memory.mm.MemoryManager;
 import io.mycat.memory.unsafe.memory.mm.ResultMergeMemoryManager;
 import io.mycat.memory.unsafe.storage.DataNodeDiskManager;

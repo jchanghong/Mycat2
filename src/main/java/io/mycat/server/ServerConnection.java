@@ -31,7 +31,6 @@ import io.mycat.backend.mysql.MySQLMessage;
 import io.mycat.net.NIOProcessor;
 import io.mycat.net.mysql.MySQLPacket;
 import io.mycat.serverproxy.Getconhander;
-import io.mycat.serverproxy.MySessionList;
 import io.mycat.serverproxy.Mysession;
 import io.mycat.statistic.CommandCount;
 import org.slf4j.Logger;
@@ -390,7 +389,7 @@ public class ServerConnection extends FrontendConnection {
 
 	@Override
 	public String toString() {
-		return "ServerConnection [id=" + id + ", schema=" + schema + ", host="
+		return "OConnection [id=" + id + ", schema=" + schema + ", host="
 				+ host + ", user=" + user + ",txIsolation=" + txIsolation
 				+ ", autocommit=" + autocommit + ", schema=" + schema + "]";
 	}

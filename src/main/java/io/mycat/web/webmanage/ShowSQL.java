@@ -23,24 +23,14 @@
  */
 package io.mycat.web.webmanage;
 
-import io.mycat.backend.mysql.PacketUtil;
-import io.mycat.config.Fields;
-import io.mycat.manager.ManagerConnection;
-import io.mycat.net.mysql.EOFPacket;
-import io.mycat.net.mysql.FieldPacket;
-import io.mycat.net.mysql.ResultSetHeaderPacket;
-import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.statistic.stat.UserSqlLastStat;
 import io.mycat.statistic.stat.UserStat;
 import io.mycat.statistic.stat.UserStatAnalyzer;
-import io.mycat.util.LongUtil;
-import io.mycat.util.StringUtil;
 import io.mycat.web.model.ReturnMessage;
 import io.mycat.web.model.UserSQLRecot;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +54,7 @@ public final class ShowSQL {
      * @author changhong
      */
     @GetMapping("/getuserlastsqls")
-    public ReturnMessage execute(/*ManagerConnection c, boolean isClear*/) {
+    public ReturnMessage execute(/*OConnection c, boolean isClear*/) {
         ReturnMessage returnMessage = new ReturnMessage();
         List<UserSQLRecot> list = new ArrayList<>();
         Map<String, UserStat> statMap = UserStatAnalyzer.getInstance().getUserStatMap();

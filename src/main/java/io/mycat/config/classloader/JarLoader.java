@@ -2,7 +2,6 @@ package io.mycat.config.classloader;
 
 
 import java.util.jar.*;
-import java.lang.reflect.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.io.*;

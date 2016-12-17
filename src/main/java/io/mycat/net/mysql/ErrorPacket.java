@@ -23,7 +23,6 @@
  */
 package io.mycat.net.mysql;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
 import io.mycat.backend.mysql.BufferUtil;

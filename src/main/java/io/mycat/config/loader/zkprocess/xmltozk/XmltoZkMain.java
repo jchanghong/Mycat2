@@ -1,12 +1,8 @@
 package io.mycat.config.loader.zkprocess.xmltozk;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.xml.bind.JAXBException;
 
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 
 import io.mycat.config.loader.console.ZookeeperPath;
 import io.mycat.config.loader.zkprocess.comm.ZkConfig;

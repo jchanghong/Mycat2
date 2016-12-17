@@ -1,13 +1,10 @@
 package io.mycat.backend.mysql.xa.recovery.impl;
 
 import io.mycat.backend.mysql.xa.CoordinatorLogEntry;
-import io.mycat.backend.mysql.xa.TxState;
 import io.mycat.backend.mysql.xa.recovery.Repository;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

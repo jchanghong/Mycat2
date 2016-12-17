@@ -26,7 +26,6 @@ package io.mycat.backend.heartbeat;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.mycat.backend.datasource.PhysicalDBPool;
 import io.mycat.backend.datasource.PhysicalDatasource;
 import io.mycat.backend.mysql.nio.MySQLDataSource;
 import io.mycat.config.model.DataHostConfig;
