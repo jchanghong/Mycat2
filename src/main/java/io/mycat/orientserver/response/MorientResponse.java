@@ -90,12 +90,16 @@ public class MorientResponse {
     }
 
     public static void response(OConnection c, String sql) {
+        MySqlStatementParser parser = new MySqlStatementParser(sql);
+        SQLStatement sqlStatement = parser.parseStatementList().get(0);
+        if (sqlStatement instanceof SQLCreateDatabaseStatement) {
+            handercreatedb(sqlStatement, c);
+            return;
+        }
         if (DBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
-        MySqlStatementParser parser = new MySqlStatementParser(sql);
-        SQLStatement sqlStatement = parser.parseStatementList().get(0);
         if (sqlStatement instanceof MySqlCreateTableStatement) {
 
             boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sqlStatement);
@@ -107,10 +111,7 @@ public class MorientResponse {
             }
             return;
         }
-        if (sqlStatement instanceof SQLCreateDatabaseStatement) {
-            handercreatedb(sqlStatement, c);
-            return;
-        }
+
         try {
             DBadapter.getInstance().exesql(sql);
             c.writeok();
