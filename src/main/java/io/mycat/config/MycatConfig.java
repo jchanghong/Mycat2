@@ -65,7 +65,7 @@ public class MycatConfig {
 	private long rollbackTime;
 	private int status;
 	private final ReentrantLock lock;
-	public boolean pureproxy = true;
+	public boolean pureproxy = false;
 	public MycatConfig() {
 		
 		//读取schema.xml，rule.xml和server.xml

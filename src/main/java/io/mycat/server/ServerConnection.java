@@ -28,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.channels.NetworkChannel;
 
 import io.mycat.backend.mysql.MySQLMessage;
+import io.mycat.config.MycatConfig;
 import io.mycat.net.NIOProcessor;
 import io.mycat.net.mysql.MySQLPacket;
 import io.mycat.serverproxy.Getconhander;
@@ -73,10 +74,12 @@ public class ServerConnection extends FrontendConnection {
 	public ServerConnection(NetworkChannel channel)
 			throws IOException {
 		super(channel);
-		mysession = new Mysession(this);
-		NIOProcessor.mySessionList.add(mysession);
-		Getconhander getconhander = new Getconhander(this);
-		getconhander.getSource(false);
+		if (MycatServer.config.pureproxy) {
+			mysession = new Mysession(this);
+			NIOProcessor.mySessionList.add(mysession);
+			Getconhander getconhander = new Getconhander(this);
+			getconhander.getSource(false);
+		}
 		this.txInterrupted = false;
 		this.autocommit = true;
 	}
@@ -378,7 +381,9 @@ public class ServerConnection extends FrontendConnection {
 
 	@Override
 	public void close(String reason) {
-		NIOProcessor.mySessionList.remove(mysession);
+		if (MycatServer.config.pureproxy) {
+			NIOProcessor.mySessionList.remove(mysession);
+		}
 		super.close(reason);
 		session.terminate();
 		if(getLoadDataInfileHandler()!=null)
