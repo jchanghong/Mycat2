@@ -94,7 +94,7 @@ public class Tableconfig {
         return returnMessage;
     }
 
-    @DeleteMapping(value = "/{dbname}/droptable/{tablename}")
+    @GetMapping(value = "/{dbname}/droptable/{tablename}")
     public ReturnMessage droptableconfig(@PathVariable("tablename") String tablename, @PathVariable("dbname") String dbname) {
         ReturnMessage returnMessage = new ReturnMessage();
 
