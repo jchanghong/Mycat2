@@ -5,10 +5,7 @@ import io.mycat.web.config.Initfunction;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,20 +31,26 @@ public class Functionconfig {
     }
 
     /**
-     * Sets .增加分区算法
+     * Sets .设置分区算法
      *
      * @param d      the d
      * @param result the result
      * @return the
      */
-    @PostMapping(value = "/addfunction")
-    public ReturnMessage setsysconfig(@Valid @RequestBody FunctionModel functionModel, BindingResult result) {
+    @PostMapping(value = "/setfunction/{name}")
+    public ReturnMessage setsysconfig(@PathVariable String name, @Valid @RequestBody FunctionModel functionModel, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
         if (result.hasErrors()) {
             returnMessage.setError(true);
             returnMessage.setMessage(result.toString());
             return returnMessage;
         }
+        if (!Initfunction.functionModels.contains("name")) {
+            returnMessage.setError(true);
+            returnMessage.setMessage("函数名字不存在");
+            return returnMessage;
+        }
+        Initfunction.functionModels.remove("name");
         Initfunction.functionModels.add(functionModel);
         Initfunction.save();
         String dd = MyReloadConfig.reloadconfig(false);

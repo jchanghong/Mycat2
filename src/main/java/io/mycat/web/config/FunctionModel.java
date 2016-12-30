@@ -2,6 +2,7 @@ package io.mycat.web.config;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,15 +16,40 @@ public class FunctionModel implements Serializable{
   private   String name;
     @NotNull
   private   String classname;
+
+    /**
+     * The Info.这个函数的描述，让用户更清楚
+     */
+    @NotNull
+    public String info;
     /**
      * The Propoty.
      * 属性
      */
-  public   Map<String, String> propoty;
+  public   Map<String, String> property;
+    /**
+     * The Propertyinfomation.
+     * 这个map用来描述每个属性的意思。让用户方便选择
+     */
+    public   Map<String, String> propertyinfomation;
+
+    public FunctionModel() {
+        property = new HashMap<>();
+        propertyinfomation = new HashMap<>();
+    }
 
     public FunctionModel(String name, String classname) {
+        this();
         this.name = name;
         this.classname = classname;
+    }
+
+    public Map<String, String> getProperty() {
+        return property;
+    }
+
+    public void setProperty(Map<String, String> property) {
+        this.property = property;
     }
 
     public String getName() {
@@ -40,5 +66,21 @@ public class FunctionModel implements Serializable{
 
     public void setClassname(String classname) {
         this.classname = classname;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Map<String, String> getPropertyinfomation() {
+        return propertyinfomation;
+    }
+
+    public void setPropertyinfomation(Map<String, String> propertyinfomation) {
+        this.propertyinfomation = propertyinfomation;
     }
 }
