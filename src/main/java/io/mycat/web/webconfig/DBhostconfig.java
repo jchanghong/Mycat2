@@ -125,7 +125,7 @@ public class DBhostconfig {
      * 增加一个从主机，
      * @return the
      */
-    @GetMapping(value = "/{datahost}/{wdbhost}/addrdb")
+    @PostMapping(value = "/{datahost}/{wdbhost}/addrdb")
     public ReturnMessage getsrdddbs(@PathVariable String datahost,@PathVariable String wdbhost,@Valid @RequestBody DBHostConfig dbHostConfig) {
         ReturnMessage returnMessage = new ReturnMessage();
         DataHostConfig config = MyConfigLoader.getInstance().getDataHosts().get(datahost);
@@ -167,7 +167,7 @@ public class DBhostconfig {
      * @param result the result
      * @return the
      */
-    @PostMapping(value = "/removedbhost/{datahost}/{dbname}")
+    @GetMapping(value = "/removedbhost/{datahost}/{dbname}")
     public ReturnMessage setsysconfig(@PathVariable String datahost, @PathVariable String dbname) {
 
         Map<String, DataHostConfig> hostConfigMap = MyConfigLoader.getInstance().getDataHosts();
