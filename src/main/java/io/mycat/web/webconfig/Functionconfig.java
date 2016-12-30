@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Created by jiang on 2016/12/3 0003.
@@ -32,26 +33,32 @@ public class Functionconfig {
 
     /**
      * Sets .设置分区算法
-     *
+     *map就是属性键值对
      * @param d      the d
      * @param result the result
      * @return the
      */
     @PostMapping(value = "/setfunction/{name}")
-    public ReturnMessage setsysconfig(@PathVariable String name, @Valid @RequestBody FunctionModel functionModel, BindingResult result) {
+    public ReturnMessage setsysconfig(@PathVariable String name, @Valid @RequestBody Map<String,String> map, BindingResult result) {
         ReturnMessage returnMessage = new ReturnMessage();
         if (result.hasErrors()) {
             returnMessage.setError(true);
             returnMessage.setMessage(result.toString());
             return returnMessage;
         }
-        if (!Initfunction.functionModels.contains("name")) {
+        FunctionModel model = null;
+        for (FunctionModel functionModel : Initfunction.functionModels) {
+            if (functionModel.getName().equals(name)) {
+                model = functionModel;
+                break;
+            }
+        }
+        if (model == null) {
             returnMessage.setError(true);
             returnMessage.setMessage("函数名字不存在");
             return returnMessage;
         }
-        Initfunction.functionModels.remove("name");
-        Initfunction.functionModels.add(functionModel);
+        model.setProperty(map);
         Initfunction.save();
         String dd = MyReloadConfig.reloadconfig(false);
         if (dd == null) {

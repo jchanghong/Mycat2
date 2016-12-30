@@ -9,9 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,13 +41,13 @@ public class DBhostconfig {
 
     /**
      * Gets .
-     * 得到一个数据库群的所有读主机信息
+     * 得到一个数据库群写主机下的的所有读主机信息
      * datahost是群组的名字
-     *
+     *wdbhost是写主机的名字
      * @return the
      */
-    @GetMapping(value = "/{datahost}/getrdbs")
-    public ReturnMessage getsrdbs(@PathVariable String datahost) {
+    @GetMapping(value = "/{datahost}/{wdbhost}/getrdbs")
+    public ReturnMessage getsrdbs(@PathVariable String datahost,@PathVariable String wdbhost) {
         ReturnMessage returnMessage = new ReturnMessage();
         DataHostConfig config = MyConfigLoader.getInstance().getDataHosts().get(datahost);
         if (config == null) {
@@ -58,9 +55,22 @@ public class DBhostconfig {
             returnMessage.setMessage("群主不存在");
             return returnMessage;
         }
-        List<DBHostConfig> list = new ArrayList<>(5);
-        config.getReadHosts().values().forEach(a -> Collections.addAll(list, a));
-        returnMessage.setObject(list.toArray());
+        int index = -1;
+        DBHostConfig wdb = null;
+        for (int i = 0; i < config.getWriteHosts().length; i++) {
+            wdb = config.getWriteHosts()[i];
+            if (wdb.getHostName().equals(wdbhost)) {
+                index = i;
+            }
+        }
+        if (index == -1) {
+            returnMessage.setError(true);
+            returnMessage.setMessage("群主存在，但是写主机不存在");
+            return returnMessage;
+        }
+//        List<DBHostConfig> list = new ArrayList<>(5);
+//        config.getReadHosts().values().forEach(a -> Collections.addAll(list, a));
+        returnMessage.setObject(config.getReadHosts().get(index));
         return returnMessage;
     }
 
@@ -85,9 +95,22 @@ public class DBhostconfig {
             returnMessage.setMessage("主机群不存在");
             return returnMessage;
         }
+        int index = -1;
+        DBHostConfig wdb = null;
+        for (int i = 0; i < config.getWriteHosts().length; i++) {
+            wdb = config.getWriteHosts()[i];
+            if (wdb.getHostName().equals(dbHostConfig.getHostName())) {
+                index = i;
+            }
+        }
+        if (index != -1) {
+            returnMessage.setError(true);
+            returnMessage.setMessage("主机已经存在");
+            return returnMessage;
+        }
         config.addwhost(dbHostConfig);
         MyConfigLoader.getInstance().save();
-        String dd = MyReloadConfig.reloadconfig(false);
+        String dd = MyReloadConfig.reloadconfig(true);
         if (dd == null) {
 
             returnMessage.setError(false);
@@ -97,9 +120,48 @@ public class DBhostconfig {
         }
         return returnMessage;
     }
-
     /**
-     * Sets .remove一个数据库
+     * Gets .
+     * 增加一个从主机，
+     * @return the
+     */
+    @GetMapping(value = "/{datahost}/{wdbhost}/addrdb")
+    public ReturnMessage getsrdddbs(@PathVariable String datahost,@PathVariable String wdbhost,@Valid @RequestBody DBHostConfig dbHostConfig) {
+        ReturnMessage returnMessage = new ReturnMessage();
+        DataHostConfig config = MyConfigLoader.getInstance().getDataHosts().get(datahost);
+        if (config == null) {
+            returnMessage.setError(true);
+            returnMessage.setMessage("群主不存在");
+            return returnMessage;
+        }
+        int index = -1;
+        DBHostConfig wdb = null;
+        for (int i = 0; i < config.getWriteHosts().length; i++) {
+            wdb = config.getWriteHosts()[i];
+            if (wdb.getHostName().equals(wdbhost)) {
+                index = i;
+            }
+        }
+        if (index == -1) {
+            returnMessage.setError(true);
+            returnMessage.setMessage("群主存在，但是写主机不存在");
+            return returnMessage;
+        }
+//        List<DBHostConfig> list = new ArrayList<>(5);
+//        config.getReadHosts().values().forEach(a -> Collections.addAll(list, a));
+        config.addrhost(index, dbHostConfig);
+        MyConfigLoader.getInstance().save();
+        String dd = MyReloadConfig.reloadconfig(true);
+        if (dd == null) {
+            returnMessage.setError(false);
+        } else {
+            returnMessage.setMessage(dd);
+            returnMessage.setError(true);
+        }
+        return returnMessage;
+    }
+    /**
+     * Sets .remove一个数据库写主机
      *
      * @param d      the d
      * @param result the result
@@ -114,7 +176,7 @@ public class DBhostconfig {
             returnMessage.setError(false);
             hostConfigMap.get(datahost).removehost(dbname);
             MyConfigLoader.getInstance().save();
-            String dd = MyReloadConfig.reloadconfig(false);
+            String dd = MyReloadConfig.reloadconfig(true);
             if (dd == null) {
                 returnMessage.setError(false);
             } else {
