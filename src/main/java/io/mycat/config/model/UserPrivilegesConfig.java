@@ -13,8 +13,11 @@ import java.util.Map;
 public class UserPrivilegesConfig implements Serializable {
     private static long serialVersionUID = -6605226933829917213L;
     private boolean check = false;
+    private Map<String, SchemaPrivilege> schemaPrivileges;
 
-    private Map<String, SchemaPrivilege> schemaPrivileges = new HashMap<String, SchemaPrivilege>();
+    public UserPrivilegesConfig() {
+        schemaPrivileges = new HashMap<>();
+    }
 
     public boolean isCheck() {
         return check;
