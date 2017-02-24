@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by 长宏 on 2017/2/23 0023.
+ * 用来演示orientdb
  */
 public class TestOrientDB {
     public static void main(String[] args) {
