@@ -2,6 +2,9 @@ package io.mycat;
 
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;
+import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
+
+import java.util.List;
 
 /**
  * Created by 长宏 on 2017/2/23 0023.
@@ -14,6 +17,16 @@ public class TestOrientDB {
         ODocument animal = new ODocument("t1");
         animal.field("id", "66");
         animal.save();
+
+        for (ODocument animal1 : db.browseClass("t1")) {
+            System.out.println(animal1.field("id")+"");
+        }
+        System.out.println("sql :---------------------------------------");
+        String sqlquery="select * from t1";
+        List<ODocument> result = db.query(
+                new OSQLSynchQuery<ODocument>(
+                        sqlquery));
+        result.forEach(a-> java.lang.System.out.println(a.field("id")+""));
     }
 
 }
