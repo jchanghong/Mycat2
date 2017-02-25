@@ -23,10 +23,10 @@
  */
 package io.mycat.net.mysql;
 
-import java.nio.ByteBuffer;
-
 import io.mycat.backend.mysql.BufferUtil;
 import io.mycat.net.FrontendConnection;
+
+import java.nio.ByteBuffer;
 
 /**
  * load data local infile 向客户端请求发送文件用

@@ -23,6 +23,16 @@
  */
 package io.mycat.net;
 
+import io.mycat.MycatServer;
+import io.mycat.backend.BackendConnection;
+import io.mycat.buffer.BufferPool;
+import io.mycat.serverproxy.MySessionList;
+import io.mycat.statistic.CommandCount;
+import io.mycat.util.NameableExecutor;
+import io.mycat.util.TimeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -30,18 +40,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import io.mycat.buffer.BufferPool;
-
-import io.mycat.serverproxy.MySessionList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.mycat.MycatServer;
-import io.mycat.backend.BackendConnection;
-import io.mycat.statistic.CommandCount;
-import io.mycat.util.NameableExecutor;
-import io.mycat.util.TimeUtil;
 
 /**
  * @author mycat

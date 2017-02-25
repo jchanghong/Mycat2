@@ -23,11 +23,11 @@
  */
 package io.mycat.net.mysql;
 
-import java.nio.ByteBuffer;
-
-import io.mycat.config.Capabilities;
 import io.mycat.backend.mysql.BufferUtil;
+import io.mycat.config.Capabilities;
 import io.mycat.net.FrontendConnection;
+
+import java.nio.ByteBuffer;
 
 /**
  * From mycat server to client during initial handshake.

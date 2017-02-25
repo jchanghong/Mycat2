@@ -23,12 +23,12 @@
  */
 package io.mycat.route.function;
 
+import io.mycat.config.model.rule.RuleAlgorithm;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-
-import io.mycat.config.model.rule.RuleAlgorithm;
 
 /**
  * auto partition by Long ,can be used in auto increment primary key partition

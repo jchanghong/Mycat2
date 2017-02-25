@@ -25,14 +25,12 @@ package io.mycat.orientserver.handler;
 
 import io.mycat.config.ErrorCode;
 import io.mycat.databaseorient.adapter.DBadapter;
-import io.mycat.net.handler.FrontendPrivileges;
 import io.mycat.net.mysql.OkPacket;
 import io.mycat.orientserver.OConnection;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author mycat

@@ -28,7 +28,6 @@ import io.mycat.server.interceptor.impl.GlobalTableUtil;
 import io.mycat.sqlengine.OneRawSQLQueryResultHandler;
 import io.mycat.sqlengine.SQLJob;
 import io.mycat.sqlengine.SQLQueryResult;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

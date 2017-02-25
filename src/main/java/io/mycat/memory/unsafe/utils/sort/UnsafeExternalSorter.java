@@ -3,7 +3,6 @@
 package io.mycat.memory.unsafe.utils.sort;
 
 import com.google.common.annotations.VisibleForTesting;
-
 import io.mycat.MycatServer;
 import io.mycat.memory.unsafe.Platform;
 import io.mycat.memory.unsafe.array.LongArray;

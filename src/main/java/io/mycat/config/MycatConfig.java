@@ -23,13 +23,6 @@
  */
 package io.mycat.config;
 
-import java.io.IOException;
-import java.net.StandardSocketOptions;
-import java.nio.channels.NetworkChannel;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
-
 import io.mycat.backend.datasource.PhysicalDBNode;
 import io.mycat.backend.datasource.PhysicalDBPool;
 import io.mycat.config.model.FirewallConfig;
@@ -38,6 +31,13 @@ import io.mycat.config.model.SystemConfig;
 import io.mycat.config.model.UserConfig;
 import io.mycat.net.AbstractConnection;
 import io.mycat.util.TimeUtil;
+
+import java.io.IOException;
+import java.net.StandardSocketOptions;
+import java.nio.channels.NetworkChannel;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author mycat

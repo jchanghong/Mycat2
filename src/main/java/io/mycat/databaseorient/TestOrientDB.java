@@ -1,4 +1,4 @@
-package io.mycat;
+package io.mycat.databaseorient;
 
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;

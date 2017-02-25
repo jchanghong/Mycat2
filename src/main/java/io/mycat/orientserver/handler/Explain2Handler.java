@@ -24,16 +24,15 @@
 package io.mycat.orientserver.handler;
 
 import io.mycat.backend.mysql.PacketUtil;
-import io.mycat.backend.mysql.nio.handler.SingleNodeHandler;
 import io.mycat.config.Fields;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
 import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.orientserver.OConnection;
+import io.mycat.orientserver.parser.ServerParse;
 import io.mycat.route.RouteResultset;
 import io.mycat.route.RouteResultsetNode;
-import io.mycat.orientserver.parser.ServerParse;
 import io.mycat.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

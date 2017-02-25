@@ -24,10 +24,9 @@
 package io.mycat.orientserver.handler;
 
 import io.mycat.orientserver.OConnection;
-import io.mycat.route.parser.util.ParseUtil;
-import io.mycat.orientserver.parser.ServerParse;
 import io.mycat.orientserver.parser.ServerParseSelect;
 import io.mycat.orientserver.response.*;
+import io.mycat.route.parser.util.ParseUtil;
 
 /**
  * @author mycat

@@ -23,11 +23,8 @@
  */
 package io.mycat.orientserver.response;
 
-import io.mycat.MycatServer;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.Fields;
-import io.mycat.config.MycatConfig;
-import io.mycat.config.model.UserConfig;
 import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
@@ -37,9 +34,6 @@ import io.mycat.orientserver.OConnection;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author mycat

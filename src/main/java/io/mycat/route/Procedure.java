@@ -1,6 +1,6 @@
 package io.mycat.route;
 
-import com.google.common.base.*;
+import com.google.common.base.Joiner;
 
 import java.io.Serializable;
 import java.sql.Types;

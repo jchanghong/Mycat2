@@ -1,12 +1,5 @@
 package io.mycat.route.handler;
 
-import java.sql.SQLNonTransientException;
-import java.sql.Types;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.expr.SQLIntegerExpr;
@@ -26,6 +19,13 @@ import io.mycat.route.*;
 import io.mycat.route.factory.RouteStrategyFactory;
 import io.mycat.server.ServerConnection;
 import io.mycat.server.parser.ServerParse;
+
+import java.sql.SQLNonTransientException;
+import java.sql.Types;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 处理注释中 类型为sql的情况 （按照 注释中的sql做路由解析，而不是实际的sql）

@@ -23,12 +23,12 @@
  */
 package io.mycat.net.mysql;
 
-import java.io.UnsupportedEncodingException;
-
 import io.mycat.backend.mysql.BindValue;
 import io.mycat.backend.mysql.BindValueUtil;
 import io.mycat.backend.mysql.MySQLMessage;
 import io.mycat.backend.mysql.PreparedStatement;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * <pre>

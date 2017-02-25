@@ -3,14 +3,10 @@ package io.mycat.databaseorient.adapter;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import io.mycat.backend.mysql.nio.MySQLConnection;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by jiang on 2016/12/17 0017.

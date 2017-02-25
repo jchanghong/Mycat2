@@ -27,12 +27,9 @@ import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import io.mycat.MycatServer;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
-import io.mycat.config.MycatConfig;
-import io.mycat.config.model.UserConfig;
 import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.databaseorient.adapter.OrientException;
 import io.mycat.databaseorient.adapter.TableAdaptor;
@@ -42,12 +39,12 @@ import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
 import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.orientserver.OConnection;
-import io.mycat.route.function.NumberParseUtil;
-import io.mycat.util.IntegerUtil;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author mycat

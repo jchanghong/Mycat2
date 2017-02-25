@@ -20,6 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TableAdaptor {
     public static String TABLEDOT = ".sql";
     private static TableAdaptor insta = new TableAdaptor();
+    public ConcurrentHashMap<String, Set<String>> hashMapdb2table = new ConcurrentHashMap<>();
+    public ConcurrentHashMap<String, HashMap<String, String>> hashmaptable2fild = new ConcurrentHashMap<>();
+
     public static TableAdaptor getInstance() {
         return insta;
     }
@@ -46,9 +49,13 @@ public class TableAdaptor {
         hashmaptable2fild.remove(dbname+table);
         return true;
     }
+
     public boolean createtable(String dbname, MySqlCreateTableStatement createTableStatement) {
 //        System.out.println(createTableStatement.toString());
         String table = createTableStatement.getTableSource().toString();
+        if (!hashMapdb2table.containsKey(dbname)) {
+            return false;
+        }
         if (hashMapdb2table.get(dbname).contains(table)) {
             return false;
         }
@@ -65,6 +72,7 @@ public class TableAdaptor {
         OClass account = db.getMetadata().getSchema()
                 .createClass(table);
        h.entrySet().stream().forEach(a->addproperty(account,a));
+        account.setStrictMode(true);//只能增加上面设置的属性，不能增加属性
         try {
             DataOutputStream stream = new DataOutputStream(new FileOutputStream(getfilepath(dbname, table)));
             stream.writeUTF(createTableStatement.toString());
@@ -82,6 +90,7 @@ public class TableAdaptor {
         db.close();
         return true;
     }
+
 
     private void addproperty(OClass account, Map.Entry<String, String> a) {
         if (a.getValue().contains("int")) {
@@ -110,8 +119,6 @@ public class TableAdaptor {
         }
         return strings;
     }
-
-
     public HashMap<String,String> gettablefiled(String  dbname,String tablename) {
         HashMap hashMap = hashmaptable2fild.get(dbname + tablename);
         if (hashMap != null) {
@@ -145,13 +152,10 @@ public class TableAdaptor {
         hashmaptable2fild.put(dbname+table, hashMap);
         return hashMap;
     }
-
     public String getfilepath(String dbname, String tablename) {
         StringBuilder builder = new StringBuilder();
         builder.append(DBadapter.getInstance().getfilepath(dbname)).append("/").append(tablename).append(TABLEDOT);
         return builder.toString();
     }
-    public ConcurrentHashMap<String, Set<String>> hashMapdb2table = new ConcurrentHashMap<>();
-    public ConcurrentHashMap<String, HashMap<String, String>> hashmaptable2fild = new ConcurrentHashMap<>();
 
 }

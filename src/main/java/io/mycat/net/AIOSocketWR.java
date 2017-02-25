@@ -1,13 +1,12 @@
 package io.mycat.net;
 
+import io.mycat.util.TimeUtil;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.mycat.util.TimeUtil;
 
 public class AIOSocketWR extends SocketWR
 {

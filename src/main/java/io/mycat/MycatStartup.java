@@ -78,6 +78,7 @@ public final class MycatStartup {
             System.out.println(e);
             ui = null;
             e.printStackTrace();
+            System.exit(-1);
         }
         try {
             String home = SystemConfig.getHomePath();

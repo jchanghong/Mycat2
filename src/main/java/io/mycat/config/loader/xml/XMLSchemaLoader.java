@@ -23,35 +23,29 @@
  */
 package io.mycat.config.loader.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import io.mycat.backend.datasource.PhysicalDBPool;
+import io.mycat.config.loader.SchemaLoader;
+import io.mycat.config.model.*;
 import io.mycat.config.model.rule.RuleConfig;
+import io.mycat.config.model.rule.TableRuleConfig;
+import io.mycat.config.util.ConfigException;
+import io.mycat.config.util.ConfigUtil;
+import io.mycat.route.function.AbstractPartitionAlgorithm;
 import io.mycat.route.function.TableRuleAware;
+import io.mycat.util.DecryptUtil;
 import io.mycat.util.ObjectUtil;
+import io.mycat.util.SplitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import io.mycat.backend.datasource.PhysicalDBPool;
-import io.mycat.config.loader.SchemaLoader;
-import io.mycat.config.model.DBHostConfig;
-import io.mycat.config.model.DataHostConfig;
-import io.mycat.config.model.DataNodeConfig;
-import io.mycat.config.model.SchemaConfig;
-import io.mycat.config.model.TableConfig;
-import io.mycat.config.model.TableConfigMap;
-import io.mycat.config.model.rule.TableRuleConfig;
-import io.mycat.config.util.ConfigException;
-import io.mycat.config.util.ConfigUtil;
-import io.mycat.route.function.AbstractPartitionAlgorithm;
-import io.mycat.util.DecryptUtil;
-import io.mycat.util.SplitUtil;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author mycat

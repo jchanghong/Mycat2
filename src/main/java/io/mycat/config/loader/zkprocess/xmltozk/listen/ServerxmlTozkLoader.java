@@ -1,15 +1,6 @@
 package io.mycat.config.loader.zkprocess.xmltozk.listen;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-import org.apache.curator.framework.CuratorFramework;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.alibaba.fastjson.util.IOUtils;
-
 import io.mycat.config.loader.console.ZookeeperPath;
 import io.mycat.config.loader.zkprocess.comm.NotiflyService;
 import io.mycat.config.loader.zkprocess.comm.ZkConfig;
@@ -25,6 +16,13 @@ import io.mycat.config.loader.zkprocess.parse.entryparse.server.json.SystemJsonP
 import io.mycat.config.loader.zkprocess.parse.entryparse.server.json.UserJsonParse;
 import io.mycat.config.loader.zkprocess.parse.entryparse.server.xml.ServerParseXmlImpl;
 import io.mycat.config.loader.zkprocess.zookeeper.process.ZkMultLoader;
+import org.apache.curator.framework.CuratorFramework;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * 进行从server.xml加载到zk中加载

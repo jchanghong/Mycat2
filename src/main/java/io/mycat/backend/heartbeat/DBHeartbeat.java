@@ -23,10 +23,10 @@
  */
 package io.mycat.backend.heartbeat;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import io.mycat.statistic.DataSourceSyncRecorder;
 import io.mycat.statistic.HeartbeatRecorder;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class DBHeartbeat {
 	public static final int DB_SYN_ERROR = -1;

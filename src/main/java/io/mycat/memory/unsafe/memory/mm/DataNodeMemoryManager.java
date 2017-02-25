@@ -1,7 +1,6 @@
 package io.mycat.memory.unsafe.memory.mm;
 
 import com.google.common.annotations.VisibleForTesting;
-
 import io.mycat.memory.unsafe.memory.MemoryBlock;
 import io.mycat.memory.unsafe.utils.JavaUtils;
 import org.slf4j.Logger;

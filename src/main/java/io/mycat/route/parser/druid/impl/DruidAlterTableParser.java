@@ -1,16 +1,13 @@
 package io.mycat.route.parser.druid.impl;
 
-import java.sql.SQLNonTransientException;
-
 import com.alibaba.druid.sql.ast.SQLStatement;
-
-
 import com.alibaba.druid.sql.ast.statement.SQLAlterTableStatement;
-
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.route.RouteResultset;
 import io.mycat.route.parser.druid.MycatSchemaStatVisitor;
 import io.mycat.util.StringUtil;
+
+import java.sql.SQLNonTransientException;
 
 /**
  * alter table 语句解析

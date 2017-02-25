@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static io.mycat.route.function.PartitionByCRC32PreSlot.*;
+import static io.mycat.route.function.PartitionByCRC32PreSlot.Range;
 
 /**
  * Created by magicdoom on 2016/9/16.

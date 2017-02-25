@@ -4,7 +4,6 @@ import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
-
 import io.mycat.MycatServer;
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.route.parser.druid.MycatSchemaStatVisitor;

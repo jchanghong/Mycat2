@@ -23,23 +23,23 @@
  */
 package io.mycat.net.handler;
 
-import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
-import java.util.Set;
-
-import io.mycat.databaseorient.adapter.DBadapter;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import io.mycat.MycatServer;
 import io.mycat.backend.mysql.SecurityUtil;
 import io.mycat.config.Capabilities;
 import io.mycat.config.ErrorCode;
+import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.FrontendConnection;
 import io.mycat.net.NIOHandler;
 import io.mycat.net.NIOProcessor;
 import io.mycat.net.mysql.AuthPacket;
 import io.mycat.net.mysql.MySQLPacket;
 import io.mycat.net.mysql.QuitPacket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 
 /**
  * 前端认证处理器

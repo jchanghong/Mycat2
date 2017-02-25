@@ -23,11 +23,11 @@
  */
 package io.mycat.route;
 
-import java.io.Serializable;
-import java.util.Map;
-
 import io.mycat.server.parser.ServerParse;
 import io.mycat.sqlengine.mpp.LoadData;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author mycat

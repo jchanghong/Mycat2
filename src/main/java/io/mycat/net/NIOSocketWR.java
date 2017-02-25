@@ -1,13 +1,13 @@
 package io.mycat.net;
 
+import io.mycat.util.TimeUtil;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.mycat.util.TimeUtil;
 
 public class NIOSocketWR extends SocketWR {
 	private SelectionKey processKey;

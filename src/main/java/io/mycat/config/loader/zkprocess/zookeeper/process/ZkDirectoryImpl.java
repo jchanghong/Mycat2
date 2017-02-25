@@ -1,10 +1,10 @@
 package io.mycat.config.loader.zkprocess.zookeeper.process;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.mycat.config.loader.zkprocess.zookeeper.DataInf;
 import io.mycat.config.loader.zkprocess.zookeeper.DiretoryInf;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * zk的目录节点信息

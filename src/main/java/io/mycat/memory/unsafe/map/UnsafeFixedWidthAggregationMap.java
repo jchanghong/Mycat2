@@ -27,7 +27,6 @@ import io.mycat.memory.unsafe.row.UnsafeRow;
 import io.mycat.memory.unsafe.utils.sort.UnsafeKVExternalSorter;
 import org.apache.log4j.Logger;
 
-
 import java.io.IOException;
 
 /**

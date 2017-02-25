@@ -1,17 +1,12 @@
 package io.mycat.config.loader.zkprocess.comm;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import io.mycat.config.loader.console.ZookeeperPath;
+import io.mycat.config.loader.zkprocess.console.ZkNofiflyCfg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.mycat.config.loader.console.ZookeeperPath;
-import io.mycat.config.loader.zkprocess.console.ZkNofiflyCfg;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * 进行zookeeper操作的监控器器父类信息

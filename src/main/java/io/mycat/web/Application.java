@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Created by 长宏 on 2016/11/25 0025.
- * 启动类
+ * 启动类，同时启动mycat和web后台
  */
 @SpringBootApplication
 public class Application {

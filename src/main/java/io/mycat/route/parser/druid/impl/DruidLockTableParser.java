@@ -1,12 +1,8 @@
 package io.mycat.route.parser.druid.impl;
 
-import java.sql.SQLNonTransientException;
-import java.util.List;
-
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlLockTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlLockTableStatement.LockType;
-
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.TableConfig;
 import io.mycat.route.RouteResultset;
@@ -15,6 +11,9 @@ import io.mycat.route.parser.druid.DruidParser;
 import io.mycat.route.parser.druid.MycatSchemaStatVisitor;
 import io.mycat.server.parser.ServerParse;
 import io.mycat.util.SplitUtil;
+
+import java.sql.SQLNonTransientException;
+import java.util.List;
 
 /**
  * lock tables [table] [write|read]语句解析器

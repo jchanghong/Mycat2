@@ -23,12 +23,12 @@
  */
 package io.mycat.net.mysql;
 
-import java.nio.ByteBuffer;
-
 import io.mycat.backend.mysql.BufferUtil;
 import io.mycat.backend.mysql.MySQLMessage;
 import io.mycat.buffer.BufferArray;
 import io.mycat.net.FrontendConnection;
+
+import java.nio.ByteBuffer;
 
 /**
  * From Server To Client, at the end of a series of Field Packets, and at the

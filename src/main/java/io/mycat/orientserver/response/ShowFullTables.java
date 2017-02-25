@@ -13,7 +13,6 @@ import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
 import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.parser.ServerParse;
 import io.mycat.orientserver.util.SchemaUtil;
 import io.mycat.util.StringUtil;
 

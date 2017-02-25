@@ -23,14 +23,14 @@
  */
 package io.mycat.server.handler;
 
-import java.nio.ByteBuffer;
-import java.util.Set;
-
 import io.mycat.config.ErrorCode;
 import io.mycat.net.handler.FrontendPrivileges;
 import io.mycat.net.mysql.OkPacket;
 import io.mycat.server.ServerConnection;
 import io.mycat.util.StringUtil;
+
+import java.nio.ByteBuffer;
+import java.util.Set;
 
 /**
  * @author mycat

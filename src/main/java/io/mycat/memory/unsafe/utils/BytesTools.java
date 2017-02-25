@@ -20,7 +20,6 @@ package io.mycat.memory.unsafe.utils;
 
 
 import com.google.common.annotations.VisibleForTesting;
-
 import io.mycat.memory.unsafe.Platform;
 import sun.misc.Unsafe;
 

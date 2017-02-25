@@ -23,6 +23,9 @@
  */
 package io.mycat.net;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.channels.CancelledKeyException;
 import java.nio.channels.SelectionKey;
@@ -30,8 +33,6 @@ import java.nio.channels.Selector;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 /**
  * 网络事件反应器

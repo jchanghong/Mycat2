@@ -1,11 +1,11 @@
 package io.mycat.sqlengine;
 
+import io.mycat.net.mysql.FieldPacket;
+import io.mycat.net.mysql.RowDataPacket;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.mycat.net.mysql.FieldPacket;
-import io.mycat.net.mysql.RowDataPacket;
 
 public class OneRawSQLQueryResultHandler implements SQLJobHandler {
 

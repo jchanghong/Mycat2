@@ -10,33 +10,35 @@ import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 
 import java.util.List;
 import java.util.Scanner;
-
 public class test implements Log{
     ODatabaseDocumentTx db;
 
     public test() {
 
         db = new ODatabaseDocumentTx
-                ("plocal:database/petshop1")
+                ("plocal:database/changhong")
 //                .create();
                 .open("admin", "admin");
-        ODocument oDocument = new ODocument("aaata");
-        oDocument.field("id", 1+"");
+        ODocument oDocument = new ODocument("my");
+        oDocument.field("id", "d");
         oDocument.field("name", "changhong");
         oDocument.save();
-        for (ODocument animal : db.browseClass("aaata")) {
+        for (ODocument animal : db.browseClass("my")) {
             System.out.println(animal.field("id").toString());
         }
 
-//        info(db.countClass("my"));
-//        info(db.countClass("my1"));
-//        List<ODocument> result = db.query(
-//                new OSQLSynchQuery<ODocument>(
-//                        "SELECT * FROM my WHERE id like 'd%'"));
-//        result.stream().forEach(a->info(a.field("id")));
-//        db.command(
-//                new OCommandSQL("UPDATE my SET id = 'ddddd'"
-//                ));
+        info("count:"+db.countClass("my"));
+        List<ODocument> result = db.query(
+                new OSQLSynchQuery<ODocument>(
+                        "SELECT * FROM my WHERE id like 'd%'"));
+        result.stream().forEach(a->info(a.field("id")));
+        db.command(
+                new OCommandSQL("UPDATE my SET id = 'd2'"
+                )).execute();
+        result=db.query(
+                new OSQLSynchQuery<ODocument>(
+                        "SELECT * FROM my WHERE id like 'd%'"));
+        result.stream().forEach(a->info(a.field("id")));
 
         db.close();
 

@@ -23,12 +23,12 @@
  */
 package io.mycat.net.factory;
 
+import io.mycat.MycatServer;
+import io.mycat.net.FrontendConnection;
+
 import java.io.IOException;
 import java.net.StandardSocketOptions;
 import java.nio.channels.NetworkChannel;
-
-import io.mycat.MycatServer;
-import io.mycat.net.FrontendConnection;
 
 /**
  * @author mycat

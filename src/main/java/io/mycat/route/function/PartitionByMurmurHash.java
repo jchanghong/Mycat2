@@ -23,25 +23,14 @@
  */
 package io.mycat.route.function;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-
 import io.mycat.config.model.rule.RuleAlgorithm;
 import io.mycat.util.exception.MurmurHashException;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * consistancy hash, murmur hash

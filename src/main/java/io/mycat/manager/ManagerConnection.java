@@ -23,11 +23,11 @@
  */
 package io.mycat.manager;
 
-import java.io.IOException;
-import java.nio.channels.NetworkChannel;
-
 import io.mycat.net.FrontendConnection;
 import io.mycat.util.TimeUtil;
+
+import java.io.IOException;
+import java.nio.channels.NetworkChannel;
 
 /**
  * @author mycat

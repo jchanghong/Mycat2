@@ -23,9 +23,9 @@
  */
 package io.mycat.config;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import io.mycat.config.model.MycatNodeConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author mycat

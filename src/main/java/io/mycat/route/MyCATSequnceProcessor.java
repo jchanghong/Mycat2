@@ -1,11 +1,5 @@
 package io.mycat.route;
 
-import java.nio.ByteBuffer;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import io.mycat.MycatServer;
 import io.mycat.config.ErrorCode;
 import io.mycat.net.mysql.EOFPacket;
@@ -15,6 +9,12 @@ import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.route.parser.druid.DruidSequenceHandler;
 import io.mycat.server.ServerConnection;
 import io.mycat.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class MyCATSequnceProcessor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MyCATSequnceProcessor.class);

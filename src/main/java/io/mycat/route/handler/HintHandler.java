@@ -1,13 +1,13 @@
 package io.mycat.route.handler;
 
-import java.sql.SQLNonTransientException;
-import java.util.Map;
-
 import io.mycat.cache.LayerCachePool;
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.SystemConfig;
 import io.mycat.route.RouteResultset;
 import io.mycat.server.ServerConnection;
+
+import java.sql.SQLNonTransientException;
+import java.util.Map;
 
 /**
  * 按照注释中包含指定类型的内容做路由解析

@@ -30,13 +30,13 @@ import io.mycat.backend.jdbc.JDBCDatasource;
 import io.mycat.backend.mysql.nio.MySQLDataSource;
 import io.mycat.backend.postgresql.PostgreSQLDataSource;
 import io.mycat.config.loader.ConfigLoader;
-import io.mycat.web.config.MyConfigLoader;
 import io.mycat.config.model.*;
 import io.mycat.config.util.ConfigException;
 import io.mycat.route.sequence.handler.DistributedSequenceHandler;
 import io.mycat.route.sequence.handler.IncrSequenceMySQLHandler;
 import io.mycat.route.sequence.handler.IncrSequenceTimeHandler;
 import io.mycat.route.sequence.handler.IncrSequenceZKHandler;
+import io.mycat.web.config.MyConfigLoader;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

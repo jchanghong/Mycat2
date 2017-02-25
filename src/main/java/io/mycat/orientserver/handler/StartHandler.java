@@ -24,7 +24,6 @@
 package io.mycat.orientserver.handler;
 
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.parser.ServerParse;
 import io.mycat.orientserver.parser.ServerParseStart;
 import io.mycat.orientserver.response.MorientResponse;
 

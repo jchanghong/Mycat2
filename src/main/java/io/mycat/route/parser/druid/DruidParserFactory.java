@@ -1,35 +1,15 @@
 package io.mycat.route.parser.druid;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLAlterTableStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlDeleteStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlInsertStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlLockTableStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlUpdateStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
 import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
-
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.config.model.TableConfig;
-import io.mycat.route.parser.druid.impl.DefaultDruidParser;
-import io.mycat.route.parser.druid.impl.DruidAlterTableParser;
-import io.mycat.route.parser.druid.impl.DruidCreateTableParser;
-import io.mycat.route.parser.druid.impl.DruidDeleteParser;
-import io.mycat.route.parser.druid.impl.DruidInsertParser;
-import io.mycat.route.parser.druid.impl.DruidLockTableParser;
-import io.mycat.route.parser.druid.impl.DruidSelectDb2Parser;
-import io.mycat.route.parser.druid.impl.DruidSelectOracleParser;
-import io.mycat.route.parser.druid.impl.DruidSelectParser;
-import io.mycat.route.parser.druid.impl.DruidSelectPostgresqlParser;
-import io.mycat.route.parser.druid.impl.DruidSelectSqlServerParser;
-import io.mycat.route.parser.druid.impl.DruidUpdateParser;
+import io.mycat.route.parser.druid.impl.*;
+
+import java.util.*;
 
 /**
  * DruidParser的工厂类

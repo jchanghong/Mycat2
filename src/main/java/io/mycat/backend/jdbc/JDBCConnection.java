@@ -1,33 +1,28 @@
 package io.mycat.backend.jdbc;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.sql.*;
-import java.util.*;
-
-import io.mycat.backend.mysql.PacketUtil;
-import io.mycat.route.Procedure;
-import io.mycat.route.ProcedureParameter;
-import io.mycat.util.*;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import io.mycat.MycatServer;
 import io.mycat.backend.BackendConnection;
+import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.backend.mysql.nio.handler.ConnectionHeartBeatHandler;
 import io.mycat.backend.mysql.nio.handler.ResponseHandler;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Isolations;
 import io.mycat.net.NIOProcessor;
-import io.mycat.net.mysql.EOFPacket;
-import io.mycat.net.mysql.ErrorPacket;
-import io.mycat.net.mysql.FieldPacket;
-import io.mycat.net.mysql.OkPacket;
-import io.mycat.net.mysql.ResultSetHeaderPacket;
-import io.mycat.net.mysql.RowDataPacket;
+import io.mycat.net.mysql.*;
+import io.mycat.route.Procedure;
+import io.mycat.route.ProcedureParameter;
 import io.mycat.route.RouteResultsetNode;
 import io.mycat.server.ServerConnection;
 import io.mycat.server.parser.ServerParse;
+import io.mycat.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.sql.*;
+import java.util.*;
 
 public class JDBCConnection implements BackendConnection {
 	protected static final Logger LOGGER = LoggerFactory

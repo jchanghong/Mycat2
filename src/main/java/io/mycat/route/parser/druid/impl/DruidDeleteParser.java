@@ -1,13 +1,12 @@
 package io.mycat.route.parser.druid.impl;
 
-import java.sql.SQLNonTransientException;
-
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlDeleteStatement;
-
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.route.RouteResultset;
 import io.mycat.util.StringUtil;
+
+import java.sql.SQLNonTransientException;
 
 public class DruidDeleteParser extends DefaultDruidParser {
 	@Override

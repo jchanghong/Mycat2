@@ -24,7 +24,6 @@
 package io.mycat.route;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
-
 import io.mycat.config.model.SchemaConfig;
 import io.mycat.route.parser.util.PageSQLUtil;
 import io.mycat.sqlengine.mpp.HavingCols;

@@ -34,10 +34,7 @@ import io.mycat.route.RouteResultsetNode;
 import io.mycat.server.ServerConnection;
 import io.mycat.sqlengine.mpp.tmp.RowDataSorter;
 import io.mycat.util.StringUtil;
-
 import org.apache.log4j.Logger;
-
-
 
 import java.nio.ByteBuffer;
 import java.util.*;

@@ -2,7 +2,7 @@ package io.mycat.web.config;
 
 import io.mycat.config.loader.ConfigLoader;
 import io.mycat.config.model.*;
-import io.mycat.config.model.rule.*;
+import io.mycat.config.model.rule.RuleConfig;
 import io.mycat.config.model.rule.TableRuleConfig;
 
 import java.util.*;

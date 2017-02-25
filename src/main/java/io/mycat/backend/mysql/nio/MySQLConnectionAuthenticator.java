@@ -23,8 +23,6 @@
  */
 package io.mycat.backend.mysql.nio;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import io.mycat.MycatServer;
 import io.mycat.backend.mysql.CharsetUtil;
 import io.mycat.backend.mysql.SecurityUtil;
@@ -32,11 +30,9 @@ import io.mycat.backend.mysql.nio.handler.ResponseHandler;
 import io.mycat.config.Capabilities;
 import io.mycat.net.ConnectionException;
 import io.mycat.net.NIOHandler;
-import io.mycat.net.mysql.EOFPacket;
-import io.mycat.net.mysql.ErrorPacket;
-import io.mycat.net.mysql.HandshakePacket;
-import io.mycat.net.mysql.OkPacket;
-import io.mycat.net.mysql.Reply323Packet;
+import io.mycat.net.mysql.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MySQL 验证处理器

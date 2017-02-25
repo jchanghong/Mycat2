@@ -23,13 +23,13 @@
  */
 package io.mycat.backend.mysql;
 
-import java.io.UnsupportedEncodingException;
-
 import io.mycat.config.ErrorCode;
 import io.mycat.net.mysql.BinaryPacket;
 import io.mycat.net.mysql.ErrorPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author mycat

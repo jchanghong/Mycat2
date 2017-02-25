@@ -23,32 +23,21 @@
  */
 package io.mycat.orientserver;
 
-import io.mycat.MycatServer;
 import io.mycat.backend.mysql.MySQLMessage;
 import io.mycat.config.ErrorCode;
-import io.mycat.config.model.SchemaConfig;
 import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.FrontendConnection;
-import io.mycat.net.NIOProcessor;
-import io.mycat.net.mysql.MySQLPacket;
 import io.mycat.net.mysql.OkPacket;
 import io.mycat.orientserver.response.Heartbeat;
-import io.mycat.route.RouteResultset;
-import io.mycat.server.parser.ServerParse;
 import io.mycat.server.response.Ping;
-import io.mycat.server.util.SchemaUtil;
-import io.mycat.serverproxy.Mysession;
-import io.mycat.statistic.CommandCount;
 import io.mycat.util.SplitUtil;
 import io.mycat.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.NetworkChannel;
-import java.util.Set;
 
 /**
  * @author mycat

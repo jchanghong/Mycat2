@@ -23,11 +23,11 @@
  */
 package io.mycat.route;
 
+import io.mycat.sqlengine.mpp.HavingCols;
+
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import io.mycat.sqlengine.mpp.HavingCols;
 
 public class SQLMerge implements Serializable {
 	private LinkedHashMap<String, Integer> orderByCols;

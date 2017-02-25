@@ -1,8 +1,6 @@
 package io.mycat.web.webconfig;
 
-import io.mycat.config.loader.zkprocess.entity.schema.schema.Schema;
 import io.mycat.config.model.SchemaConfig;
-import io.mycat.config.model.TableConfig;
 import io.mycat.web.config.MyConfigLoader;
 import io.mycat.web.config.MyReloadConfig;
 import io.mycat.web.model.ReturnMessage;

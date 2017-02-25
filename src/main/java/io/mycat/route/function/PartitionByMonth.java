@@ -1,14 +1,14 @@
 package io.mycat.route.function;
 
+import io.mycat.config.model.rule.RuleAlgorithm;
+import org.apache.log4j.Logger;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-
-import io.mycat.config.model.rule.RuleAlgorithm;
-import org.apache.log4j.Logger;
 
 /**
  * 例子 按月份列分区 ，每个自然月一个分片，格式 between操作解析的范例

@@ -7,9 +7,16 @@ import java.awt.event.WindowListener;
 
 /**
  * Created by jiang on 2016/12/1 0001.
+ * 启动mycat，有ui界面提示
  */
 public class FrameUI extends JFrame implements WindowListener {
     private JTextArea jTextArea = new JTextArea(40, 40);
+
+    /**
+     * Instantiates a new Frame ui.
+     *
+     * @throws HeadlessException the headless exception
+     */
     public FrameUI() throws HeadlessException {
         jTextArea.setFont(new Font(Font.DIALOG,0,30));
         jTextArea.setEditable(false);
@@ -23,10 +30,21 @@ public class FrameUI extends JFrame implements WindowListener {
 
     }
 
+    /**
+     * Sets .
+     *
+     * @param s the s
+     */
     public void settest(String s) {
         jTextArea.setText(s);
 
     }
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
 
         MycatStartup.startmain(args);

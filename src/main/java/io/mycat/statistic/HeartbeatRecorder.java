@@ -23,12 +23,12 @@
  */
 package io.mycat.statistic;
 
+import io.mycat.util.TimeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
-import io.mycat.util.TimeUtil;
 
 /**
  * 记录最近3个时段的平均响应时间，默认1，10，30分钟。

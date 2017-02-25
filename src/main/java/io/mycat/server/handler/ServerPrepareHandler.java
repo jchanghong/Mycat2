@@ -23,18 +23,9 @@
  */
 package io.mycat.server.handler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import com.google.common.escape.Escapers.Builder;
-
 import io.mycat.backend.mysql.BindValue;
 import io.mycat.backend.mysql.ByteUtil;
 import io.mycat.backend.mysql.PreparedStatement;
@@ -48,6 +39,14 @@ import io.mycat.net.mysql.ResetPacket;
 import io.mycat.server.ServerConnection;
 import io.mycat.server.response.PreparedStmtResponse;
 import io.mycat.util.HexFormatUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mycat, CrazyPig, zhuam

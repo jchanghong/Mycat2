@@ -1,22 +1,16 @@
 package io.mycat.config.loader.zkprocess.xmltozk;
 
-import javax.xml.bind.JAXBException;
-
-import org.apache.curator.framework.CuratorFramework;
-
 import io.mycat.config.loader.console.ZookeeperPath;
 import io.mycat.config.loader.zkprocess.comm.ZkConfig;
 import io.mycat.config.loader.zkprocess.comm.ZkParamCfg;
 import io.mycat.config.loader.zkprocess.comm.ZookeeperProcessListen;
 import io.mycat.config.loader.zkprocess.console.ZkNofiflyCfg;
 import io.mycat.config.loader.zkprocess.parse.XmlProcessBase;
-import io.mycat.config.loader.zkprocess.xmltozk.listen.EcachesxmlTozkLoader;
-import io.mycat.config.loader.zkprocess.xmltozk.listen.OthermsgTozkLoader;
-import io.mycat.config.loader.zkprocess.xmltozk.listen.RulesxmlTozkLoader;
-import io.mycat.config.loader.zkprocess.xmltozk.listen.SchemasxmlTozkLoader;
-import io.mycat.config.loader.zkprocess.xmltozk.listen.SequenceTozkLoader;
-import io.mycat.config.loader.zkprocess.xmltozk.listen.ServerxmlTozkLoader;
+import io.mycat.config.loader.zkprocess.xmltozk.listen.*;
 import io.mycat.util.ZKUtils;
+import org.apache.curator.framework.CuratorFramework;
+
+import javax.xml.bind.JAXBException;
 
 public class XmltoZkMain {
 

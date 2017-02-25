@@ -23,13 +23,13 @@
  */
 package io.mycat.server.response;
 
-import java.nio.ByteBuffer;
-
 import io.mycat.backend.mysql.PreparedStatement;
 import io.mycat.net.FrontendConnection;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.PreparedOkPacket;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author mycat

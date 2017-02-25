@@ -1,10 +1,10 @@
 package io.mycat.statistic.stat;
 
+import com.alibaba.druid.sql.visitor.ParameterizedOutputVisitorUtils;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
-
-import com.alibaba.druid.sql.visitor.ParameterizedOutputVisitorUtils;
 
 public class UserSqlHighStat {
 	

@@ -23,8 +23,6 @@
  */
 package io.mycat.net;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
-
 import io.mycat.MycatServer;
 import io.mycat.backend.mysql.CharsetUtil;
 import io.mycat.backend.mysql.MySQLMessage;
@@ -32,13 +30,11 @@ import io.mycat.config.Capabilities;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Versions;
 import io.mycat.net.handler.*;
-import io.mycat.net.mysql.ErrorPacket;
-import io.mycat.net.mysql.HandshakePacket;
-import io.mycat.net.mysql.HandshakeV10Packet;
-import io.mycat.net.mysql.MySQLPacket;
-import io.mycat.net.mysql.OkPacket;
+import io.mycat.net.mysql.*;
 import io.mycat.util.CompressUtil;
 import io.mycat.util.RandomUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

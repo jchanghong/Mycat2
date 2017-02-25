@@ -1,14 +1,6 @@
 package io.mycat.backend.jdbc;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import io.mycat.MycatServer;
 import io.mycat.backend.datasource.PhysicalDatasource;
 import io.mycat.backend.heartbeat.DBHeartbeat;
@@ -17,6 +9,13 @@ import io.mycat.config.model.DBHostConfig;
 import io.mycat.config.model.DataHostConfig;
 import io.mycat.net.NIOConnector;
 import io.mycat.net.NIOProcessor;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 public class JDBCDatasource extends PhysicalDatasource {
 	
