@@ -29,7 +29,7 @@ import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.FrontendConnection;
 import io.mycat.net.mysql.OkPacket;
 import io.mycat.orientserver.response.Heartbeat;
-import io.mycat.server.response.Ping;
+import io.mycat.orientserver.response.Ping;
 import io.mycat.util.SplitUtil;
 import io.mycat.util.TimeUtil;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.NetworkChannel;
 
 /**
- * @author mycat
+ * @author changhong.orientdb前段，9999端口连接
  */
 public class OConnection extends FrontendConnection {
     private static final Logger LOGGER = LoggerFactory
