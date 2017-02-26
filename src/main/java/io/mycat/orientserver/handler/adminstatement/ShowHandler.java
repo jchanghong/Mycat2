@@ -157,7 +157,8 @@ public final class ShowHandler {
     public static void showtriggers(MySqlShowTriggersStatement x) {
     }
 
-    public static void showvatiants(MySqlShowVariantsStatement x) {
+    public static void showvatiants(MySqlShowVariantsStatement x, OConnection connection) {
+        ShowVariables.response(connection);
     }
 
     public static void showtables(SQLShowTablesStatement x, OConnection connection) {

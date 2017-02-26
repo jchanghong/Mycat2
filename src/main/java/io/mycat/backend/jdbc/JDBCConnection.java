@@ -303,10 +303,10 @@ public class JDBCConnection implements BackendConnection {
 			if (sqlType == ServerParse.SELECT || sqlType == ServerParse.SHOW) {
 				if ((sqlType == ServerParse.SHOW) && (!dbType.equals("MYSQL"))) {
 					// showCMD(sc, orgin);
-					//ShowVariables.execute(sc, orgin);
+					//selectVariables.execute(sc, orgin);
 					ShowVariables.execute(sc, orgin,this);
 				} else if ("SELECT CONNECTION_ID()".equalsIgnoreCase(orgin)) {
-					//ShowVariables.justReturnValue(sc,String.valueOf(sc.getId()));
+					//selectVariables.justReturnValue(sc,String.valueOf(sc.getId()));
 					ShowVariables.justReturnValue(sc,String.valueOf(sc.getId()),this);
 				} else {
 					ouputResultSet(sc, orgin);

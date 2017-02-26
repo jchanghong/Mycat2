@@ -1,71 +1,42 @@
-/*
- * Copyright (c) 2013, OpenCloudDB/MyCAT and/or its affiliates. All rights reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
- * This code is free software;Designed and Developed mainly by many Chinese 
- * opensource volunteers. you can redistribute it and/or modify it under the 
- * terms of the GNU General Public License version 2 only, as published by the
- * Free Software Foundation.
- *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 2 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
- *
- * You should have received a copy of the GNU General Public License version
- * 2 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- * 
- * Any questions about this component can be directed to it's project Web address 
- * https://code.google.com/p/opencloudb/.
- *
- */
 package io.mycat.orientserver.response;
 
-import com.google.common.base.Splitter;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.Fields;
+import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
 import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.orientserver.OConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * @author mycat
+ * Created by jiang on 2017/2/26 0026.
+ *
  */
-public final class SelectVariables {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SelectVariables.class);
+public class ShowVariables {
 
+    private static final int FIELD_COUNT = 2;
+    private static final ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
+    private static final FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
+    private static final EOFPacket eof = new EOFPacket();
 
-    public static void execute(OConnection c, String sql) {
-
-        String subSql = sql.substring(sql.indexOf("SELECT") + 6);
-        List<String> splitVar = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(subSql);
-        splitVar = convert(splitVar);
-        int FIELD_COUNT = splitVar.size();
-        ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
-        FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
-
+    static {
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;
-        for (int i1 = 0, splitVarSize = splitVar.size(); i1 < splitVarSize; i1++) {
-            String s = splitVar.get(i1);
-            fields[i] = PacketUtil.getField(s, Fields.FIELD_TYPE_VAR_STRING);
-            fields[i++].packetId = ++packetId;
-        }
+        fields[i] = PacketUtil.getField("variable", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        fields[i] = PacketUtil.getField("values", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
+        eof.packetId = ++packetId;
+    }
 
-
+    public static void response(OConnection c) {
         ByteBuffer buffer = c.allocate();
 
         // write header
@@ -76,54 +47,27 @@ public final class SelectVariables {
             buffer = field.write(buffer, c, true);
         }
 
-
-        EOFPacket eof = new EOFPacket();
-        eof.packetId = ++packetId;
         // write eof
         buffer = eof.write(buffer, c, true);
 
         // write rows
-        //byte packetId = eof.packetId;
+        byte packetId = eof.packetId;
 
-        RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-        for (int i1 = 0, splitVarSize = splitVar.size(); i1 < splitVarSize; i1++) {
-            String s = splitVar.get(i1);
-            String value = variables.get(s) == null ? "" : variables.get(s);
-            row.add(value.getBytes());
-
+        for (Map.Entry<String,String> name : variables.entrySet()) {
+            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+            row.add(StringUtil.encode(name.getKey(), c.getCharset()));
+            row.add(StringUtil.encode(name.getValue(), c.getCharset()));
+            row.packetId = ++packetId;
+            buffer = row.write(buffer, c, true);
         }
 
-        row.packetId = ++packetId;
-        buffer = row.write(buffer, c, true);
-
-
-        // write lastEof
+        // write last eof
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;
         buffer = lastEof.write(buffer, c, true);
-
-        // write buffer
+        // post write
         c.write(buffer);
     }
-
-    private static List<String> convert(List<String> in) {
-        List<String> out = new ArrayList<>();
-        for (String s : in) {
-            int asIndex = s.toUpperCase().indexOf(" AS ");
-            if (asIndex != -1) {
-                out.add(s.substring(asIndex + 4));
-            }
-        }
-        if (out.isEmpty()) {
-            return in;
-        } else {
-            return out;
-        }
-
-
-    }
-
-
     private static final Map<String, String> variables = new HashMap<String, String>();
 
     static {

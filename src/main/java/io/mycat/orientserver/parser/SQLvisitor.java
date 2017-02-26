@@ -376,7 +376,7 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
     @Override
     public void endVisit(MySqlShowVariantsStatement x) {
         super.endVisit(x);
-        ShowHandler.showvatiants(x);
+        ShowHandler.showvatiants(x, connection);
     }
 
     @Override

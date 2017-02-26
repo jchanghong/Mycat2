@@ -266,7 +266,7 @@ public class PostgreSQLBackendConnectionHandler extends BackendAsyncHandler {
 		if (commandComplete.isSelectComplete()) {
 			if (response == null) {
 				throw new RuntimeException(
-						"the select proess err ,the SelectResponse is empty");
+						"the select proess err ,the Select1Response is empty");
 			}
 			doProcessBusinessQuery(con, response, commandComplete);
 		} else {

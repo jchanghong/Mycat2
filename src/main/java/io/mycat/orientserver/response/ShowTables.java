@@ -14,6 +14,8 @@ import io.mycat.orientserver.util.SchemaUtil;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * show tables impl
@@ -79,6 +81,4 @@ public class ShowTables {
 
 
     }
-
-
 }
