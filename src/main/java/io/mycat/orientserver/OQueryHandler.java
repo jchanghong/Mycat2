@@ -23,17 +23,16 @@
  */
 package io.mycat.orientserver;
 
-import io.mycat.config.ErrorCode;
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
 import io.mycat.net.handler.FrontendQueryHandler;
-import io.mycat.net.mysql.OkPacket;
-import io.mycat.orientserver.handler.*;
-import io.mycat.orientserver.response.MorientResponse;
-import io.mycat.server.parser.ServerParse;
+import io.mycat.orientserver.parser.SQLvisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author mycat
+ * @author 服务器查询处理器
  */
 public class OQueryHandler implements FrontendQueryHandler {
     private static final Logger LOGGER = LoggerFactory
@@ -41,6 +40,7 @@ public class OQueryHandler implements FrontendQueryHandler {
 
     private final OConnection source;
     protected Boolean readOnly;
+    private MySqlASTVisitor mySqlASTVisitor;
 
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
@@ -48,6 +48,7 @@ public class OQueryHandler implements FrontendQueryHandler {
 
     public OQueryHandler(OConnection source) {
         this.source = source;
+        mySqlASTVisitor = new SQLvisitor(source);
     }
 
     @Override
@@ -57,87 +58,90 @@ public class OQueryHandler implements FrontendQueryHandler {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(new StringBuilder().append(c).append(sql).toString());
         }
+        MySqlStatementParser parser = new MySqlStatementParser(sql);
+        SQLStatement mySqlStatement = parser.parseStatement();
+        mySqlStatement.accept(mySqlASTVisitor);
         //
-        int rs = ServerParse.parse(sql);
-        int sqlType = rs & 0xff;
-
-        switch (sqlType) {
-            //explain sql
-            case ServerParse.EXPLAIN:
-                ExplainHandler.handle(sql, c, rs >>> 8);
-                break;
-            //explain2 datanode=? sql=?
-            case ServerParse.EXPLAIN2:
-                Explain2Handler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.SET:
-                SetHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.SHOW:
-                ShowHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.SELECT:
-                SelectHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.START:
-                StartHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.BEGIN:
-                BeginHandler.handle(sql, c);
-                break;
-            //不支持oracle的savepoint事务回退点
-            case ServerParse.SAVEPOINT:
-                SavepointHandler.handle(sql, c);
-                break;
-            case ServerParse.KILL:
-                KillHandler.handle(sql, rs >>> 8, c);
-                break;
-            //不支持KILL_Query
-            case ServerParse.KILL_QUERY:
-                LOGGER.warn(new StringBuilder().append("Unsupported command:").append(sql).toString());
-                c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsupported command");
-                break;
-            case ServerParse.USE:
-                UseHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.COMMIT:
-                c.commit();
-                break;
-            case ServerParse.ROLLBACK:
-                c.rollback();
-                break;
-            case ServerParse.HELP:
-                LOGGER.warn(new StringBuilder().append("Unsupported command:").append(sql).toString());
-                c.writeErrMessage(ErrorCode.ER_SYNTAX_ERROR, "Unsupported command");
-                break;
-            case ServerParse.MYSQL_CMD_COMMENT:
-                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
-                break;
-            case ServerParse.MYSQL_COMMENT:
-                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
-                break;
-            case ServerParse.LOAD_DATA_INFILE_SQL:
-                c.loadDataInfileStart(sql);
-                break;
-            case ServerParse.MIGRATE:
-                MigrateHandler.handle(sql, c);
-                break;
-            case ServerParse.LOCK:
-                c.lockTable(sql);
-                break;
-            case ServerParse.UNLOCK:
-                c.unLockTable(sql);
-                break;
-            default:
-                if (readOnly) {
-                    LOGGER.warn(new StringBuilder().append("User readonly:").append(sql).toString());
-                    c.writeErrMessage(ErrorCode.ER_USER_READ_ONLY, "User readonly");
-                    break;
-                }
-//                c.execute(sql, rs & 0xff);
-                MorientResponse.response(c,sql);
-
-        }
+//        int rs = ServerParse.parse(sql);
+//        int sqlType = rs & 0xff;
+//
+//        switch (sqlType) {
+//            //explain sql
+//            case ServerParse.EXPLAIN:
+//                ExplainHandler.handle(sql, c, rs >>> 8);
+//                break;
+//            //explain2 datanode=? sql=?
+//            case ServerParse.EXPLAIN2:
+//                Explain2Handler.handle(sql, c, rs >>> 8);
+//                break;
+//            case ServerParse.SET:
+//                SetHandler.handle(sql, c, rs >>> 8);
+//                break;
+//            case ServerParse.SHOW:
+//                ShowHandler.handle(sql, c, rs >>> 8);
+//                break;
+//            case ServerParse.SELECT:
+//                SelectHandler.handle(sql, c, rs >>> 8);
+//                break;
+//            case ServerParse.START:
+//                StartHandler.handle(sql, c, rs >>> 8);
+//                break;
+//            case ServerParse.BEGIN:
+//                BeginHandler.handle(sql, c);
+//                break;
+//            //不支持oracle的savepoint事务回退点
+//            case ServerParse.SAVEPOINT:
+//                SavepointHandler.handle(sql, c);
+//                break;
+//            case ServerParse.KILL:
+//                KillHandler.handle(sql, rs >>> 8, c);
+//                break;
+//            //不支持KILL_Query
+//            case ServerParse.KILL_QUERY:
+//                LOGGER.warn(new StringBuilder().append("Unsupported command:").append(sql).toString());
+//                c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsupported command");
+//                break;
+//            case ServerParse.USE:
+//                UseHandler.handle(sql, c, rs >>> 8);
+//                break;
+//            case ServerParse.COMMIT:
+//                c.commit();
+//                break;
+//            case ServerParse.ROLLBACK:
+//                c.rollback();
+//                break;
+//            case ServerParse.HELP:
+//                LOGGER.warn(new StringBuilder().append("Unsupported command:").append(sql).toString());
+//                c.writeErrMessage(ErrorCode.ER_SYNTAX_ERROR, "Unsupported command");
+//                break;
+//            case ServerParse.MYSQL_CMD_COMMENT:
+//                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+//                break;
+//            case ServerParse.MYSQL_COMMENT:
+//                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+//                break;
+//            case ServerParse.LOAD_DATA_INFILE_SQL:
+//                c.loadDataInfileStart(sql);
+//                break;
+//            case ServerParse.MIGRATE:
+//                MigrateHandler.handle(sql, c);
+//                break;
+//            case ServerParse.LOCK:
+//                c.lockTable(sql);
+//                break;
+//            case ServerParse.UNLOCK:
+//                c.unLockTable(sql);
+//                break;
+//            default:
+//                if (readOnly) {
+//                    LOGGER.warn(new StringBuilder().append("User readonly:").append(sql).toString());
+//                    c.writeErrMessage(ErrorCode.ER_USER_READ_ONLY, "User readonly");
+//                    break;
+//                }
+////                c.execute(sql, rs & 0xff);
+//                MorientResponse.response(c,sql);
+//
+//        }
     }
 
 }

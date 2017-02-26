@@ -38,7 +38,8 @@ import java.nio.ByteBuffer;
  * @author mycat
  */
 public class SelectVersion {
-
+    /**服务器版本**/
+    public static byte[] SERVER_VERSION = "jsql 1.0".getBytes();
     private static final int FIELD_COUNT = 1;
     private static final ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
     private static final FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
@@ -62,7 +63,7 @@ public class SelectVersion {
         buffer = eof.write(buffer, c, true);
         byte packetId = eof.packetId;
         RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-        row.add(Versions.SERVER_VERSION);
+        row.add(SERVER_VERSION);
         row.packetId = ++packetId;
         buffer = row.write(buffer, c, true);
         EOFPacket lastEof = new EOFPacket();

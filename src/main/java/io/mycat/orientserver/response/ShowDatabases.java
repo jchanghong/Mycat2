@@ -36,7 +36,7 @@ import io.mycat.util.StringUtil;
 import java.nio.ByteBuffer;
 
 /**
- * @author mycat
+ * @author show database语句
  */
 public class ShowDatabases {
 

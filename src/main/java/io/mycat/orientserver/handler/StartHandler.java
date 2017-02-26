@@ -24,19 +24,17 @@
 package io.mycat.orientserver.handler;
 
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.parser.ServerParseStart;
 import io.mycat.orientserver.response.MorientResponse;
 
 /**
- * @author mycat
+ * @author 完成
  */
 public final class StartHandler {
     private static final byte[] AC_OFF = new byte[]{7, 0, 0, 1, 0, 0, 0, 0,
             0, 0, 0};
 
     public static void handle(String stmt, OConnection c, int offset) {
-        switch (ServerParseStart.parse(stmt, offset)) {
-            case ServerParseStart.TRANSACTION:
+
                 if (c.isAutocommit()) {
                     c.setAutocommit(false);
                     c.write(c.writeToBuffer(AC_OFF, c.allocate()));
@@ -44,10 +42,7 @@ public final class StartHandler {
 //                    c.getSession2().commit();
                     c.writeok();
                 }
-                break;
-            default:
-                MorientResponse.response(c,stmt);
-        }
+
     }
 
 }

@@ -26,6 +26,7 @@ package io.mycat.orientserver.response;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
@@ -47,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author mycat
+ * @author 默认的响应
  */
 public class MorientResponse {
 
@@ -86,18 +87,16 @@ public class MorientResponse {
         eof.packetId = ++packetId;
     }
 
-    public static void response(OConnection c, String sql) {
-        MySqlStatementParser parser = new MySqlStatementParser(sql);
-        SQLStatement sqlStatement = parser.parseStatementList().get(0);
-        if (sqlStatement instanceof SQLCreateDatabaseStatement) {
-            handercreatedb(sqlStatement, c);
+    public static void response(OConnection c, MySqlStatement sql) {
+        if (sql instanceof SQLCreateDatabaseStatement) {
+            handercreatedb(sql, c);
             return;
         }
         if (DBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
-        if (sqlStatement instanceof MySqlCreateTableStatement) {
+        if (sql instanceof MySqlCreateTableStatement) {
 
             boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sqlStatement);
             if (b) {
@@ -110,7 +109,7 @@ public class MorientResponse {
         }
 
         try {
-            DBadapter.getInstance().exesql(sql);
+            DBadapter.getInstance().exesql(sql.toString());
             c.writeok();
         } catch (OrientException e) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "执行语句错误");
@@ -119,14 +118,12 @@ public class MorientResponse {
         }
     }
 
-    public static void responseselect(OConnection c, String stmt) {
+    public static void responseselect(OConnection c, MySqlStatement stmt) {
         if (DBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
-        MySqlStatementParser parser = new MySqlStatementParser(stmt);
-        SQLStatement sqlStatement = parser.parseStatementList().get(0);
-        if (sqlStatement instanceof MySqlCreateTableStatement) {
+        if (stmt instanceof MySqlCreateTableStatement) {
 
          boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sqlStatement);
             if (b) {
@@ -137,8 +134,8 @@ public class MorientResponse {
             }
             return;
         }
-        if (sqlStatement instanceof SQLCreateDatabaseStatement) {
-            handercreatedb(sqlStatement, c);
+        if (stmt instanceof SQLCreateDatabaseStatement) {
+            handercreatedb(stmt, c);
             return;
         }
         List<Map<String, String>> data = null;
