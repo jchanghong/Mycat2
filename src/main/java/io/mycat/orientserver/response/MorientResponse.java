@@ -26,8 +26,6 @@ package io.mycat.orientserver.response;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlStatement;
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
@@ -87,7 +85,13 @@ public class MorientResponse {
         eof.packetId = ++packetId;
     }
 
-    public static void response(OConnection c, MySqlStatement sql) {
+    /**
+     * Response.没有还回结果的语句
+     *
+     * @param c   the c
+     * @param sql the sql
+     */
+    public static void response(OConnection c, SQLStatement sql) {
         if (sql instanceof SQLCreateDatabaseStatement) {
             handercreatedb(sql, c);
             return;
@@ -98,7 +102,7 @@ public class MorientResponse {
         }
         if (sql instanceof MySqlCreateTableStatement) {
 
-            boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sqlStatement);
+            boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sql);
             if (b) {
                 c.writeok();
             }
@@ -109,7 +113,8 @@ public class MorientResponse {
         }
 
         try {
-            DBadapter.getInstance().exesql(sql.toString());
+          String re=  DBadapter.getInstance().exesql(sql.toString());
+//          c.write(re.getBytes());
             c.writeok();
         } catch (OrientException e) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "执行语句错误");
@@ -118,35 +123,20 @@ public class MorientResponse {
         }
     }
 
-    public static void responseselect(OConnection c, MySqlStatement stmt) {
+    public static void responseselect(OConnection c, SQLStatement stmt) {
         if (DBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
-        if (stmt instanceof MySqlCreateTableStatement) {
-
-         boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sqlStatement);
-            if (b) {
-                c.writeok();
-            }
-            else {
-                c.writeErrMessage(ErrorCode.ER_BAD_TABLE_ERROR,"错误");
-            }
-            return;
-        }
-        if (stmt instanceof SQLCreateDatabaseStatement) {
-            handercreatedb(stmt, c);
-            return;
-        }
         List<Map<String, String>> data = null;
         try {
-         data=  DBadapter.getInstance().exequery(stmt);
+         data=  DBadapter.getInstance().exequery(stmt.toString());
         } catch (OrientException e) {
             e.printStackTrace();
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
         }
-        inithead(data,stmt);
+        inithead(data,stmt.toString());
         ByteBuffer buffer = c.allocate();
 
         // write header

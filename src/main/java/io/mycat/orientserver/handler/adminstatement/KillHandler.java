@@ -21,7 +21,7 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.adminstatement;
 
 import io.mycat.MycatServer;
 import io.mycat.config.ErrorCode;

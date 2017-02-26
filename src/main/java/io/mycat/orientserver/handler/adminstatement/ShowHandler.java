@@ -21,8 +21,11 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.adminstatement;
 
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import io.mycat.config.ErrorCode;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.parser.ServerParseShow;
 import io.mycat.orientserver.response.*;
@@ -56,7 +59,15 @@ public final class ShowHandler {
                 ShowMyCATCluster.response(c);
                 break;
             default:
-                MorientResponse.responseselect(c,stmt);
+                SQLStatement mySqlStatement = null;
+                try {
+                    MySqlStatementParser parser = new MySqlStatementParser(stmt);
+                    mySqlStatement = parser.parseStatement();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    c.writeErrMessage(ErrorCode.ER_STMT_HAS_NO_OPEN_CURSOR,e.getMessage());
+                }
+                MorientResponse.responseselect(c,mySqlStatement);
         }
     }
 

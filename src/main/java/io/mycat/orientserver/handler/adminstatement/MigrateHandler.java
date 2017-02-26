@@ -21,7 +21,7 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.adminstatement;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.CharMatcher;

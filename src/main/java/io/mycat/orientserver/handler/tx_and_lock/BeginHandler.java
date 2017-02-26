@@ -21,28 +21,24 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.tx_and_lock;
 
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.response.MorientResponse;
 
 /**
- * @author 完成
+ * @author mycat
  */
-public final class StartHandler {
+public final class BeginHandler {
     private static final byte[] AC_OFF = new byte[]{7, 0, 0, 1, 0, 0, 0, 0,
             0, 0, 0};
 
-    public static void handle(String stmt, OConnection c, int offset) {
-
-                if (c.isAutocommit()) {
-                    c.setAutocommit(false);
-                    c.write(c.writeToBuffer(AC_OFF, c.allocate()));
-                } else {
-//                    c.getSession2().commit();
-                    c.writeok();
-                }
-
+    public static void handle(String stmt, OConnection c) {
+        if (c.isAutocommit()) {
+            c.setAutocommit(false);
+            c.write(c.writeToBuffer(AC_OFF, c.allocate()));
+        } else {
+          c.writeok();
+        }
     }
 
 }

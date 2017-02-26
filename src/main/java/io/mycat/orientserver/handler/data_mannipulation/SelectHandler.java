@@ -21,8 +21,11 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.data_mannipulation;
 
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import io.mycat.config.ErrorCode;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.parser.ServerParseSelect;
 import io.mycat.orientserver.response.*;
@@ -104,7 +107,15 @@ public final class SelectHandler {
                 break;
             default:
 //                c.execute(stmt, ServerParse.SELECT);
-                MorientResponse.responseselect(c,stmt);
+                SQLStatement mySqlStatement = null;
+                try {
+                    MySqlStatementParser parser = new MySqlStatementParser(stmt);
+                    mySqlStatement = parser.parseStatement();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    c.writeErrMessage(ErrorCode.ER_SELECT_REDUCED, e.getMessage());
+                }
+                MorientResponse.responseselect(c,mySqlStatement);
         }
     }
 

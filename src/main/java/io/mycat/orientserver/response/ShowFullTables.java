@@ -54,7 +54,7 @@ public class ShowFullTables {
             String node = schema.getDataNode();
             if (!Strings.isNullOrEmpty(node)) {
 //                c.execute(stmt, ServerParse.SHOW);
-                MorientResponse.response(c,stmt);
+//                MorientResponse.response(c,stmt);
                 return;
             }
         } else {

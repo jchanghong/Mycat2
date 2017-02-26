@@ -21,7 +21,7 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.tx_and_lock;
 
 import io.mycat.config.ErrorCode;
 import io.mycat.orientserver.OConnection;

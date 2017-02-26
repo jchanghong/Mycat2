@@ -21,7 +21,7 @@
  * https://code.google.com/p/opencloudb/.
  *
  */
-package io.mycat.orientserver.handler;
+package io.mycat.orientserver.handler.preparestatement;
 
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
