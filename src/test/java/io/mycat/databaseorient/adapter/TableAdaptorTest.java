@@ -12,6 +12,11 @@ import java.util.List;
  * Created by jiang on 2016/12/17 0017.
  */
 public class TableAdaptorTest {
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void gettablefiled() throws Exception {
 
@@ -20,28 +25,53 @@ public class TableAdaptorTest {
         System.out.println(TableAdaptor.getInstance().hashmaptable2fild.get("petshop1aaata"));
     }
 
+    /**
+     * Inittablefilrs.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void inittablefilrs() throws Exception {
 
 //        TableAdaptor.getInstance().inittablefilrs(new File("database/petshop1/aaata.sql"));
     }
 
+    /**
+     * Gets instance.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getInstance() throws Exception {
 
     }
 
+    /**
+     * Droptable.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void droptable() throws Exception {
 
         TableAdaptor.getInstance().droptable("petshop1", "aaata");
     }
 
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getfilepath() throws Exception {
 
     }
 
+    /**
+     * Createtable.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void createtable() throws Exception {
 

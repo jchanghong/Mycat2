@@ -40,7 +40,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.NetworkChannel;
 
 /**
- * @author changhong.orientdb前段，9999端口连接
+ * @author changhong.基于orientdb的服务器，9999端口连接
  */
 public class OConnection extends FrontendConnection {
     private static final Logger LOGGER = LoggerFactory

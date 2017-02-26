@@ -18,11 +18,25 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by jiang on 2016/12/17 0017.
  */
 public class TableAdaptor {
+    /**
+     * The constant TABLEDOT.
+     */
     public static String TABLEDOT = ".sql";
     private static TableAdaptor insta = new TableAdaptor();
+    /**
+     * The Hash mapdb 2 table.
+     */
     public ConcurrentHashMap<String, Set<String>> hashMapdb2table = new ConcurrentHashMap<>();
+    /**
+     * The Hashmaptable 2 fild.
+     */
     public ConcurrentHashMap<String, HashMap<String, String>> hashmaptable2fild = new ConcurrentHashMap<>();
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static TableAdaptor getInstance() {
         return insta;
     }
@@ -32,6 +46,13 @@ public class TableAdaptor {
         dbs.stream().forEach(a -> hashMapdb2table.put(a, getalltable(a)));
     }
 
+    /**
+     * Droptable boolean.
+     *
+     * @param dbname the dbname
+     * @param table  the table
+     * @return the boolean
+     */
     public boolean droptable(String dbname,String table) {
         ODatabaseDocumentTx db = DBadapter.getInstance().hashMap.get(dbname).acquire();
         db.activateOnCurrentThread();
@@ -50,6 +71,13 @@ public class TableAdaptor {
         return true;
     }
 
+    /**
+     * Createtable boolean.
+     *
+     * @param dbname               the dbname
+     * @param createTableStatement the create table statement
+     * @return the boolean
+     */
     public boolean createtable(String dbname, MySqlCreateTableStatement createTableStatement) {
 //        System.out.println(createTableStatement.toString());
         String table = createTableStatement.getTableSource().toString();
@@ -119,6 +147,14 @@ public class TableAdaptor {
         }
         return strings;
     }
+
+    /**
+     * Gets .
+     *
+     * @param dbname    the dbname
+     * @param tablename the tablename
+     * @return the
+     */
     public HashMap<String,String> gettablefiled(String  dbname,String tablename) {
         HashMap hashMap = hashmaptable2fild.get(dbname + tablename);
         if (hashMap != null) {
@@ -152,6 +188,14 @@ public class TableAdaptor {
         hashmaptable2fild.put(dbname+table, hashMap);
         return hashMap;
     }
+
+    /**
+     * Gets .
+     *
+     * @param dbname    the dbname
+     * @param tablename the tablename
+     * @return the
+     */
     public String getfilepath(String dbname, String tablename) {
         StringBuilder builder = new StringBuilder();
         builder.append(DBadapter.getInstance().getfilepath(dbname)).append("/").append(tablename).append(TABLEDOT);

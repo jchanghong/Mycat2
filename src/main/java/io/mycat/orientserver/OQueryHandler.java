@@ -66,13 +66,13 @@ public class OQueryHandler implements FrontendQueryHandler {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(new StringBuilder().append(c).append(sql).toString());
         }
-        SQLStatement mySqlStatement = null;
+        SQLStatement mySqlStatement;
         try {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
             mySqlStatement = parser.parseStatement();
-        } catch (Exception e) {
-            e.printStackTrace();
-            c.writeErrMessage(ErrorCode.ER_SELECT_REDUCED, e.getMessage());
+        } catch (Exception e) {//如果不是合法的mysql语句，就报错
+//            e.printStackTrace();
+            c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, e.getMessage());
             return;
         }
         //
@@ -153,8 +153,7 @@ public class OQueryHandler implements FrontendQueryHandler {
                     break;
                 }
 
-//                c.execute(sql, rs & 0xff);
-                mySqlStatement.accept(mySqlASTVisitor);
+                mySqlStatement.accept(mySqlASTVisitor);//其他语句就直接传，必须是更改数据的语句。所以上面有判断read only
 
         }
     }

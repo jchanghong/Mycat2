@@ -12,22 +12,49 @@ import java.util.List;
  * Created by jiang on 2016/12/17 0017.
  */
 public class MSQLutil {
+    /**
+     * Gets .
+     *
+     * @param sqlStatement the sql statement
+     * @return the
+     */
     public static String gettablename(SQLSelectStatement sqlStatement) {
         MySqlSelectQueryBlock select = (MySqlSelectQueryBlock) sqlStatement.getSelect().getQuery();
         return select.getFrom().toString();
     }
+
+    /**
+     * Gets .
+     *
+     * @param sqlStatement the sql statement
+     * @return the
+     */
     public static List<String> gettablenamefileds(SQLSelectStatement sqlStatement) {
         MySqlSelectQueryBlock select = (MySqlSelectQueryBlock) sqlStatement.getSelect().getQuery();
         List<String> list = new ArrayList<>();
         select.getSelectList().stream().forEach(a->list.add(a.getExpr().toString()));
         return list;
     }
- public static String gettablename(String sqlStatement) {
+
+    /**
+     * Gets .
+     *
+     * @param sqlStatement the sql statement
+     * @return the
+     */
+    public static String gettablename(String sqlStatement) {
      SQLSelectStatement sqlSelectStatement = null;
      MySqlStatementParser parser = new MySqlStatementParser(sqlStatement);
      sqlSelectStatement = (SQLSelectStatement) parser.parseSelect();
      return gettablename(sqlSelectStatement);
     }
+
+    /**
+     * Gets .
+     *
+     * @param sqlStatement the sql statement
+     * @return the
+     */
     public static List<String> gettablenamefileds(String sqlStatement) {
         SQLSelectStatement sqlSelectStatement = null;
         MySqlStatementParser parser = new MySqlStatementParser(sqlStatement);
@@ -35,9 +62,21 @@ public class MSQLutil {
         return gettablenamefileds(sqlSelectStatement);
     }
 
+    /**
+     * Gets .
+     *
+     * @param statement the statement
+     * @return the
+     */
     public static String getdbname(SQLCreateDatabaseStatement statement) {
         return statement.getName().getSimpleName();
     }
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
 
         System.out.println(gettablenamefileds("select *,rff from dd"));

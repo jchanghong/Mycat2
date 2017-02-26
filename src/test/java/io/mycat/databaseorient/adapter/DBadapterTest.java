@@ -15,11 +15,21 @@ import static org.junit.Assert.assertEquals;
  * Created by jiang on 2016/12/17 0017.
  */
 public class DBadapterTest {
+    /**
+     * Exesql.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void exesql() throws Exception {
 
     }
 
+    /**
+     * Exequery.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void exequery() throws Exception {
 
@@ -29,18 +39,33 @@ public class DBadapterTest {
         System.out.println(list.size());
     }
 
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getfilepath() throws Exception {
 
         System.out.println(DBadapter.getInstance().getfilepath("db"));
     }
 
+    /**
+     * Deletedb.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void deletedb() throws Exception {
 
         DBadapter.getInstance().deletedb("db");
     }
 
+    /**
+     * Createdb.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void createdb() throws Exception {
 
@@ -53,6 +78,11 @@ public class DBadapterTest {
         }
     }
 
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getalldbnames() throws Exception {
 
@@ -61,17 +91,32 @@ public class DBadapterTest {
         System.out.println(list.get(0).toString());
     }
 
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getmemoryurl() throws Exception {
 
         assertEquals("memory:database/hello",DBadapter.getInstance().getmemoryurl("hello"));
     }
 
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getlccalurl() throws Exception {
 
     }
 
+    /**
+     * Testorint.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void testorint() throws Exception {
         OPartitionedDatabasePool pool = new OPartitionedDatabasePool("plocal:database/petshop3", "admin", "admin");
@@ -87,22 +132,42 @@ public class DBadapterTest {
 
     }
 
+    /**
+     * Gets instance.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getInstance() throws Exception {
 
     }
 
+    /**
+     * Gets .
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getdbnamefromurl() throws Exception {
 
         assertEquals("hello",DBadapter.getInstance().getdbnamefromurl("local:data/hello"));
     }
 
+    /**
+     * Sets up.
+     *
+     * @throws Exception the exception
+     */
     @Before
     public void setUp() throws Exception {
 
     }
 
+    /**
+     * Tear down.
+     *
+     * @throws Exception the exception
+     */
     @After
     public void tearDown() throws Exception {
 
