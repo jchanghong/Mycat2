@@ -41,8 +41,6 @@ public class ShowTables {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!!");
             return;
         }
-        String showSchemal = SchemaUtil.parseShowTableSchema(stmt);
-        String cSchema = showSchemal == null ? c.getSchema() : showSchemal;
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;

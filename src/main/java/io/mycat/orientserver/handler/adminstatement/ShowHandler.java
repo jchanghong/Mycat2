@@ -23,52 +23,144 @@
  */
 package io.mycat.orientserver.handler.adminstatement;
 
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import io.mycat.config.ErrorCode;
+import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.parser.ServerParseShow;
 import io.mycat.orientserver.response.*;
-import io.mycat.util.StringUtil;
 
 /**
- * @author mycat
+ * @author changhong show开头的语句
  */
 public final class ShowHandler {
 
-    public static void handle(String stmt, OConnection c, int offset) {
-
-        // 排除 “ ` ” 符号
-        stmt = StringUtil.replaceChars(stmt, "`", null);
-
-        int type = ServerParseShow.parse(stmt, offset);
-        switch (type) {
-            case ServerParseShow.DATABASES:
-                ShowDatabases.response(c);
-                break;
-            case ServerParseShow.TABLES:
-                ShowTables.response(c, stmt, type);
-                break;
-            case ServerParseShow.FULLTABLES:
-                ShowFullTables.response(c, stmt, type);
-                break;
-            case ServerParseShow.MYCAT_STATUS:
-                ShowMyCatStatus.response(c);
-                break;
-            case ServerParseShow.MYCAT_CLUSTER:
-                ShowMyCATCluster.response(c);
-                break;
-            default:
-                SQLStatement mySqlStatement = null;
-                try {
-                    MySqlStatementParser parser = new MySqlStatementParser(stmt);
-                    mySqlStatement = parser.parseStatement();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    c.writeErrMessage(ErrorCode.ER_STMT_HAS_NO_OPEN_CURSOR,e.getMessage());
-                }
-                MorientResponse.responseselect(c,mySqlStatement);
-        }
+    public static void showcolumn(MySqlShowColumnsStatement x) {
     }
 
+    public static void showdatabase(MySqlShowDatabasesStatement x, OConnection c) {
+        ShowDatabases.response(c);
+    }
+
+    public static void showwarnings(MySqlShowWarningsStatement x) {
+    }
+
+    public static void showstatus(MySqlShowStatusStatement x) {
+    }
+
+    public static void showauthors(MySqlShowAuthorsStatement x) {
+    }
+
+    public static void showbinarylogs(MySqlShowBinaryLogsStatement x) {
+    }
+
+    public static void showmasterlogs(MySqlShowMasterLogsStatement x) {
+    }
+
+    public static void showcollation(MySqlShowCollationStatement x) {
+    }
+
+    public static void showbinlogevent(MySqlShowBinLogEventsStatement x) {
+    }
+
+    public static void showcharater(MySqlShowCharacterSetStatement x) {
+    }
+
+    public static void showcontributors(MySqlShowContributorsStatement x) {
+    }
+
+    public static void showcreatedatabase(MySqlShowCreateDatabaseStatement x) {
+    }
+
+    public static void showcreateevent(MySqlShowCreateEventStatement x) {
+    }
+
+    public static void showcreatefunction(MySqlShowCreateFunctionStatement x) {
+    }
+
+    public static void showcreateproccedure(MySqlShowCreateProcedureStatement x) {
+    }
+
+    public static void showcreatetable(MySqlShowCreateTableStatement x) {
+    }
+
+    public static void showcreatetrigger(MySqlShowCreateTriggerStatement x) {
+    }
+
+    public static void showcreateview(MySqlShowCreateViewStatement x) {
+    }
+
+    public static void showengine(MySqlShowEngineStatement x) {
+    }
+
+    public static void showengines(MySqlShowEnginesStatement x) {
+    }
+
+    public static void showerrors(MySqlShowErrorsStatement x) {
+    }
+
+    public static void showevents(MySqlShowEventsStatement x) {
+    }
+
+    public static void showfunctioncode(MySqlShowFunctionCodeStatement x) {
+    }
+
+    public static void showfunctionstatus(MySqlShowFunctionStatusStatement x) {
+    }
+
+    public static void showgrants(MySqlShowGrantsStatement x) {
+    }
+
+    public static void showindexs(MySqlShowIndexesStatement x) {
+    }
+
+    public static void showkeys(MySqlShowKeysStatement x) {
+    }
+
+    public static void showmasterstatus(MySqlShowMasterStatusStatement x) {
+    }
+
+    public static void showopentable(MySqlShowOpenTablesStatement x) {
+    }
+
+    public static void showplugins(MySqlShowPluginsStatement x) {
+    }
+
+    public static void showprivileges(MySqlShowPrivilegesStatement x) {
+    }
+
+    public static void showprovedureode(MySqlShowProcedureCodeStatement x) {
+    }
+
+    public static void showproedurestatus(MySqlShowProcedureStatusStatement x) {
+    }
+
+    public static void showprocesslist(MySqlShowProcessListStatement x) {
+    }
+
+    public static void showprofile(MySqlShowProfileStatement x) {
+    }
+
+    public static void showprofiles(MySqlShowProfilesStatement x) {
+    }
+
+    public static void showrelaylog(MySqlShowRelayLogEventsStatement x) {
+    }
+
+    public static void showslavehosts(MySqlShowSlaveHostsStatement x) {
+    }
+
+    public static void showslavestatus(MySqlShowSlaveStatusStatement x) {
+    }
+
+    public static void showtablestatus(MySqlShowTableStatusStatement x) {
+    }
+
+    public static void showtriggers(MySqlShowTriggersStatement x) {
+    }
+
+    public static void showvatiants(MySqlShowVariantsStatement x) {
+    }
+
+    public static void showtables(SQLShowTablesStatement x, OConnection connection) {
+        ShowTables.response(connection, x.toString(), 0);
+    }
 }

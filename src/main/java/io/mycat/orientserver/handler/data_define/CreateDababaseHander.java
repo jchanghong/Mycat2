@@ -1,4 +1,4 @@
-package io.mycat.orientserver.handler.datadefine;
+package io.mycat.orientserver.handler.data_define;
 
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
 import io.mycat.config.ErrorCode;

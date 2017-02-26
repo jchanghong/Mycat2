@@ -35,7 +35,7 @@ import io.mycat.orientserver.handler.tx_and_lock.BeginHandler;
 import io.mycat.orientserver.handler.tx_and_lock.SavepointHandler;
 import io.mycat.orientserver.handler.tx_and_lock.StartHandler;
 import io.mycat.orientserver.parser.SQLvisitor;
-import io.mycat.orientserver.parser.ServerParse;
+import io.mycat.orientserver.response.ShowTables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,10 +58,8 @@ public class OQueryHandler implements FrontendQueryHandler {
         this.source = source;
         mySqlASTVisitor = new SQLvisitor(source);
     }
-
     @Override
     public void query(String sql) {
-
         OConnection c = this.source;
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(new StringBuilder().append(c).append(sql).toString());
@@ -75,87 +73,13 @@ public class OQueryHandler implements FrontendQueryHandler {
             c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, e.getMessage());
             return;
         }
-        //
-        int rs = ServerParse.parse(sql);
-        int sqlType = rs & 0xff;
-
-        switch (sqlType) {
-            //explain sql
-            case ServerParse.EXPLAIN:
-                ExplainHandler.handle(sql, c, rs >>> 8);
-                break;
-            //explain2 datanode=? sql=?
-            case ServerParse.EXPLAIN2:
-                Explain2Handler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.SET:
-                SetHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.SHOW:
-                ShowHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.SELECT:
-                SelectHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.START:
-                StartHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.BEGIN:
-                BeginHandler.handle(sql, c);
-                break;
-            //不支持oracle的savepoint事务回退点
-            case ServerParse.SAVEPOINT:
-                SavepointHandler.handle(sql, c);
-                break;
-            case ServerParse.KILL:
-                KillHandler.handle(sql, rs >>> 8, c);
-                break;
-            //不支持KILL_Query
-            case ServerParse.KILL_QUERY:
-                LOGGER.warn(new StringBuilder().append("Unsupported command:").append(sql).toString());
-                c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsupported command");
-                break;
-            case ServerParse.USE:
-                UseHandler.handle(sql, c, rs >>> 8);
-                break;
-            case ServerParse.COMMIT:
-                c.commit();
-                break;
-            case ServerParse.ROLLBACK:
-                c.rollback();
-                break;
-            case ServerParse.HELP:
-                LOGGER.warn(new StringBuilder().append("Unsupported command:").append(sql).toString());
-                c.writeErrMessage(ErrorCode.ER_SYNTAX_ERROR, "Unsupported command");
-                break;
-            case ServerParse.MYSQL_CMD_COMMENT:
-                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
-                break;
-            case ServerParse.MYSQL_COMMENT:
-                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
-                break;
-            case ServerParse.LOAD_DATA_INFILE_SQL:
-                c.loadDataInfileStart(sql);
-                break;
-            case ServerParse.MIGRATE:
-                MigrateHandler.handle(sql, c);
-                break;
-            case ServerParse.LOCK:
-                c.lockTable(sql);
-                break;
-            case ServerParse.UNLOCK:
-                c.unLockTable(sql);
-                break;
-            default:
-                if (readOnly) {
-                    LOGGER.warn(new StringBuilder().append("User readonly:").append(sql).toString());
-                    c.writeErrMessage(ErrorCode.ER_USER_READ_ONLY, "User readonly");
-                    break;
-                }
-
-                mySqlStatement.accept(mySqlASTVisitor);//其他语句就直接传，必须是更改数据的语句。所以上面有判断read only
-
+        mySqlStatement.accept(mySqlASTVisitor);
+        //对show tables druid貌似有bug，，，，，所以自己写
+        String[] strings = sql.split("\\s+");
+        if (strings[0].equalsIgnoreCase("show") && strings[1].equalsIgnoreCase("tables"))
+        {
+            ShowTables.response(c, sql, 1);
+        }
         }
     }
 
-}

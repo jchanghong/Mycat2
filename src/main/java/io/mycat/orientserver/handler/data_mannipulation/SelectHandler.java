@@ -23,100 +23,16 @@
  */
 package io.mycat.orientserver.handler.data_mannipulation;
 
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import io.mycat.config.ErrorCode;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.parser.ServerParseSelect;
-import io.mycat.orientserver.response.*;
-import io.mycat.route.parser.util.ParseUtil;
+import io.mycat.orientserver.handler.DefaultHander;
 
 /**
  * @author mycat
  */
 public final class SelectHandler {
 
-    public static void handle(String stmt, OConnection c, int offs) {
-        int offset = offs;
-        switch (ServerParseSelect.parse(stmt, offs)) {
-            case ServerParseSelect.VERSION_COMMENT:
-                SelectVersionComment.response(c);
-                break;
-            case ServerParseSelect.DATABASE:
-                SelectDatabase.response(c);
-                break;
-            case ServerParseSelect.USER:
-                SelectUser.response(c);
-                break;
-            case ServerParseSelect.VERSION:
-                SelectVersion.response(c);
-                break;
-            case ServerParseSelect.SESSION_INCREMENT:
-                SessionIncrement.response(c);
-                break;
-            case ServerParseSelect.SESSION_ISOLATION:
-                SessionIsolation.response(c);
-                break;
-            case ServerParseSelect.LAST_INSERT_ID:
-                // offset = ParseUtil.move(stmt, 0, "select".length());
-                loop:
-                for (int l = stmt.length(); offset < l; ++offset) {
-                    switch (stmt.charAt(offset)) {
-                        case ' ':
-                            continue;
-                        case '/':
-                        case '#':
-                            offset = ParseUtil.comment(stmt, offset);
-                            continue;
-                        case 'L':
-                        case 'l':
-                            break loop;
-                    }
-                }
-                offset = ServerParseSelect.indexAfterLastInsertIdFunc(stmt, offset);
-                offset = ServerParseSelect.skipAs(stmt, offset);
-                SelectLastInsertId.response(c, stmt, offset);
-                break;
-            case ServerParseSelect.IDENTITY:
-                // offset = ParseUtil.move(stmt, 0, "select".length());
-                loop:
-                for (int l = stmt.length(); offset < l; ++offset) {
-                    switch (stmt.charAt(offset)) {
-                        case ' ':
-                            continue;
-                        case '/':
-                        case '#':
-                            offset = ParseUtil.comment(stmt, offset);
-                            continue;
-                        case '@':
-                            break loop;
-                    }
-                }
-                int indexOfAtAt = offset;
-                offset += 2;
-                offset = ServerParseSelect.indexAfterIdentity(stmt, offset);
-                String orgName = stmt.substring(indexOfAtAt, offset);
-                offset = ServerParseSelect.skipAs(stmt, offset);
-                SelectIdentity.response(c, stmt, offset, orgName);
-                break;
-            case ServerParseSelect.SELECT_VAR_ALL:
-                SelectVariables.execute(c, stmt);
-                break;
-            case ServerParseSelect.SESSION_TX_READ_ONLY:
-                SelectTxReadOnly.response(c);
-                break;
-            default:
-//                c.execute(stmt, ServerParse.SELECT);
-                SQLStatement mySqlStatement = null;
-                try {
-                    MySqlStatementParser parser = new MySqlStatementParser(stmt);
-                    mySqlStatement = parser.parseStatement();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    c.writeErrMessage(ErrorCode.ER_SELECT_REDUCED, e.getMessage());
-                }
-                MorientResponse.responseselect(c,mySqlStatement);
-        }
+    public static void handle(SQLSelectStatement selectStatement, OConnection connection) {
+        DefaultHander.handlequery(selectStatement, connection);
     }
-
 }

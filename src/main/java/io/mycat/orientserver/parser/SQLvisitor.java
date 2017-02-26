@@ -6,8 +6,13 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitorAdapter;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.handler.DefaultHander;
-import io.mycat.orientserver.handler.datadefine.CreateDababaseHander;
-import io.mycat.orientserver.response.ShowDatabases;
+import io.mycat.orientserver.handler.adminstatement.ShowHandler;
+import io.mycat.orientserver.handler.data_define.CreateDababaseHander;
+import io.mycat.orientserver.handler.data_define.CreateTable;
+import io.mycat.orientserver.handler.data_mannipulation.SelectHandler;
+import io.mycat.orientserver.handler.utilstatement.Usedatabase;
+
+import static io.mycat.orientserver.handler.adminstatement.ShowHandler.showfunctionstatus;
 
 public class SQLvisitor extends MySqlASTVisitorAdapter {
     OConnection connection;
@@ -76,22 +81,26 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlShowColumnsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcolumn(x);
     }
 
     @Override
     public void endVisit(MySqlShowDatabasesStatement x) {
-        super.endVisit(x); ShowDatabases.response(connection);
+        super.endVisit(x);
+        ShowHandler.showdatabase(x, connection);
     }
 
     @Override
     public void endVisit(MySqlShowWarningsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showwarnings(x);
     }
 
     @Override
     public void endVisit(MySqlShowStatusStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showstatus(x);
     }
 
     @Override
@@ -144,192 +153,230 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlShowAuthorsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showauthors(x);
     }
 
     @Override
     public void endVisit(MySqlShowBinaryLogsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showbinarylogs(x);
     }
 
     @Override
     public void endVisit(MySqlShowMasterLogsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showmasterlogs(x);
     }
 
     @Override
     public void endVisit(MySqlShowCollationStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcollation(x);
     }
 
     @Override
     public void endVisit(MySqlShowBinLogEventsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showbinlogevent(x);
     }
 
     @Override
     public void endVisit(MySqlShowCharacterSetStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcharater(x);
     }
 
     @Override
     public void endVisit(MySqlShowContributorsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcontributors(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateDatabaseStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreatedatabase(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateEventStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreateevent(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateFunctionStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreatefunction(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateProcedureStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreateproccedure(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateTableStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreatetable(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateTriggerStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreatetrigger(x);
     }
 
     @Override
     public void endVisit(MySqlShowCreateViewStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showcreateview(x);
     }
 
     @Override
     public void endVisit(MySqlShowEngineStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showengine(x);
     }
 
     @Override
     public void endVisit(MySqlShowEnginesStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showengines(x);
     }
 
     @Override
     public void endVisit(MySqlShowErrorsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showerrors(x);
     }
 
     @Override
     public void endVisit(MySqlShowEventsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showevents(x);
     }
 
     @Override
     public void endVisit(MySqlShowFunctionCodeStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showfunctioncode(x);
     }
 
     @Override
     public void endVisit(MySqlShowFunctionStatusStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        showfunctionstatus(x);
     }
 
     @Override
     public void endVisit(MySqlShowGrantsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showgrants(x);
     }
 
     @Override
     public void endVisit(MySqlShowIndexesStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showindexs(x);
     }
 
     @Override
     public void endVisit(MySqlShowKeysStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showkeys(x);
     }
 
     @Override
     public void endVisit(MySqlShowMasterStatusStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showmasterstatus(x);
     }
 
     @Override
     public void endVisit(MySqlShowOpenTablesStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showopentable(x);
     }
 
     @Override
     public void endVisit(MySqlShowPluginsStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        ShowHandler.showplugins(x);
     }
 
     @Override
     public void endVisit(MySqlShowPrivilegesStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showprivileges(x);
     }
 
     @Override
     public void endVisit(MySqlShowProcedureCodeStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showprovedureode(x);
     }
 
     @Override
     public void endVisit(MySqlShowProcedureStatusStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showproedurestatus(x);
     }
 
     @Override
     public void endVisit(MySqlShowProcessListStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showprocesslist(x);
     }
 
     @Override
     public void endVisit(MySqlShowProfileStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showprofile(x);
     }
 
     @Override
     public void endVisit(MySqlShowProfilesStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showprofiles(x);
     }
 
     @Override
     public void endVisit(MySqlShowRelayLogEventsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showrelaylog(x);
     }
 
     @Override
     public void endVisit(MySqlShowSlaveHostsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showslavehosts(x);
     }
 
     @Override
     public void endVisit(MySqlShowSlaveStatusStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showslavestatus(x);
     }
 
     @Override
     public void endVisit(MySqlShowTableStatusStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showtablestatus(x);
     }
 
     @Override
     public void endVisit(MySqlShowTriggersStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showtriggers(x);
     }
 
     @Override
     public void endVisit(MySqlShowVariantsStatement x) {
-        super.endVisit(x); DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showvatiants(x);
     }
 
     @Override
@@ -350,7 +397,9 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlCreateTableStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        CreateTable.handle(x, connection);
+//        DefaultHander.handle(x, connection);
     }
 
     @Override
@@ -443,7 +492,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLSelectStatement selectStatement) {
-        super.endVisit(selectStatement);DefaultHander.handlequery(selectStatement, connection);
+        super.endVisit(selectStatement);
+        SelectHandler.handle(selectStatement, connection);
     }
 
     @Override
@@ -453,7 +503,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLCreateTableStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        DefaultHander.handle(  x, connection);
     }
 
     @Override
@@ -463,7 +514,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLInsertStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+//        DefaultHander.handle(  x, connection);
     }
 
     @Override
@@ -498,7 +550,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLUseStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        Usedatabase.handle(x, connection);
     }
 
     @Override
@@ -604,7 +657,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLShowTablesStatement x) {
-        super.endVisit(x);DefaultHander.handlequery(x, connection);
+        super.endVisit(x);
+        ShowHandler.showtables(x, connection);
     }
 
     @Override
