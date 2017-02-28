@@ -51,7 +51,7 @@ public class ServerQueryHandler implements FrontendQueryHandler {
 
 	@Override
 	public void query(String sql) {
-		
+		System.out.println("--------------------------------------------"+sql);
 		ServerConnection c = this.source;
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(new StringBuilder().append(c).append(sql).toString());

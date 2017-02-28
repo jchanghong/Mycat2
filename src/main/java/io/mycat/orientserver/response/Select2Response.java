@@ -34,6 +34,7 @@ import io.mycat.orientserver.OConnection;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
 /**
  * @author schanghong
@@ -41,7 +42,7 @@ import java.nio.ByteBuffer;
  */
 public class Select2Response {
 
-    private static final int FIELD_COUNT = 1;
+    private static final int FIELD_COUNT = 2;
     private static final ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
     private static final FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
     private static final EOFPacket eof = new EOFPacket();
@@ -52,12 +53,15 @@ public class Select2Response {
         header.packetId = ++packetId;
         fields[i] = PacketUtil.getField("DATABASE", Fields.FIELD_TYPE_VAR_STRING);
         fields[i++].packetId = ++packetId;
+        fields[i] = PacketUtil.getField("DATABASE", Fields.FIELD_TYPE_VAR_STRING);
+        fields[i++].packetId = ++packetId;
         eof.packetId = ++packetId;
     }
 
-    public static void response(OConnection c) {
+    public static void response(OConnection c, String column1, String colu2, List<String> clist1,List<String> clist2) {
+        fields[0]=PacketUtil.getField(column1, Fields.FIELD_TYPE_VAR_STRING);
+        fields[1]=PacketUtil.getField(colu2, Fields.FIELD_TYPE_VAR_STRING);
         ByteBuffer buffer = c.allocate();
-
         // write header
         buffer = header.write(buffer, c, true);
 
@@ -65,20 +69,18 @@ public class Select2Response {
         for (FieldPacket field : fields) {
             buffer = field.write(buffer, c, true);
         }
-
         // write eof
         buffer = eof.write(buffer, c, true);
 
         // write rows
         byte packetId = eof.packetId;
-
-            for (String name : DBadapter.getInstance().getalldbnames()) {
-                RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-                row.add(StringUtil.encode(name, c.getCharset()));
-                row.packetId = ++packetId;
-                buffer = row.write(buffer, c, true);
-            }
-
+        for (int i = 0; i < clist1.size(); i++) {
+            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+            row.add(StringUtil.encode(clist1.get(i), c.getCharset()));
+            row.add(StringUtil.encode(clist2.get(i), c.getCharset()));
+            row.packetId = ++packetId;
+            buffer = row.write(buffer, c, true);
+        }
         // write last eof
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;
