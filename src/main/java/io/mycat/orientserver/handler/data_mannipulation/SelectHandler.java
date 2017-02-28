@@ -51,50 +51,61 @@ public final class SelectHandler {
             return;
         }
         SQLSelectItem selectItem = queryBlock.getSelectList().get(0);
+        boolean number = true;
+        try {
+            Double.parseDouble(selectItem.toString());
+        } catch (Exception e) {
+//            e.printStackTrace();
+            number = false;
+        }
+        if (number) {
+            Select1Response.response(c, selectItem.toString(), Arrays.asList(selectItem.toString()));
+            return;
+        }
         if (selectItem.getExpr() instanceof SQLBinaryOpExpr) {
             handleopexpr((SQLBinaryOpExpr) selectItem.getExpr(),c);
             return;
         }
         SQLExpr sqlExpr = selectItem.getExpr();
         String what = sqlExpr.toString().toUpperCase();
-        if (what.startsWith("VERSION_COMMENT")) {
+        if (what.contains("VERSION_COMMENT")) {
             io.mycat.orientserver.response.SelectVersionComment.response(c);
             return;
         }
-        if (what.startsWith("DATABASE")) {
+        if (what.contains("DATABASE")) {
             SelectDatabase.response(c);
             return;
         }
-        if (what.startsWith("USER")) {
+        if (what.contains("USER")) {
             SelectUser.response(c);
             return;
         }
-        if (what.startsWith("VERSION")) {
+        if (what.contains("VERSION")) {
             SelectVersion.response(c);
             return;
         }
-        if (what.startsWith("SESSION_INCREMENT")) {
+        if (what.contains("SESSION_INCREMENT")) {
             SessionIncrement.response(c);
             return;
         }
-        if (what.startsWith("SESSION_ISOLATION")) {
+        if (what.contains("SESSION_ISOLATION")) {
             SessionIsolation.response(c);
             return;
         }
-        if (what.startsWith("LAST_INSERT_ID")) {
+        if (what.contains("LAST_INSERT_ID")) {
                 SelectLastInsertId.response(c, selectStatement.toString(), 1);
                 return;
         }
-        if (what.startsWith("IDENTITY")) {
+        if (what.contains("IDENTITY")) {
                 SelectIdentity.response(c, selectStatement.toString(), 1, "mysql");
                 return;
         }
-        if (what.startsWith("SELECT_VAR_ALL")) {
+        if (what.contains("SELECT_VAR_ALL")) {
             ShowVariables.response(c);
             return;
 
         }
-        if (what.startsWith("SESSION_TX_READ_ONLY")) {
+        if (what.contains("SESSION_TX_READ_ONLY")) {
             SelectTxReadOnly.response(c);
             return;
         }
