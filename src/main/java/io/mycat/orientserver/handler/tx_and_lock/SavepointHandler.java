@@ -23,7 +23,10 @@
  */
 package io.mycat.orientserver.handler.tx_and_lock;
 
+import com.alibaba.druid.sql.ast.statement.SQLReleaseSavePointStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSavePointStatement;
 import io.mycat.config.ErrorCode;
+import io.mycat.net.mysql.OkPacket;
 import io.mycat.orientserver.OConnection;
 
 /**
@@ -32,7 +35,14 @@ import io.mycat.orientserver.OConnection;
 public final class SavepointHandler {
 
     public static void handle(String stmt, OConnection c) {
-        c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsupported statement");
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 
+    public static void handle(SQLSavePointStatement x,OConnection c) {
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
+
+    public static void handle(SQLReleaseSavePointStatement x,OConnection c) {
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
 }

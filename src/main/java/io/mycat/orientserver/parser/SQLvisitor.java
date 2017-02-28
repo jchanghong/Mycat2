@@ -6,10 +6,15 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitorAdapter;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.handler.DefaultHander;
+import io.mycat.orientserver.handler.adminstatement.KillHandler;
+import io.mycat.orientserver.handler.adminstatement.SetHandler;
 import io.mycat.orientserver.handler.adminstatement.ShowHandler;
 import io.mycat.orientserver.handler.data_define.CreateDababaseHander;
 import io.mycat.orientserver.handler.data_define.CreateTable;
 import io.mycat.orientserver.handler.data_mannipulation.SelectHandler;
+import io.mycat.orientserver.handler.tx_and_lock.SavepointHandler;
+import io.mycat.orientserver.handler.tx_and_lock.StartHandler;
+import io.mycat.orientserver.handler.utilstatement.HelpStatement;
 import io.mycat.orientserver.handler.utilstatement.Usedatabase;
 
 import static io.mycat.orientserver.handler.adminstatement.ShowHandler.showfunctionstatus;
@@ -51,7 +56,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlLoadDataInFileStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        connection.loadDataInfileStart(x.toString());
     }
 
     @Override
@@ -66,17 +72,21 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlStartTransactionStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        StartHandler.handle(x,connection);
+
     }
 
     @Override
     public void endVisit(MySqlCommitStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        connection.commit();
     }
 
     @Override
     public void endVisit(MySqlRollbackStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        connection.rollback();
     }
 
     @Override
@@ -105,7 +115,9 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlKillStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        KillHandler.handle(x,connection);
+
     }
 
     @Override
@@ -138,17 +150,19 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlSetTransactionStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        SetHandler.handle(x,connection);
+
     }
 
     @Override
     public void endVisit(MySqlSetNamesStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x); SetHandler.handle(x,connection);
     }
 
     @Override
     public void endVisit(MySqlSetCharSetStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);SetHandler.handle(x,connection);
     }
 
     @Override
@@ -387,12 +401,12 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlLockTableStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x); connection.lockTable(x.toString());
     }
 
     @Override
     public void endVisit(MySqlUnlockTablesStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x); connection.unLockTable(x.toString());
     }
 
     @Override
@@ -404,7 +418,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlHelpStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        HelpStatement.handle(x,connection);
     }
 
     @Override
@@ -424,7 +439,7 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlSetPasswordStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x); SetHandler.handle(x,connection);
     }
 
     @Override
@@ -566,17 +581,23 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLSavePointStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        SavepointHandler.handle(x,connection);
+
     }
 
     @Override
     public void endVisit(SQLRollbackStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        connection.rollback();
+
     }
 
     @Override
     public void endVisit(SQLReleaseSavePointStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        SavepointHandler.handle(x,connection);
+
     }
 
     @Override
@@ -612,7 +633,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLExplainStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        io.mycat.orientserver.handler.adminstatement.ExplainHandler.handle(x,connection);
     }
 
     @Override

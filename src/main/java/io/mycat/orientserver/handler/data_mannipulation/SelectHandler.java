@@ -32,6 +32,7 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.handler.DefaultHander;
 import io.mycat.orientserver.response.*;
+import io.mycat.orientserver.util.Mcomputer;
 
 import java.util.Arrays;
 
@@ -100,22 +101,8 @@ public final class SelectHandler {
     }
 
     private static void handleopexpr(SQLBinaryOpExpr sqlBinaryOpExpr,OConnection connection) {
-        double left = Double.parseDouble(sqlBinaryOpExpr.getLeft().toString());
-        double re = Double.parseDouble(sqlBinaryOpExpr.getRight().toString());
-        SQLBinaryOperator operator = sqlBinaryOpExpr.getOperator();
-        if (operator == SQLBinaryOperator.Add) {
-            left = left + re;
-        }
-        if (operator == SQLBinaryOperator.Subtract) {
-            left = left - re;
-        }
-        if (operator == SQLBinaryOperator.Multiply) {
-            left = left * re;
-        }
-        if (operator == SQLBinaryOperator.Divide) {
-            left = left / re;
-        }
-        Select1Response.response(connection, sqlBinaryOpExpr.toString(), Arrays.asList(left+""));
+        String columnname = sqlBinaryOpExpr.toString();
+        Select1Response.response(connection, columnname, Arrays.asList(Mcomputer.compute(columnname)+""));
 
     }
 }

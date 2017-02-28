@@ -1,52 +1,30 @@
-///*
-// * Copyright (c) 2013, OpenCloudDB/MyCAT and/or its affiliates. All rights reserved.
-// * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-// *
-// * This code is free software;Designed and Developed mainly by many Chinese
-// * opensource volunteers. you can redistribute it and/or modify it under the
-// * terms of the GNU General Public License version 2 only, as published by the
-// * Free Software Foundation.
-// *
-// * This code is distributed in the hope that it will be useful, but WITHOUT
-// * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-// * version 2 for more details (a copy is included in the LICENSE file that
-// * accompanied this code).
-// *
-// * You should have received a copy of the GNU General Public License version
-// * 2 along with this work; if not, write to the Free Software Foundation,
-// * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-// *
-// * Any questions about this component can be directed to it's project Web address
-// * https://code.google.com/p/opencloudb/.
-// *
-// */
-//package io.mycat.orientserver.handler.adminstatement;
-//
-//import io.mycat.config.ErrorCode;
-//import io.mycat.config.Isolations;
-//import io.mycat.net.mysql.OkPacket;
-//import io.mycat.orientserver.OConnection;
-//import io.mycat.orientserver.response.CharacterSet;
-//import io.mycat.util.SetIgnoreUtil;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//
-//
-///**
-// * SET 语句处理
-// *
-// * @author mycat
-// * @author zhuam
-// */
-//public final class SetHandler {
-//
-//    private static final Logger logger = LoggerFactory.getLogger(SetHandler.class);
-//
-//    private static final byte[] AC_OFF = new byte[]{7, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
-//
-//    public static void handle(String stmt, OConnection c, int offset) {
-//        // System.out.println("SetHandler: "+stmt);
+package io.mycat.orientserver.handler.adminstatement;
+
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetCharSetStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetNamesStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetPasswordStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetTransactionStatement;
+import io.mycat.config.ErrorCode;
+import io.mycat.net.mysql.OkPacket;
+import io.mycat.orientserver.OConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ * SET 语句处理
+ *
+ * @author mycat
+ * @author zhuam
+ */
+public final class SetHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(SetHandler.class);
+
+    private static final byte[] AC_OFF = new byte[]{7, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
+
+    public static void handle(String stmt, OConnection c, int offset) {
+        // System.out.println("SetHandler: "+stmt);
 //        int rs = ServerParseSet.parse(stmt, offset);
 //        switch (rs & 0xff) {
 //            case AUTOCOMMIT_ON:
@@ -146,6 +124,27 @@
 //                }
 //                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
 //        }
-//    }
-//
-//}
+    }
+
+    public static void handle(MySqlSetTransactionStatement x,OConnection c) {
+        if (c.isAutocommit()) {
+            c.writeErrMessage(ErrorCode.ERR_WRONG_USED,
+                    "set xa cmd on can't used in autocommit connection ");
+            return;
+        }
+//                c.getSession2().setXATXEnabled(true);
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
+//还没有写全部报错
+    public static void handle(MySqlSetPasswordStatement x,OConnection c) {
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
+
+    public static void handle(MySqlSetNamesStatement x,OConnection c) {
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
+
+    public static void handle(MySqlSetCharSetStatement x,OConnection c) {
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
+}

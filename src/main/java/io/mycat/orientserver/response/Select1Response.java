@@ -52,13 +52,15 @@ public class Select1Response {
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;
-        fields[i] = PacketUtil.getField("DATABASE", Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId = ++packetId;
+//        fields[i] = PacketUtil.getField("DATABASE", Fields.FIELD_TYPE_VAR_STRING);
+//        fields[i++].packetId = ++packetId;
+        packetId++;
         eof.packetId = ++packetId;
     }
 
     public static void response(OConnection c, String columnname, List<String> columnvaluess) {
         fields[0] = PacketUtil.getField(columnname, Fields.FIELD_TYPE_VAR_STRING);
+        fields[0].packetId = 2;
         ByteBuffer buffer = c.allocate();
 
         // write header

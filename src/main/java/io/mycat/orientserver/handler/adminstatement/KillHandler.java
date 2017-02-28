@@ -23,6 +23,7 @@
  */
 package io.mycat.orientserver.handler.adminstatement;
 
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlKillStatement;
 import io.mycat.MycatServer;
 import io.mycat.config.ErrorCode;
 import io.mycat.net.FrontendConnection;
@@ -82,4 +83,41 @@ public class KillHandler {
         return packet;
     }
 
+    public static void handle(MySqlKillStatement x,OConnection c) {
+        String id = x.getThreadId().toString();
+        if (StringUtil.isEmpty(id)) {
+            c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "NULL connection id");
+        } else {
+            // get value
+            long value = 0;
+            try {
+                value = Long.parseLong(id);
+            } catch (NumberFormatException e) {
+                c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "Invalid connection id:" + id);
+                return;
+            }
+
+            // kill myself
+            if (value == c.getId()) {
+                getOkPacket().write(c);
+                c.write(c.allocate());
+                return;
+            }
+
+            // get connection and close it
+            FrontendConnection fc = null;
+            NIOProcessor[] processors = MycatServer.getInstance().getProcessors();
+            for (NIOProcessor p : processors) {
+                if ((fc = p.getFrontends().get(value)) != null) {
+                    break;
+                }
+            }
+            if (fc != null) {
+                fc.close("killed");
+                getOkPacket().write(c);
+            } else {
+                c.writeErrMessage(ErrorCode.ER_NO_SUCH_THREAD, "Unknown connection id:" + id);
+            }
+        }
+    }
 }

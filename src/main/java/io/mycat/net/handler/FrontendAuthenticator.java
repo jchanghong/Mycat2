@@ -86,11 +86,7 @@ public class FrontendAuthenticator implements NIOHandler {
              return;
         }
 
-        if (DBadapter.isorient) {
             DBadapter.currentDB = auth.database;
-            success(auth);
-            return;
-        }
         // check schema
         switch (checkSchema(auth.database, auth.user)) {
         case ErrorCode.ER_BAD_DB_ERROR:

@@ -293,10 +293,10 @@ public class MycatServer {
         LOGGER.info("sysconfig params:" + system.toString());
 
         // startup manager
-        ManagerConnectionFactory mf = new ManagerConnectionFactory();
+//        ManagerConnectionFactory mf = new ManagerConnectionFactory();
         ServerConnectionFactory sf = new ServerConnectionFactory();
         OConnectionFactory oConnectionFactory = new OConnectionFactory();
-        SocketAcceptor manager = null;
+//        SocketAcceptor manager = null;
         SocketAcceptor server = null;
         SocketAcceptor oserver = null;
         aio = (system.getUsingAIO() == 1);
@@ -387,9 +387,9 @@ public class MycatServer {
                         }
                 );
             }
-            manager = new AIOAcceptor(NAME + "Manager", system.getBindIp(),
-                    system.getManagerPort(), mf, this.asyncChannelGroups[0]);
-            oserver = new AIOAcceptor(NAME + "Manager", system.getBindIp(),
+//            manager = new AIOAcceptor(NAME + "Manager", system.getBindIp(),
+//                    system.getManagerPort(), mf, this.asyncChannelGroups[0]);
+            oserver = new AIOAcceptor(NAME + "oserver", system.getBindIp(),
                     9999, oConnectionFactory, this.asyncChannelGroups[0]);
 
             // startup server
@@ -405,9 +405,9 @@ public class MycatServer {
                     processors.length);
             connector = new NIOConnector(DirectByteBufferPool.LOCAL_BUF_THREAD_PREX + "NIOConnector", reactorPool);
             ((NIOConnector) connector).start();
-
-            manager = new NIOAcceptor(DirectByteBufferPool.LOCAL_BUF_THREAD_PREX + NAME
-                    + "Manager", system.getBindIp(), system.getManagerPort(), mf, reactorPool);
+//
+//            manager = new NIOAcceptor(DirectByteBufferPool.LOCAL_BUF_THREAD_PREX + NAME
+//                    + "Manager", system.getBindIp(), system.getManagerPort(), mf, reactorPool);
             oserver = new NIOAcceptor(DirectByteBufferPool.LOCAL_BUF_THREAD_PREX + NAME
                     + "oserver", system.getBindIp(), 9999, oConnectionFactory, reactorPool);
 
@@ -417,7 +417,7 @@ public class MycatServer {
         // manager start
 //        manager.start();
         oserver.start();
-        LOGGER.info(oserver.getName() + " is started and listening on " + manager.getPort());
+        LOGGER.info(oserver.getName() + " is started and listening on " + oserver.getPort());
 //        LOGGER.info(manager.getName() + " is started and listening on " + manager.getPort());
         server.start();
         // server started

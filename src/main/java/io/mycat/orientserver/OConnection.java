@@ -45,7 +45,7 @@ import java.nio.channels.NetworkChannel;
 public class OConnection extends FrontendConnection {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(OConnection.class);
-    private static final long AUTH_TIMEOUT = 15 * 1000L;
+    private static final long AUTH_TIMEOUT = 30 * 1000L;
     private volatile int txIsolation;
     private volatile boolean autocommit;
     private volatile boolean txInterrupted;
