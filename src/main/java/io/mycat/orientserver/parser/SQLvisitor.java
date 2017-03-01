@@ -312,7 +312,7 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
     @Override
     public void endVisit(MySqlShowOpenTablesStatement x) {
         super.endVisit(x);
-        ShowHandler.showopentable(x);
+        ShowHandler.showopentable(x);//hrllo
     }
 
     @Override
