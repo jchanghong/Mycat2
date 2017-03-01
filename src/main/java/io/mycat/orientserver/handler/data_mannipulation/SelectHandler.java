@@ -38,7 +38,9 @@ import java.util.Arrays;
 
 /**
  * @author changhong
- * select 语句有些是selct table，
+ * select 语句有些是selct table from,,,,,，
+ * select 6+1;
+ * select dabase();
  * 有些比如是select suer（）；
  */
 public final class SelectHandler {
