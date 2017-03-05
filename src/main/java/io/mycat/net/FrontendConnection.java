@@ -201,6 +201,7 @@ public abstract class FrontendConnection extends AbstractConnection {
 		OkPacket ok=new OkPacket();
 		ok.packetId=(byte)1;
 		ok.affectedRows=1;
+
 		ok.insertId=1;
 		ok.message=encodeString(msg,charset);
 		ok.write(this);
