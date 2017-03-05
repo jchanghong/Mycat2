@@ -17,12 +17,13 @@ import java.util.Map;
 public class TestOrientDB {
     public static void main(String[] args) throws OrientException {
         DBadapter.currentDB = "changhong";
+
         List<Map<String, String>> list = DBadapter.getInstance().exequery("select * from t1");
         System.out.println(list.size());
 
         ODatabaseDocumentTx db = new ODatabaseDocumentTx
                 ("plocal:database/changhong")
-                .open("admin", "admin");
+              .open("admin", "admin");
         ODocument animal = new ODocument("t1");
         animal.field("id", "66");
         animal.save();

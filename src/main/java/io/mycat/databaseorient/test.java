@@ -48,7 +48,7 @@ public class test implements Log{
 
         test dmoe1 = new test();
 //        dmoe1.tests();
-//        dmoe1.comtest();
+ //      dmoe1.comtest();
 
     }
 
