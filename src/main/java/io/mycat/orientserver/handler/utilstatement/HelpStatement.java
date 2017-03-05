@@ -29,7 +29,7 @@ public class HelpStatement {
             //c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "The USE db_name statement tells MySQL to use the db_name database as the default (current) database for subsequent statements. ");
        //   c.writeErrMessage(ErrorCode.ER_UNKNOWN_COM_ERROR, "Unsuppoted Message ");
 
-        c.writeOkMessage("hello");
+//        c.writeOkMessage("hello");
 
 
             return;
