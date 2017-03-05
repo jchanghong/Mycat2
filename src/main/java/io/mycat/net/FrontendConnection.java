@@ -197,6 +197,14 @@ public abstract class FrontendConnection extends AbstractConnection {
 	public void writeErrMessage(int errno, String msg) {
 		writeErrMessage((byte) 1, errno, msg);
 	}
+	public void writeOkMessage(String msg){
+		OkPacket ok=new OkPacket();
+		ok.packetId=(byte)1;
+		ok.affectedRows=1;
+		ok.insertId=1;
+		ok.message=encodeString(msg,charset);
+		ok.write(this);
+	}
 
 	public void writeErrMessage(byte id, int errno, String msg) {
 		ErrorPacket err = new ErrorPacket();
