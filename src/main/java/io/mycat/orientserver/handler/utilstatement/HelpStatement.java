@@ -7,11 +7,13 @@ import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.AbstractConnection;
 import io.mycat.net.mysql.*;
 import io.mycat.orientserver.OConnection;
+import io.mycat.orientserver.response.Select1Response;
 import io.mycat.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.header;
 import static io.mycat.net.mysql.EOFPacket.FIELD_COUNT;
@@ -32,6 +34,7 @@ public class HelpStatement {
 //        c.writeOkMessage("hello");
 
 
+            Select1Response.response(c, "help use", Arrays.asList("use database ,比如use db;"));
             return;
         }
         if (helpstatment.contains("show")) {
