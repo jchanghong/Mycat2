@@ -12,6 +12,7 @@ import io.mycat.orientserver.response.MorientResponse;
 public class DefaultHander {
     public static void handle(SQLStatement statement, OConnection connection) {
         MorientResponse.response(connection,statement);
+
     }
     public static void handlequery(SQLStatement statement, OConnection connection) {
         MorientResponse.responseselect(connection, statement);
