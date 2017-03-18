@@ -5,7 +5,9 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
+import io.mycat.MycatServer;
 import io.mycat.databaseorient.sqlhander.sqlutil.MSQLutil;
+import io.mycat.util.NameableExecutor;
 
 import java.io.File;
 import java.util.*;
@@ -17,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 我们需要做的也就是做这个转化过程。
  */
 public class DBadapter {
+    public static NameableExecutor executor;
     /**
      * The constant isorient.
      */
@@ -24,12 +27,12 @@ public class DBadapter {
     /**
      * The constant currentDB.
      */
-    volatile public static String currentDB;
+     public static String currentDB;
     /**
      * The constant DB_DIR.
      */
-    public static String DB_DIR = "database";
-    private List<String> set = null;
+    private static final String DB_DIR = "database";
+    private List<String> dbset = null;
     /**
      * The Hash map.
      */
@@ -51,17 +54,20 @@ public class DBadapter {
      * @param dbname the dbname
      * @return the boolean
      */
-    public boolean deletedb(String dbname) {
+   synchronized public void deletedb(String dbname) throws MException {
         if (getalldbnames().contains(dbname)) {
-            OPartitionedDatabasePool oDatabaseDocumentTx = hashMap.get(dbname);
-            ODatabaseDocumentTx documentTx = oDatabaseDocumentTx.acquire();
-            documentTx.activateOnCurrentThread();
-            documentTx.drop();
-            hashMap.remove(dbname);
-            set.remove(dbname);
-            return true;
+            executor.execute(()->{
+                OPartitionedDatabasePool oDatabaseDocumentTx = hashMap.get(dbname);
+                ODatabaseDocumentTx documentTx = oDatabaseDocumentTx.acquire();
+                documentTx.activateOnCurrentThread();
+                documentTx.drop();
+                hashMap.remove(dbname);
+                dbset.remove(dbname);
+            });
+        }else {
+            throw new MException("db 不存在");
         }
-        return false;
+
     }
 
     /**
@@ -70,15 +76,16 @@ public class DBadapter {
      * @param dbname the dbname
      * @return the boolean
      */
-    public boolean createdb(String dbname) {
+  synchronized   public void createdb(String dbname) throws MException{
         if (getalldbnames().contains(dbname)) {
-            return false;
+            throw new MException("db已经存在");
         }
-        new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
-        hashMap.put(dbname, getdbpool(dbname));
-        set.add(dbname);
-        TableAdaptor.getInstance().hashMapdb2table.put(dbname, new HashSet<>());
-        return true;
+        executor.execute(()->{
+            new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
+            hashMap.put(dbname, getdbpool(dbname));
+            dbset.add(dbname);
+            TableAdaptor.getInstance().hashMapdb2table.put(dbname, new HashSet<>());
+        });
     }
 
     /**
@@ -87,30 +94,31 @@ public class DBadapter {
      * @return the
      */
     public List<String> getalldbnames() {
-        if (set != null) {
-            return set;
+        if (dbset != null) {
+            return dbset;
         }
-        set= new ArrayList<>();
+        dbset =new ArrayList<>();
         File file = new File(DB_DIR);
         if (!file.exists()) {
-            return set;
+            return dbset;
         }
         if (file.isFile()) {
             file.delete();
-            return set;
+            return dbset;
         }
         for (File file1 : file.listFiles()) {
             if (file1.isDirectory()) {
-                set.add(file1.getName());
+                dbset.add(file1.getName());
             }
         }
-        return set;
+        return dbset;
     }
 
     /**
      * Instantiates a new D badapter.
      */
     public DBadapter() {
+        executor = MycatServer.getInstance().getBusinessExecutor();
         getalldbnames().stream().forEach(a->hashMap.put(a,getdbpool(a)));
     }
 
@@ -170,9 +178,9 @@ public class DBadapter {
      *
      * @param sql the sql 不是select语句或者show语句 ,show dddd
      * @return the string
-     * @throws OrientException the orient exception
+     * @throws MException the orient exception
      */
-    public String exesql(String sql) throws OrientException{
+    public String exesql(String sql) throws MException {
         ODatabaseDocumentTx documentTx = null;
         if (currentDB == null) {
             return "error";
@@ -184,7 +192,7 @@ public class DBadapter {
             documentTx.close();
             return object.toString();
         } catch (Exception e) {
-            throw new OrientException(e.getMessage());
+            throw new MException(e.getMessage());
         } finally {
             if (documentTx != null&& !documentTx.isClosed()) {
                 documentTx.close();
@@ -198,9 +206,9 @@ public class DBadapter {
      *
      * @param sqlquery the sqlquery
      * @return the list
-     * @throws OrientException the orient exception
+     * @throws MException the orient exception
      */
-    public List<Map<String,String>> exequery(String sqlquery) throws OrientException{
+    public List<Map<String,String>> exequery(String sqlquery) throws MException {
         ODatabaseDocumentTx documentTx = null;
 
         try {
@@ -221,7 +229,7 @@ public class DBadapter {
             setemptylist(list, result, alls, select);
             return list;
         } catch (Exception e) {
-            throw new OrientException(e.getMessage());
+            throw new MException(e.getMessage());
         } finally {
             if (documentTx != null&& !documentTx.isClosed()) {
                 documentTx.close();

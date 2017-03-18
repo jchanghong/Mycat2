@@ -43,13 +43,13 @@ import java.util.Arrays;
  * select dabase();
  * 有些比如是select suer（）；
  */
-public final class SelectHandler {
+public final class MSelectHandler {
 
     public static void handle(SQLSelectStatement selectStatement, OConnection c) {
 
         MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
         if (queryBlock.getFrom() != null) {
-            DefaultHander.handlequery(selectStatement, c);// select 数据
+            MorientResponse.responseselect(c, selectStatement);
             return;
         }
         SQLSelectItem selectItem = queryBlock.getSelectList().get(0);

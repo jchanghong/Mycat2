@@ -21,16 +21,17 @@ public class TableAdaptor {
     /**
      * The constant TABLEDOT.
      */
-    public static String TABLEDOT = ".sql";
+    public static final String TABLEDOT = ".sql";
     private static TableAdaptor insta = new TableAdaptor();
     /**
      * The Hash mapdb 2 table.
      */
-    public ConcurrentHashMap<String, Set<String>> hashMapdb2table = new ConcurrentHashMap<>();
+    public HashMap<String, Set<String>> hashMapdb2table = new HashMap<>();
     /**
      * The Hashmaptable 2 fild.
+     * 关键字，db.table
      */
-    public ConcurrentHashMap<String, HashMap<String, String>> hashmaptable2fild = new ConcurrentHashMap<>();
+    public HashMap<String, HashMap<String, String>> hashmaptable2fild = new HashMap<>();
 
     /**
      * Gets instance.
@@ -53,22 +54,30 @@ public class TableAdaptor {
      * @param table  the table
      * @return the boolean
      */
-    public boolean droptable(String dbname,String table) {
+     public void droptable(String dbname,String table) throws MException{
+      String getfilepath = getfilepath(dbname, table);
+      File file = new File(getfilepath);
+      if (!file.exists()) {
+          throw new MException("table 不存在");
+      }
+      DBadapter.executor.execute(()-> droptableinter(dbname, table, getfilepath));
+
+    }
+
+ synchronized    private void droptableinter(String dbname, String table, String getfilepath) {
         ODatabaseDocumentTx db = DBadapter.getInstance().hashMap.get(dbname).acquire();
         db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
         if (oSchema.existsClass(table)) {
             oSchema.dropClass(table);
-
         }
         db.close();
-        File file = new File(getfilepath(dbname, table));
-        if (file.exists()) {
-            file.delete();
+        File file1 = new File(getfilepath);
+        if (file1.exists()) {
+            file1.delete();
         }
         hashMapdb2table.get(dbname).remove(table);
         hashmaptable2fild.remove(dbname+table);
-        return true;
     }
 
     /**
@@ -78,19 +87,30 @@ public class TableAdaptor {
      * @param createTableStatement the create table statement
      * @return the boolean
      */
-    public boolean createtable(String dbname, MySqlCreateTableStatement createTableStatement) {
+    public void createtable(String dbname, MySqlCreateTableStatement createTableStatement) throws MException{
 //        System.out.println(createTableStatement.toString());
         String table = createTableStatement.getTableSource().toString();
         if (!hashMapdb2table.containsKey(dbname)) {
-            return false;
+            throw new MException("db不存在");
         }
         if (hashMapdb2table.get(dbname).contains(table)) {
-            return false;
+            throw new MException("table已经存在");
         }
+
+        DBadapter.executor.execute(()->{
+            try {
+                createtableinter(dbname, createTableStatement, table);
+            } catch (MException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+   synchronized private void createtableinter(String dbname, MySqlCreateTableStatement createTableStatement, String table) throws MException {
         ODatabaseDocumentTx db = DBadapter.getInstance().hashMap.get(dbname).acquire();
         db.activateOnCurrentThread();
         if (db.getMetadata().getSchema().existsClass(table)) {
-            return false;
+            throw new MException("table已经存在");
         }
         Map<String, String> h = new HashMap<>();
         for (SQLTableElement sqlTableElement : createTableStatement.getTableElementList()) {
@@ -99,7 +119,7 @@ public class TableAdaptor {
         }
         OClass account = db.getMetadata().getSchema()
                 .createClass(table);
-       h.entrySet().stream().forEach(a->addproperty(account,a));
+        h.entrySet().stream().forEach(a->addproperty(account,a));
         account.setStrictMode(true);//只能增加上面设置的属性，不能增加属性
         try {
             DataOutputStream stream = new DataOutputStream(new FileOutputStream(getfilepath(dbname, table)));
@@ -116,7 +136,6 @@ public class TableAdaptor {
         hashMapdb2table.get(dbname).add(table);
         hashmaptable2fild.put(dbname+table, (HashMap<String, String>) h);
         db.close();
-        return true;
     }
 
 

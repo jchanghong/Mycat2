@@ -63,6 +63,9 @@ public class OConnection extends FrontendConnection {
         this.autocommit = true;
     }
 
+    public void writeNotSurrport() {
+        writeErrMessage(ErrorCode.ER_NOT_SUPPORTED_YET,"暂时不支持！！！");
+    }
     @Override
     public boolean isIdleTimeout() {
         if (isAuthenticated) {
@@ -230,5 +233,9 @@ public class OConnection extends FrontendConnection {
         DBadapter.currentDB = db;
         write(writeToBuffer(OkPacket.OK, allocate()));
 
+    }
+
+    public void writeErrMessage(String message) {
+        writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, message);
     }
 }

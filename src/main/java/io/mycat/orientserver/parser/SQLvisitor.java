@@ -9,9 +9,8 @@ import io.mycat.orientserver.handler.DefaultHander;
 import io.mycat.orientserver.handler.adminstatement.KillHandler;
 import io.mycat.orientserver.handler.adminstatement.SetHandler;
 import io.mycat.orientserver.handler.adminstatement.ShowHandler;
-import io.mycat.orientserver.handler.data_define.CreateDababaseHander;
-import io.mycat.orientserver.handler.data_define.CreateTable;
-import io.mycat.orientserver.handler.data_mannipulation.SelectHandler;
+import io.mycat.orientserver.handler.data_define.*;
+import io.mycat.orientserver.handler.data_mannipulation.*;
 import io.mycat.orientserver.handler.tx_and_lock.SavepointHandler;
 import io.mycat.orientserver.handler.tx_and_lock.StartHandler;
 import io.mycat.orientserver.handler.utilstatement.HelpStatement;
@@ -20,7 +19,7 @@ import io.mycat.orientserver.handler.utilstatement.Usedatabase;
 import static io.mycat.orientserver.handler.adminstatement.ShowHandler.showfunctionstatus;
 
 public class SQLvisitor extends MySqlASTVisitorAdapter {
-    OConnection connection;
+    private OConnection connection;
 
     public SQLvisitor(OConnection connection) {
         this.connection = connection;
@@ -29,7 +28,7 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
     @Override
     public void endVisit(MySqlPrepareStatement x) {
         super.endVisit(x);
-        DefaultHander.handle(x, connection);
+
     }
 
     @Override
@@ -46,28 +45,32 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlDeleteStatement x) {
-        super.endVisit(x); DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        Mdelete.handle(x, connection);
     }
 
     @Override
     public void endVisit(MySqlInsertStatement x) {
-        super.endVisit(x); DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        Minsert.handle(x, connection);
     }
 
     @Override
     public void endVisit(MySqlLoadDataInFileStatement x) {
         super.endVisit(x);
-        connection.loadDataInfileStart(x.toString());
+        MloaddataINfile.handle(x, connection);
     }
 
     @Override
     public void endVisit(MySqlLoadXmlStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        Mloadxml.handle(x, connection);
     }
 
     @Override
     public void endVisit(MySqlReplaceStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        Mrepelace.handle(x, connection);
     }
 
     @Override
@@ -145,7 +148,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlUpdateStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        Mupdate.handle(x, connection);
     }
 
     @Override
@@ -395,7 +399,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(MySqlRenameTableStatement x) {
-        super.endVisit(x); DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        RenameTable.handle(x, connection);
     }
 
 
@@ -508,39 +513,43 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
     @Override
     public void endVisit(SQLSelectStatement selectStatement) {
         super.endVisit(selectStatement);
-        SelectHandler.handle(selectStatement, connection);
+        MSelectHandler.handle(selectStatement, connection);
     }
 
     @Override
     public void endVisit(SQLDropTableStatement x) {
-        super.endVisit(x);DefaultHander.handle( x, connection);
+        super.endVisit(x);
+        DropTable.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLCreateTableStatement x) {
         super.endVisit(x);
-        DefaultHander.handle(  x, connection);
+        CreateTable.handle(connection, x);
     }
 
     @Override
     public void endVisit(SQLDeleteStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        Mdelete.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLInsertStatement x) {
         super.endVisit(x);
-//        DefaultHander.handle(  x, connection);
+        Minsert.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLUpdateStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        Mupdate.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLCreateViewStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        CreateView.handle(x, connection);
     }
 
     @Override
@@ -550,12 +559,14 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLCallStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        Mcall.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLTruncateStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        TruncteTable.handle(x, connection);
     }
 
     @Override
@@ -571,12 +582,14 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLDropIndexStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        DropIndex.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLDropViewStatement x) {
-        super.endVisit(x);DefaultHander.handle(  x, connection);
+        super.endVisit(x);
+        DropView.handle(x, connection);
     }
 
     @Override
@@ -608,12 +621,14 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLAlterTableStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        AlterTable.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLCreateIndexStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        CreateIndex.handle(x, connection);
     }
 
     @Override
@@ -623,7 +638,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLDropTriggerStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        Droptrigger.handle(x, connection);
     }
 
     @Override
@@ -644,27 +660,32 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLDropDatabaseStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        DropDatabase.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLCreateTriggerStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        CreateTrigger.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLDropFunctionStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        DropProcedure_function.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLDropTableSpaceStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        DropTABLEspace.handle(x, connection);
     }
 
     @Override
     public void endVisit(SQLDropProcedureStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        DropProcedure_function.handle(connection, x);
     }
 
     @Override
@@ -674,7 +695,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLAlterViewRenameStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        AlterView.handle(x, connection);
     }
 
     @Override
@@ -710,7 +732,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLCreateProcedureStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        CreateProcedure_function.handle(x, connection);
     }
 
     @Override
@@ -720,7 +743,8 @@ public class SQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public void endVisit(SQLAlterDatabaseStatement x) {
-        super.endVisit(x);DefaultHander.handle(x, connection);
+        super.endVisit(x);
+        AlterDatabase.handle(x, connection);
     }
 
     @Override

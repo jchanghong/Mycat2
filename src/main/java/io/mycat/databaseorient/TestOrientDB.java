@@ -4,9 +4,8 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import io.mycat.databaseorient.adapter.DBadapter;
-import io.mycat.databaseorient.adapter.OrientException;
+import io.mycat.databaseorient.adapter.MException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import java.util.Map;
  * 用来演示orientdb
  */
 public class TestOrientDB {
-    public static void main(String[] args) throws OrientException {
+    public static void main(String[] args) throws MException {
         DBadapter.currentDB = "changhong";
 
         List<Map<String, String>> list = DBadapter.getInstance().exequery("select * from t1");

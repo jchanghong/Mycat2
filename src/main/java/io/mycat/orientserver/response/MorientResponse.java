@@ -30,7 +30,7 @@ import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
 import io.mycat.databaseorient.adapter.DBadapter;
-import io.mycat.databaseorient.adapter.OrientException;
+import io.mycat.databaseorient.adapter.MException;
 import io.mycat.databaseorient.adapter.TableAdaptor;
 import io.mycat.databaseorient.sqlhander.sqlutil.MSQLutil;
 import io.mycat.net.mysql.EOFPacket;
@@ -100,23 +100,12 @@ public class MorientResponse {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
-        if (sql instanceof MySqlCreateTableStatement) {
-
-            boolean b =TableAdaptor.getInstance().createtable(DBadapter.currentDB, (MySqlCreateTableStatement) sql);
-            if (b) {
-                c.writeok();
-            }
-            else {
-                c.writeErrMessage(ErrorCode.ER_BAD_TABLE_ERROR,"错误");
-            }
-            return;
-        }
 
         try {
           String re=  DBadapter.getInstance().exesql(sql.toString());
 //          c.write(re.getBytes());
             c.writeok();
-        } catch (OrientException e) {
+        } catch (MException e) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "执行语句错误");
             e.printStackTrace();
             return;
@@ -131,7 +120,7 @@ public class MorientResponse {
         List<Map<String, String>> data = null;
         try {
          data=  DBadapter.getInstance().exequery(stmt.toString());
-        } catch (OrientException e) {
+        } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
@@ -173,13 +162,6 @@ public class MorientResponse {
 
     private static void handercreatedb(SQLStatement sqlStatement, OConnection c) {
 
-        boolean b = DBadapter.getInstance().createdb(MSQLutil.getdbname((SQLCreateDatabaseStatement) sqlStatement));
-        if (b) {
-            c.writeok();
-        }
-        else {
-            c.writeErrMessage(ErrorCode.ER_CORRUPT_HELP_DB, "create db erro");
-        }
     }
 
 

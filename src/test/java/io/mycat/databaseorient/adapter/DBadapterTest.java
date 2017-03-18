@@ -71,11 +71,11 @@ public class DBadapterTest {
 
         DBadapter dBadapter = DBadapter.getInstance();
         int si = dBadapter.getalldbnames().size();
-        boolean db = dBadapter.createdb("db");
-        if (db) {
-
-            assertEquals(si+1, dBadapter.hashMap.size());
-        }
+//        boolean db = dBadapter.createdb("db");
+//        if (db) {
+//
+//            assertEquals(si+1, dBadapter.hashMap.size());
+//        }
     }
 
     /**
