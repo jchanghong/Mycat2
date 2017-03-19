@@ -9,10 +9,10 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
  */
 public class sqltest {
     public static void main(String[] args) {
-        String sql = "select 1+1";
+        String sql = "show tables;";
         MySqlStatementParser parser = new MySqlStatementParser(sql);
         SQLStatement mySqlStatement = parser.parseStatement();
-        SQLvisitor visitor = new SQLvisitor(null);
+        MSQLvisitor visitor = new MSQLvisitor(null);
         mySqlStatement.accept(visitor);
 
     }

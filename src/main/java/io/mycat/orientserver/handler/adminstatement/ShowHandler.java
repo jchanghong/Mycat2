@@ -40,121 +40,121 @@ public final class ShowHandler {
         ShowDatabases.response(c);
     }
 
-    public static void showwarnings(MySqlShowWarningsStatement x) {
+    public static void showwarnings(MySqlShowWarningsStatement x, OConnection connection) {
     }
 
-    public static void showstatus(MySqlShowStatusStatement x) {
+    public static void showstatus(MySqlShowStatusStatement x, OConnection connection) {
     }
 
-    public static void showauthors(MySqlShowAuthorsStatement x) {
+    public static void showauthors(MySqlShowAuthorsStatement x, OConnection connection) {
     }
 
-    public static void showbinarylogs(MySqlShowBinaryLogsStatement x) {
+    public static void showbinarylogs(MySqlShowBinaryLogsStatement x, OConnection connection) {
     }
 
-    public static void showmasterlogs(MySqlShowMasterLogsStatement x) {
+    public static void showmasterlogs(MySqlShowMasterLogsStatement x, OConnection connection) {
     }
 
-    public static void showcollation(MySqlShowCollationStatement x) {
+    public static void showcollation(MySqlShowCollationStatement x, OConnection connection) {
     }
 
-    public static void showbinlogevent(MySqlShowBinLogEventsStatement x) {
+    public static void showbinlogevent(MySqlShowBinLogEventsStatement x, OConnection connection) {
     }
 
-    public static void showcharater(MySqlShowCharacterSetStatement x) {
+    public static void showcharater(MySqlShowCharacterSetStatement x, OConnection connection) {
     }
 
-    public static void showcontributors(MySqlShowContributorsStatement x) {
+    public static void showcontributors(MySqlShowContributorsStatement x, OConnection connection) {
     }
 
-    public static void showcreatedatabase(MySqlShowCreateDatabaseStatement x) {
+    public static void showcreatedatabase(MySqlShowCreateDatabaseStatement x, OConnection connection) {
     }
 
-    public static void showcreateevent(MySqlShowCreateEventStatement x) {
+    public static void showcreateevent(MySqlShowCreateEventStatement x, OConnection connection) {
     }
 
-    public static void showcreatefunction(MySqlShowCreateFunctionStatement x) {
+    public static void showcreatefunction(MySqlShowCreateFunctionStatement x, OConnection connection) {
     }
 
-    public static void showcreateproccedure(MySqlShowCreateProcedureStatement x) {
+    public static void showcreateproccedure(MySqlShowCreateProcedureStatement x, OConnection connection) {
     }
 
-    public static void showcreatetable(MySqlShowCreateTableStatement x) {
+    public static void showcreatetable(MySqlShowCreateTableStatement x, OConnection connection) {
     }
 
-    public static void showcreatetrigger(MySqlShowCreateTriggerStatement x) {
+    public static void showcreatetrigger(MySqlShowCreateTriggerStatement x, OConnection connection) {
     }
 
-    public static void showcreateview(MySqlShowCreateViewStatement x) {
+    public static void showcreateview(MySqlShowCreateViewStatement x, OConnection connection) {
     }
 
-    public static void showengine(MySqlShowEngineStatement x) {
+    public static void showengine(MySqlShowEngineStatement x, OConnection connection) {
     }
 
-    public static void showengines(MySqlShowEnginesStatement x) {
+    public static void showengines(MySqlShowEnginesStatement x, OConnection connection) {
     }
 
-    public static void showerrors(MySqlShowErrorsStatement x) {
+    public static void showerrors(MySqlShowErrorsStatement x, OConnection connection) {
     }
 
-    public static void showevents(MySqlShowEventsStatement x) {
+    public static void showevents(MySqlShowEventsStatement x, OConnection connection) {
     }
 
-    public static void showfunctioncode(MySqlShowFunctionCodeStatement x) {
+    public static void showfunctioncode(MySqlShowFunctionCodeStatement x, OConnection connection) {
     }
 
-    public static void showfunctionstatus(MySqlShowFunctionStatusStatement x) {
+    public static void showfunctionstatus(MySqlShowFunctionStatusStatement x, OConnection connection) {
     }
 
-    public static void showgrants(MySqlShowGrantsStatement x) {
+    public static void showgrants(MySqlShowGrantsStatement x, OConnection connection) {
     }
 
-    public static void showindexs(MySqlShowIndexesStatement x) {
+    public static void showindexs(MySqlShowIndexesStatement x, OConnection connection) {
     }
 
-    public static void showkeys(MySqlShowKeysStatement x) {
+    public static void showkeys(MySqlShowKeysStatement x, OConnection connection) {
     }
 
-    public static void showmasterstatus(MySqlShowMasterStatusStatement x) {
+    public static void showmasterstatus(MySqlShowMasterStatusStatement x, OConnection connection) {
     }
 
-    public static void showopentable(MySqlShowOpenTablesStatement x) {
+    public static void showopentable(MySqlShowOpenTablesStatement x, OConnection connection) {
     }
 
-    public static void showplugins(MySqlShowPluginsStatement x) {
+    public static void showplugins(MySqlShowPluginsStatement x, OConnection connection) {
     }
 
-    public static void showprivileges(MySqlShowPrivilegesStatement x) {
+    public static void showprivileges(MySqlShowPrivilegesStatement x, OConnection connection) {
     }
 
-    public static void showprovedureode(MySqlShowProcedureCodeStatement x) {
+    public static void showprovedureode(MySqlShowProcedureCodeStatement x, OConnection connection) {
     }
 
-    public static void showproedurestatus(MySqlShowProcedureStatusStatement x) {
+    public static void showproedurestatus(MySqlShowProcedureStatusStatement x, OConnection connection) {
     }
 
-    public static void showprocesslist(MySqlShowProcessListStatement x) {
+    public static void showprocesslist(MySqlShowProcessListStatement x, OConnection connection) {
     }
 
-    public static void showprofile(MySqlShowProfileStatement x) {
+    public static void showprofile(MySqlShowProfileStatement x, OConnection connection) {
     }
 
-    public static void showprofiles(MySqlShowProfilesStatement x) {
+    public static void showprofiles(MySqlShowProfilesStatement x, OConnection connection) {
     }
 
-    public static void showrelaylog(MySqlShowRelayLogEventsStatement x) {
+    public static void showrelaylog(MySqlShowRelayLogEventsStatement x, OConnection connection) {
     }
 
-    public static void showslavehosts(MySqlShowSlaveHostsStatement x) {
+    public static void showslavehosts(MySqlShowSlaveHostsStatement x, OConnection connection) {
     }
 
-    public static void showslavestatus(MySqlShowSlaveStatusStatement x) {
+    public static void showslavestatus(MySqlShowSlaveStatusStatement x, OConnection connection) {
     }
 
-    public static void showtablestatus(MySqlShowTableStatusStatement x) {
+    public static void showtablestatus(MySqlShowTableStatusStatement x, OConnection connection) {
     }
 
-    public static void showtriggers(MySqlShowTriggersStatement x) {
+    public static void showtriggers(MySqlShowTriggersStatement x, OConnection connection) {
     }
 
     public static void showvatiants(MySqlShowVariantsStatement x, OConnection connection) {
