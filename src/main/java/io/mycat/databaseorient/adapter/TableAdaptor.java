@@ -47,6 +47,11 @@ public class TableAdaptor {
         dbs.stream().forEach(a -> hashMapdb2table.put(a, getalltable(a)));
     }
 
+    public void reload(String otablename,String newtable) {
+        hashmaptable2fild.remove(DBadapter.currentDB + otablename);
+        hashMapdb2table.get(DBadapter.currentDB).remove(otablename);
+        hashMapdb2table.get(DBadapter.currentDB).remove(newtable);
+    }
     /**
      * Droptable boolean.
      *

@@ -79,7 +79,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlInsertStatement x) {
-        connection.writeNotSurrport();
+        Minsert.handle(x, connection);
         return false;
     }
 
