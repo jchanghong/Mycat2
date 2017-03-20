@@ -69,12 +69,11 @@ public class OQueryHandler implements FrontendQueryHandler {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
             lists = parser.parseStatementList();
             lists.forEach(statement -> statement.accept(mySqlASTVisitor));
-            if (lists != null) {
-
+            if (lists != null&&lists.size()>0) {
                 return;
             }
         } catch (Exception e) {//如果不是合法的mysql语句，就报错
-//            e.printStackTrace();
+            e.printStackTrace();
 //            return;
         }
 
