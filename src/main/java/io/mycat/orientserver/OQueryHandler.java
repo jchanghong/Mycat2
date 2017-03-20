@@ -28,6 +28,9 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
 import io.mycat.config.ErrorCode;
 import io.mycat.net.handler.FrontendQueryHandler;
+import io.mycat.orientserver.handler.data_define.AlterServer;
+import io.mycat.orientserver.handler.data_define.DropEVENT;
+import io.mycat.orientserver.handler.data_define.DropView;
 import io.mycat.orientserver.parser.MSQLvisitor;
 import io.mycat.orientserver.response.ShowTables;
 import org.slf4j.Logger;
@@ -65,19 +68,29 @@ public class OQueryHandler implements FrontendQueryHandler {
         try {
             MySqlStatementParser parser = new MySqlStatementParser(sql);
             lists = parser.parseStatementList();
+            lists.forEach(statement -> statement.accept(mySqlASTVisitor));
+            if (lists != null) {
+
+                return;
+            }
         } catch (Exception e) {//如果不是合法的mysql语句，就报错
 //            e.printStackTrace();
             c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, e.getMessage());
             return;
         }
-        lists.forEach(statement -> statement.accept(mySqlASTVisitor));
 
 
-        //对show tables druid貌似有bug，，，，，所以自己写
-//        String[] strings = sql.split("\\s+");
-//        if (strings[0].equalsIgnoreCase("show") && strings[1].equalsIgnoreCase("tables")) {
-//            ShowTables.response(c, sql, 1);
-//        }
+        //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
+        //下面是drop event语句的例子，这个例子druid不支持，所以自己写
+        if (DropEVENT.isdropevent(sql)) {//判断是不是dropevent语句
+            DropEVENT.handle(sql,c);
+            return;
+        }
+        if (AlterServer.ismy(sql)) {
+            AlterServer.handle(sql, c);
+            return;
+        }
+
     }
 }
 
