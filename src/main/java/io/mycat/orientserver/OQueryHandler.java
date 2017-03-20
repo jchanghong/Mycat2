@@ -75,13 +75,15 @@ public class OQueryHandler implements FrontendQueryHandler {
             }
         } catch (Exception e) {//如果不是合法的mysql语句，就报错
 //            e.printStackTrace();
-            c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, e.getMessage());
-            return;
+//            return;
         }
-
 
         //druid支持的语句就用上面的方法语句处理，如果不支持，就会有异常，就自己写代码解析sql语句，处理。
         //下面是drop event语句的例子，这个例子druid不支持，所以自己写
+        handleotherStatement(sql, c);
+    }
+
+    private void handleotherStatement(String sql, OConnection c) {
         if (DropEVENT.isdropevent(sql)) {//判断是不是dropevent语句
             DropEVENT.handle(sql,c);
             return;
@@ -90,7 +92,7 @@ public class OQueryHandler implements FrontendQueryHandler {
             AlterServer.handle(sql, c);
             return;
         }
-
+        c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, e.getMessage());
     }
 }
 
