@@ -7,10 +7,16 @@ import io.mycat.orientserver.OConnection;
  */
 public class DropEVENT {
     public static boolean isdropevent(String sql) {
-        return true;
+        String[] strings = sql.split("\\s+");
+        if (strings.length > 2 && strings[0].equalsIgnoreCase("drop") && strings[1].equalsIgnoreCase("event")) {
+            return true;
+        }
+        return false;
     }
 
     public static void handle(String sql, OConnection c) {
+
+        c.writeErrMessage("drop event 暂时不支持");
 
     }
 }
