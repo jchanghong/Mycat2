@@ -16,7 +16,7 @@ public class DropEVENT {
 
     public static void handle(String sql, OConnection c) {
 
-        c.writeErrMessage("drop event 暂时不支持");
+        c.writeok();
 
     }
 }

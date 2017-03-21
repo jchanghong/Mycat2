@@ -8,6 +8,6 @@ import io.mycat.orientserver.OConnection;
  */
 public class CreateView {
     public static void handle(SQLCreateViewStatement x, OConnection connection) {
-
+        connection.writeok();
     }
 }

@@ -68,6 +68,12 @@ public class FrontendAuthenticator implements NIOHandler {
         AuthPacket auth = new AuthPacket();
         auth.read(data);
 
+        if (source.isorientdb) {
+            MDBadapter.currentDB = auth.database;
+//            source.setSchema(auth.database);
+            success(auth);
+            return;
+        }
         // check user
         if (!checkUser(auth.user, source.getHost())) {
             failure(ErrorCode.ER_ACCESS_DENIED_ERROR, "Access denied for user '" + auth.user + "' with host '" + source.getHost()+ "'");
@@ -87,6 +93,7 @@ public class FrontendAuthenticator implements NIOHandler {
         }
 
             MDBadapter.currentDB = auth.database;
+        source.setSchema(auth.database);
         // check schema
         switch (checkSchema(auth.database, auth.user)) {
         case ErrorCode.ER_BAD_DB_ERROR:

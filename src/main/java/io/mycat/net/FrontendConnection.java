@@ -49,7 +49,7 @@ import java.util.Set;
  * @author mycat
  */
 public abstract class FrontendConnection extends AbstractConnection {
-	
+	public boolean isorientdb;
 	private static final Logger LOGGER = LoggerFactory.getLogger(FrontendConnection.class);
 
 	protected long id;

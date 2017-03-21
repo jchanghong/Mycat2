@@ -61,6 +61,7 @@ public class OConnection extends FrontendConnection {
         super(channel);
         this.txInterrupted = false;
         this.autocommit = true;
+        isorientdb = true;
     }
 
     public void writeNotSurrport() {

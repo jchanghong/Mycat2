@@ -28,9 +28,8 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitor;
 import io.mycat.config.ErrorCode;
 import io.mycat.net.handler.FrontendQueryHandler;
-import io.mycat.orientserver.handler.data_define.AlterServer;
-import io.mycat.orientserver.handler.data_define.DropEVENT;
-import io.mycat.orientserver.handler.data_define.DropView;
+import io.mycat.orientserver.handler.data_define.*;
+import io.mycat.orientserver.handler.data_mannipulation.*;
 import io.mycat.orientserver.parser.MSQLvisitor;
 import io.mycat.orientserver.response.ShowTables;
 import org.slf4j.Logger;
@@ -85,14 +84,84 @@ public class OQueryHandler implements FrontendQueryHandler {
     }
 
     private void handleotherStatement(String sql, OConnection c) {
+        if (AlterEvent.isme(sql)) {
+            AlterEvent.handle(sql, c);
+            return;
+        }
+
+        if (AlterFunction.isme(sql)) {
+            AlterFunction.handle(sql, c);
+            return;
+        }
+        if (AlterInstall.isme(sql)) {
+            AlterInstall.handle(sql, c);
+            return;
+        }
+        if (AlterProcedure.isme(sql)) {
+            AlterInstall.handle(sql, c);
+            return;
+        }
+        if (AlterServer.isme(sql)) {
+            AlterServer.handle(sql, c);
+            return;
+        }
+        if (AlterTableSpace.isme(sql)) {
+            AlterTableSpace.handle(sql, c);
+            return;
+        }
+        if (CreateEvent.isme(sql)) {
+            CreateEvent.handle(sql, c);
+            return;
+        }
+        if (CreateServer.isme(sql)) {
+            CreateServer.handle(sql, c);
+            return;
+        }
+        if (CreateFunction.isme(sql)) {
+            CreateFunction.handle(sql, c);
+            return;
+        }
+        if (CreateLogfilegroup.isme(sql)) {
+            CreateLogfilegroup.handle(sql, c);
+            return;
+        }
+        if (CreateServer.isme(sql)) {
+            CreateServer.handle(sql, c);
+            return;
+        }
+        if (CreateTableSpace.isme(sql)) {
+            CreateTableSpace.handle(sql, c);
+            return;
+        }
         if (DropEVENT.isdropevent(sql)) {//判断是不是dropevent语句
             DropEVENT.handle(sql,c);
             return;
         }
-        if (AlterServer.ismy(sql)) {
-            AlterServer.handle(sql, c);
+        if (DropFunction.isme(sql)) {
+            DropFunction.handle(sql, c);
             return;
         }
+        if (DropLOGFILEGROUP.isme(sql)) {
+            DropLOGFILEGROUP.handle(sql, c);
+            return;
+        }
+        if (DropServer.isme(sql)) {
+            DropServer.handle(sql, c);
+            return;
+        }
+        if (Mdo.isme(sql)) {
+            Mdo.handle(sql, c);
+            return;
+        }
+        if (Mhandler.isme(sql)) {
+            Mhandler.handle(sql, c);
+            return;
+        }
+        if (Msubquery.isme(sql)) {
+            Msubquery.handle(sql, c);
+            return;
+        }
+
         c.writeErrMessage(ErrorCode.ER_SP_BAD_SQLSTATE, exception == null ? "不支持的语句！！！" : exception.getMessage());
     }
 }

@@ -8,6 +8,7 @@ import io.mycat.orientserver.OConnection;
 
 /**
  * Created by 长宏 on 2017/3/18 0018.
+ * LOAD DATA INFILE 'data.txt' INTO TABLE db2.my_table;
  */
 public class MloaddataINfile {
     public static void handle(MySqlLoadDataInFileStatement x, OConnection connection) {

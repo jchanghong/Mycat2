@@ -24,6 +24,7 @@
 package io.mycat.orientserver.response;
 
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.record.impl.ODocument;
@@ -68,6 +69,7 @@ public class MorientSelectResponse {
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;
+        documentTx.activateOnCurrentThread();
         for (OProperty string : oClass.properties()) {
             fields[i] = PacketUtil.getField(string.getName(), Fields.FIELD_TYPE_VAR_STRING);
             fieldsstring.add(string.getName());
@@ -89,6 +91,8 @@ public class MorientSelectResponse {
         fields[i++].packetId = ++packetId;
         eof.packetId = ++packetId;
     }
+
+    private static ODatabaseDocumentTx documentTx = null;
     public static void responseselect(OConnection c, SQLSelectStatement stmt) {
         if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
@@ -102,6 +106,7 @@ public class MorientSelectResponse {
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
         }
+        documentTx = MDBadapter.getdbtx();
         if (!inithead(data, stmt)) {
             c.writeNotSurrport();
             return;
@@ -131,6 +136,7 @@ public class MorientSelectResponse {
         buffer = lastEof.write(buffer, c, true);
         // post write
         c.write(buffer);
+        documentTx.close();
     }
 
 

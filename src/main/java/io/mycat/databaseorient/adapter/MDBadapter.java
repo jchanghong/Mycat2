@@ -24,6 +24,24 @@ public class MDBadapter {
         executor = MycatServer.getInstance().getBusinessExecutor();
         loaddbset();
     }
+
+    public static ODatabaseDocumentTx getdbtx(String dbname) {
+        if (!dbset.contains(dbname)) {
+            return null;
+        }
+        ODatabaseDocumentTx documentTx = getdbpool(dbname).acquire();
+        return documentTx;
+    }
+    public static ODatabaseDocumentTx getdbtx() {
+        if (currentDB == null) {
+            return null;
+        }
+        if (!dbset.contains(currentDB)) {
+            return null;
+        }
+        ODatabaseDocumentTx documentTx = getdbpool(currentDB).acquire();
+        return documentTx;
+    }
     /**
      * The constant currentDB.
      */
@@ -46,13 +64,14 @@ public class MDBadapter {
      */
     synchronized  public static void deletedb(String dbname) throws MException {
         if (dbset.contains(dbname)) {
+            dbset.remove(dbname);
+            hashMap.remove(dbname);
             executor.execute(()->{
                 OPartitionedDatabasePool oDatabaseDocumentTx = getdbpool(dbname);
                 ODatabaseDocumentTx documentTx = oDatabaseDocumentTx.acquire();
                 documentTx.activateOnCurrentThread();
                 documentTx.drop();
-                hashMap.remove(dbname);
-                dbset.remove(dbname);
+                documentTx.close();
             });
         }else {
             throw new MException("db 不存在");
@@ -173,7 +192,6 @@ public class MDBadapter {
             documentTx= getdbpool(currentDB).acquire();
             documentTx.activateOnCurrentThread();
             Object object=documentTx.command(new OCommandSQL(sql)).execute();
-            documentTx.close();
             return object;
         } catch (Exception e) {
             throw new MException(e.getMessage());
@@ -203,9 +221,9 @@ public class MDBadapter {
             List<ODocument> result = documentTx.query(
                     new OSQLSynchQuery<ODocument>(
                             sqlquery));
-            documentTx.close();
             return result;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new MException(e.getMessage());
         } finally {
             if (documentTx != null&& !documentTx.isClosed()) {

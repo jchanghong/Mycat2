@@ -8,6 +8,12 @@ import io.mycat.orientserver.OConnection;
 
 /**
  * Created by 长宏 on 2017/3/18 0018.
+ * mysql> LOAD XML LOCAL INFILE 'person.xml'
+ ->   INTO TABLE person
+ ->   ROWS IDENTIFIED BY '<person>';
+
+ Query OK, 8 rows affected (0.00 sec)
+ Records: 8  Deleted: 0  Skipped: 0  Warnings: 0
  */
 public class Mloadxml {
     public static void handle(MySqlLoadXmlStatement x, OConnection connection) {

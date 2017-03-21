@@ -109,6 +109,7 @@ public final class MSelectHandler {
             SelectTxReadOnly.response(c);
             return;
         }
+        c.writeNotSurrport();
     }
 
     private static void handleopexpr(SQLBinaryOpExpr sqlBinaryOpExpr,OConnection connection) {
