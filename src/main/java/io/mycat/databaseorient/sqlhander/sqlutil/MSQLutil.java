@@ -63,10 +63,10 @@ public class MSQLutil {
      * @param sqlStatement the sql statement
      * @return the
      */
-    public static String gettablename(String sqlStatement) {
+    public static String gettablename(String sqlselectStatement) {
      SQLSelectStatement sqlSelectStatement = null;
-     MySqlStatementParser parser = new MySqlStatementParser(sqlStatement);
-     sqlSelectStatement = (SQLSelectStatement) parser.parseSelect();
+     MySqlStatementParser parser = new MySqlStatementParser(sqlselectStatement);
+     sqlSelectStatement = (SQLSelectStatement) parser.parseStatement();
      return gettablename(sqlSelectStatement);
     }
 

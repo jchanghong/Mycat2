@@ -36,7 +36,6 @@ import java.nio.channels.NetworkChannel;
  * @author mycat
  */
 public class OConnectionFactory extends FrontendConnectionFactory {
-
     @Override
     protected FrontendConnection getConnection(NetworkChannel channel) throws IOException {
         SystemConfig sys = MycatServer.config.getSystem();

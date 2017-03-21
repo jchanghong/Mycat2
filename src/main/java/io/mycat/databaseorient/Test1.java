@@ -9,7 +9,7 @@ import io.mycat.databaseorient.adapter.MException;
 public class Test1 {
     public static void main(String[] args) throws MException {
 
-        MDBadapter.currentDB = "db1";
+        MDBadapter.currentDB = "db3";
 //        MDBadapter.createdb(MDBadapter.currentDB);
         MDBadapter.exesql("insert into t1(id) values(2);");
         Object o = MDBadapter.exesql("insert into t1(id) values(2);");

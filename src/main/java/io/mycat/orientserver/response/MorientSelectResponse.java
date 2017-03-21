@@ -43,11 +43,11 @@ import io.mycat.orientserver.OConnection;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author 默认的响应
+ * @author changhong 默认的响应
+ * 调用orientdb的select
  * orientdb select
  */
 public class MorientSelectResponse {
@@ -56,14 +56,14 @@ public class MorientSelectResponse {
     private static   ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
     private static   FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
     private static   EOFPacket eof = new EOFPacket();
-    private static List<String> fieldsstring = new ArrayList<>();
+    private static List<String> selects;
     private static boolean inithead(List<ODocument> data, SQLSelectStatement stmt) {
         OClass oClass = MtableAdapter.gettableclass(MSQLutil.gettablename(stmt));
         if (oClass == null) {
             return false;
         }
-        fieldsstring.clear();
-        FIELD_COUNT = oClass.properties().size();
+        selects = MSQLutil.gettablenamefileds(stmt);
+        FIELD_COUNT = selects.size();
         header = PacketUtil.getHeader(FIELD_COUNT);
         fields = new FieldPacket[FIELD_COUNT];
         int i = 0;
@@ -71,29 +71,30 @@ public class MorientSelectResponse {
         header.packetId = ++packetId;
         documentTx.activateOnCurrentThread();
         for (OProperty string : oClass.properties()) {
-            fields[i] = PacketUtil.getField(string.getName(), Fields.FIELD_TYPE_VAR_STRING);
-            fieldsstring.add(string.getName());
+            if (!oClass.existsProperty(string)) {
+                return false;
+            }
+            fields[i] = PacketUtil.getField(string, Fields.FIELD_TYPE_VAR_STRING);
             fields[i++].packetId = ++packetId;
         }
         eof.packetId = ++packetId;
         return true;
     }
     private static void setrow(RowDataPacket row, ODocument name,OConnection connection) {
-        fieldsstring.forEach(a-> {
+        selects.forEach(a-> {
             row.add(StringUtil.encode(name.field(a).toString(), connection.getCharset()));
         });
     }
-    static {
-        int i = 0;
-        byte packetId = 0;
-        header.packetId = ++packetId;
-        fields[i] = PacketUtil.getField("DATABASE22", Fields.FIELD_TYPE_VAR_STRING);
-        fields[i++].packetId = ++packetId;
-        eof.packetId = ++packetId;
-    }
 
     private static ODatabaseDocumentTx documentTx = null;
-    public static void responseselect(OConnection c, SQLSelectStatement stmt) {
+
+    /**
+     * Responseselect.
+     *stem可以是mysql的语句，也可以经过一定的变化
+     * @param c    the c
+     * @param stmt the stmt
+     */
+    public static void responseselect(OConnection c, String stmt) {
         if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;

@@ -46,6 +46,7 @@ public class OQueryHandler implements FrontendQueryHandler {
 
     private final OConnection source;
     protected Boolean readOnly;
+    private Exception exception;
     private MySqlASTVisitor mySqlASTVisitor;
 
     public OQueryHandler(OConnection source) {
@@ -56,8 +57,6 @@ public class OQueryHandler implements FrontendQueryHandler {
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
-
-    private Exception exception;
     @Override
     public void query(String sql) {
         OConnection c = this.source;
@@ -98,7 +97,7 @@ public class OQueryHandler implements FrontendQueryHandler {
             return;
         }
         if (AlterProcedure.isme(sql)) {
-            AlterInstall.handle(sql, c);
+            AlterProcedure.handle(sql, c);
             return;
         }
         if (AlterServer.isme(sql)) {
