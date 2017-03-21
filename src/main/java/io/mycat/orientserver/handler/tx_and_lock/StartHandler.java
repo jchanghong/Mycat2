@@ -24,10 +24,8 @@
 package io.mycat.orientserver.handler.tx_and_lock;
 
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlStartTransactionStatement;
-import io.mycat.config.ErrorCode;
 import io.mycat.net.mysql.OkPacket;
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.response.MorientResponse;
 
 /**
  * @author 完成

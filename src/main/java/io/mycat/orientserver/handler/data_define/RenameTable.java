@@ -1,16 +1,14 @@
 package io.mycat.orientserver.handler.data_define;
 
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlRenameTableStatement;
-import io.mycat.databaseorient.adapter.DBadapter;
+import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.databaseorient.adapter.MException;
-import io.mycat.databaseorient.adapter.TableAdaptor;
 import io.mycat.orientserver.OConnection;
-import org.springframework.util.FileCopyUtils;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by 长宏 on 2017/3/18 0018.
@@ -27,34 +25,38 @@ import java.io.IOException;
  orientdb> ALTER CLASS Account NAME Seller
  */
 public class RenameTable {
+    static Map<String, MException> map = new HashMap<>();
     public static void handle(MySqlRenameTableStatement x, OConnection connection) {
-        if (DBadapter.currentDB == null) {
+        if (MDBadapter.currentDB == null) {
             connection.writeErrMessage("没有选择数据库");
         }
-       DBadapter.executor.execute(() -> handleme(x, connection));
+        OPartitionedDatabasePool pool = MDBadapter.getdbpool(MDBadapter.currentDB);
+        ODatabaseDocumentTx tx = pool.acquire();
+        tx.activateOnCurrentThread();
+        String oldname = x.getItems().get(0).getName().toString();
+        String newname = x.getItems().get(0).getTo().toString();
+        if (!tx.getMetadata().getSchema().existsClass(oldname)) {
+            connection.writeErrMessage("表不存在");
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append("ALTER CLASS ");
+        builder.append(oldname);
+        builder.append("  NAME ");
+        builder.append(newname);
+        map.clear();
+            MDBadapter.executor.execute(() -> {
+                try {
+                    MDBadapter.exesql(builder.toString());
+                } catch (MException e) {
+                    e.printStackTrace();
+                    map.put("k", e);
+                }
+            });
+        if (map.size() > 0) {
+            connection.writeErrMessage(map.get("k").getMessage());
+            return;
+        }
         connection.writeok();
-    }
-    private static void handleme(MySqlRenameTableStatement x, OConnection connection) {
-        MySqlRenameTableStatement.Item item = x.getItems().get(0);
-        String oldname = item.getName().toString();
-        String newname = item.getTo().toString();
-        File old = new File(TableAdaptor.getInstance().getfilepath(DBadapter.currentDB, oldname));
-        File newfile = new File(TableAdaptor.getInstance().getfilepath(DBadapter.currentDB, newname));
-        old.renameTo(newfile);
-        try {
-            String content = FileCopyUtils.copyToString(new FileReader(newfile));
-            content = content.replace(oldname, newname);
-            FileCopyUtils.copy(content, new FileWriter(newfile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //orientdb> ALTER CLASS Account NAME Seller
-        String orient = "ALTER CLASS  " + oldname + "  NAME " + newname;
-        try {
-            DBadapter.getInstance().exesql(orient);
-        } catch (MException e) {
-            e.printStackTrace();
-        }
-        TableAdaptor.getInstance().reload(oldname, newname);
     }
 }

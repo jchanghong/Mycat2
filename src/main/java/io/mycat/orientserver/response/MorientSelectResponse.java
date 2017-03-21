@@ -23,15 +23,16 @@
  */
 package io.mycat.orientserver.response;
 
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
-import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.core.metadata.schema.OProperty;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.databaseorient.adapter.MException;
-import io.mycat.databaseorient.adapter.TableAdaptor;
+import io.mycat.databaseorient.adapter.MtableAdapter;
 import io.mycat.databaseorient.sqlhander.sqlutil.MSQLutil;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
@@ -43,38 +44,42 @@ import io.mycat.util.StringUtil;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 默认的响应
+ * orientdb select
  */
-public class MorientResponse {
+public class MorientSelectResponse {
 
     private static   int FIELD_COUNT = 1;
     private static   ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
     private static   FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
     private static   EOFPacket eof = new EOFPacket();
-    static List<String> fieldss = null;
-    private static void inithead(List<Map<String, String>> data, String stmt) {
-        List<String> strings = null;
-        if (data.size() > 0) {
-            strings = new ArrayList<>(data.get(0).keySet());
+    private static List<String> fieldsstring = new ArrayList<>();
+    private static boolean inithead(List<ODocument> data, SQLSelectStatement stmt) {
+        OClass oClass = MtableAdapter.gettableclass(MSQLutil.gettablename(stmt));
+        if (oClass == null) {
+            return false;
         }
-        else {
-            strings = MSQLutil.gettablenamefileds(stmt);
-        }
-        FIELD_COUNT = strings.size();
+        fieldsstring.clear();
+        FIELD_COUNT = oClass.properties().size();
         header = PacketUtil.getHeader(FIELD_COUNT);
         fields = new FieldPacket[FIELD_COUNT];
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;
-        for (String string : strings) {
-            fields[i] = PacketUtil.getField(string, Fields.FIELD_TYPE_VAR_STRING);
+        for (OProperty string : oClass.properties()) {
+            fields[i] = PacketUtil.getField(string.getName(), Fields.FIELD_TYPE_VAR_STRING);
+            fieldsstring.add(string.getName());
             fields[i++].packetId = ++packetId;
         }
-        fieldss = strings;
         eof.packetId = ++packetId;
+        return true;
+    }
+    private static void setrow(RowDataPacket row, ODocument name,OConnection connection) {
+        fieldsstring.forEach(a-> {
+            row.add(StringUtil.encode(name.field(a).toString(), connection.getCharset()));
+        });
     }
     static {
         int i = 0;
@@ -84,50 +89,24 @@ public class MorientResponse {
         fields[i++].packetId = ++packetId;
         eof.packetId = ++packetId;
     }
-
-    /**
-     * Response.没有还回结果的语句
-     *
-     * @param c   the c
-     * @param sql the sql
-     */
-    public static void response(OConnection c, SQLStatement sql) {
-        if (sql instanceof SQLCreateDatabaseStatement) {
-            handercreatedb(sql, c);
-            return;
-        }
-        if (DBadapter.currentDB == null) {
+    public static void responseselect(OConnection c, SQLSelectStatement stmt) {
+        if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
-
+        List<ODocument> data ;
         try {
-          String re=  DBadapter.getInstance().exesql(sql.toString());
-//          c.write(re.getBytes());
-            c.writeok();
-        } catch (MException e) {
-            c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "执行语句错误");
-            e.printStackTrace();
-            return;
-        }
-    }
-
-    public static void responseselect(OConnection c, SQLStatement stmt) {
-        if (DBadapter.currentDB == null) {
-            c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
-            return;
-        }
-        List<Map<String, String>> data = null;
-        try {
-         data=  DBadapter.getInstance().exequery(stmt.toString());
+         data=  MDBadapter.exequery(stmt.toString());
         } catch (MException e) {
             e.printStackTrace();
             c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
             return;
         }
-        inithead(data,stmt.toString());
+        if (!inithead(data, stmt)) {
+            c.writeNotSurrport();
+            return;
+        }
         ByteBuffer buffer = c.allocate();
-
         // write header
         buffer = header.write(buffer, c, true);
 
@@ -138,16 +117,11 @@ public class MorientResponse {
 
         // write eof
         buffer = eof.write(buffer, c, true);
-
         // write rows
         byte packetId = eof.packetId;
-            for (Map<String,String> name : data) {
+            for (ODocument name : data) {
                 RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-                for (String s : fieldss) {
-//                    String s1 = String.valueOf(s);
-                    String ss2 = String.valueOf(name.get(s));
-                    row.add(StringUtil.encode(ss2, c.getCharset()));
-                }
+                setrow(row, name,c);
                 row.packetId = ++packetId;
                 buffer = row.write(buffer, c, true);
             }
@@ -155,14 +129,11 @@ public class MorientResponse {
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;
         buffer = lastEof.write(buffer, c, true);
-
         // post write
         c.write(buffer);
     }
 
-    private static void handercreatedb(SQLStatement sqlStatement, OConnection c) {
 
-    }
 
 
 }

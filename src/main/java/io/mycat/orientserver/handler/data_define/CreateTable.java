@@ -3,9 +3,9 @@ package io.mycat.orientserver.handler.data_define;
 import com.alibaba.druid.sql.ast.statement.SQLCreateTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
 import io.mycat.config.ErrorCode;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.databaseorient.adapter.MException;
-import io.mycat.databaseorient.adapter.TableAdaptor;
+import io.mycat.databaseorient.adapter.MtableAdapter;
 import io.mycat.orientserver.OConnection;
 
 /**
@@ -13,12 +13,12 @@ import io.mycat.orientserver.OConnection;
  */
 public class CreateTable {
     public static void handle(MySqlCreateTableStatement x, OConnection c) {
-        if (DBadapter.currentDB == null) {
+        if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
             return;
         }
         try {
-            TableAdaptor.getInstance().createtable(DBadapter.currentDB, x);
+            MtableAdapter.createtable(MDBadapter.currentDB, x);
             c.writeok();
             return;
         } catch (MException e) {

@@ -25,7 +25,7 @@ package io.mycat.orientserver.response;
 
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.Fields;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
@@ -71,7 +71,7 @@ public class ShowDatabases {
         // write rows
         byte packetId = eof.packetId;
 
-            for (String name : DBadapter.getInstance().getalldbnames()) {
+            for (String name : MDBadapter.dbset) {
                 RowDataPacket row = new RowDataPacket(FIELD_COUNT);
                 row.add(StringUtil.encode(name, c.getCharset()));
                 row.packetId = ++packetId;

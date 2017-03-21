@@ -27,7 +27,7 @@ import io.mycat.MycatServer;
 import io.mycat.backend.mysql.SecurityUtil;
 import io.mycat.config.Capabilities;
 import io.mycat.config.ErrorCode;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.net.FrontendConnection;
 import io.mycat.net.NIOHandler;
 import io.mycat.net.NIOProcessor;
@@ -86,7 +86,7 @@ public class FrontendAuthenticator implements NIOHandler {
              return;
         }
 
-            DBadapter.currentDB = auth.database;
+            MDBadapter.currentDB = auth.database;
         // check schema
         switch (checkSchema(auth.database, auth.user)) {
         case ErrorCode.ER_BAD_DB_ERROR:

@@ -25,7 +25,6 @@ package io.mycat.orientserver.response;
 
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.Fields;
-import io.mycat.databaseorient.adapter.DBadapter;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;

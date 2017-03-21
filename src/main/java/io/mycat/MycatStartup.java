@@ -24,9 +24,8 @@
 package io.mycat;
 
 
-
 import io.mycat.config.model.SystemConfig;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +54,7 @@ public final class MycatStartup {
             // startup
             server.startup();
 //            MystoreConfig.saveconfig();
-            DBadapter.getInstance().exesql("list class");
+            MDBadapter.currentDB = null;
             System.out.println("MyCAT Server startup successfully. see logs in logs/mycat.log");
             System.out.println("Mycat启动成功.日志文件在logs/mycat.log");
             System.out.println("Mycat启动成功.日志文件在logs/mycat.log");

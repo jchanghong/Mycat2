@@ -25,7 +25,7 @@ package io.mycat.orientserver;
 
 import io.mycat.backend.mysql.MySQLMessage;
 import io.mycat.config.ErrorCode;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.net.FrontendConnection;
 import io.mycat.net.mysql.OkPacket;
 import io.mycat.orientserver.response.Heartbeat;
@@ -223,16 +223,14 @@ public class OConnection extends FrontendConnection {
         MySQLMessage mm = new MySQLMessage(data);
         mm.position(5);
         String db = mm.readString();
-
         // 检查schema的有效性
-        if (!DBadapter.getInstance().getalldbnames().contains(db)) {
+        if (!MDBadapter.dbset.contains(db)) {
             writeErrMessage(ErrorCode.ER_BAD_DB_ERROR, "Unknown database '" + db + "'");
             return;
         }
         this.schema = db;
-        DBadapter.currentDB = db;
+        MDBadapter.currentDB = db;
         write(writeToBuffer(OkPacket.OK, allocate()));
-
     }
 
     public void writeErrMessage(String message) {

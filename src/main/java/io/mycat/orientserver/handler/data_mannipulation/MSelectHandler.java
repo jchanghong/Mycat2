@@ -25,12 +25,10 @@ package io.mycat.orientserver.handler.data_mannipulation;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
-import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.handler.DefaultHander;
 import io.mycat.orientserver.response.*;
 import io.mycat.orientserver.util.Mcomputer;
 
@@ -49,7 +47,7 @@ public final class MSelectHandler {
 
         MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
         if (queryBlock.getFrom() != null) {
-            MorientResponse.responseselect(c, selectStatement);
+            MorientSelectResponse.responseselect(c, selectStatement);
             return;
         }
         SQLSelectItem selectItem = queryBlock.getSelectList().get(0);

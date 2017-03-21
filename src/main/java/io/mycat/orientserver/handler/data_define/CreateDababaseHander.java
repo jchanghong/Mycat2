@@ -1,8 +1,7 @@
 package io.mycat.orientserver.handler.data_define;
 
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
-import io.mycat.config.ErrorCode;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.databaseorient.adapter.MException;
 import io.mycat.databaseorient.sqlhander.sqlutil.MSQLutil;
 import io.mycat.orientserver.OConnection;
@@ -13,7 +12,7 @@ import io.mycat.orientserver.OConnection;
 public class CreateDababaseHander {
     public static void handle(SQLCreateDatabaseStatement createDatabaseStatement, OConnection c) {
         try {
-            DBadapter.getInstance().createdb(MSQLutil.getdbname( createDatabaseStatement));
+            MDBadapter.createdb(MSQLutil.getdbname( createDatabaseStatement));
             c.writeok();
         } catch (MException e) {
             e.printStackTrace();

@@ -1,22 +1,10 @@
 package io.mycat.orientserver.handler.utilstatement;
 
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlHelpStatement;
-import io.mycat.backend.mysql.PacketUtil;
-import io.mycat.config.ErrorCode;
-import io.mycat.databaseorient.adapter.DBadapter;
-import io.mycat.net.AbstractConnection;
-import io.mycat.net.mysql.*;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.response.Select1Response;
-import io.mycat.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.nio.ByteBuffer;
 import java.util.Arrays;
-
-import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.header;
-import static io.mycat.net.mysql.EOFPacket.FIELD_COUNT;
 
 /**
  * Created by 长宏 on 2017/2/25 0025.

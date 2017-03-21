@@ -1,7 +1,7 @@
 package io.mycat.orientserver.handler.data_define;
 
 import com.alibaba.druid.sql.ast.statement.SQLDropDatabaseStatement;
-import io.mycat.databaseorient.adapter.DBadapter;
+import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.databaseorient.adapter.MException;
 import io.mycat.orientserver.OConnection;
 
@@ -11,7 +11,7 @@ import io.mycat.orientserver.OConnection;
 public class DropDatabase {
     public static void handle(SQLDropDatabaseStatement x, OConnection connection) {
         try {
-            DBadapter.getInstance().deletedb(x.getDatabase().toString());
+            MDBadapter.deletedb(x.getDatabase().toString());
             connection.writeok();
         } catch (MException e) {
             e.printStackTrace();

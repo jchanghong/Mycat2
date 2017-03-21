@@ -1,12 +1,16 @@
 package io.mycat.databaseorient.sqlhander.sqlutil;
 
+import com.alibaba.druid.sql.SQLUtils;
+import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;
 import com.alibaba.druid.sql.ast.statement.SQLCreateDatabaseStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import com.orientechnologies.orient.core.metadata.schema.OProperty;
+import com.orientechnologies.orient.core.metadata.schema.OPropertyImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jiang on 2016/12/17 0017.
@@ -35,6 +39,23 @@ public class MSQLutil {
         select.getSelectList().stream().forEach(a->list.add(a.getExpr().toString()));
         return list;
     }
+    /**
+     * Gets .
+     *
+     * @param sqlStatement the sql statement
+     * @return the
+     */
+    public static Map<String,String> gettablenamefileds(MySqlCreateTableStatement sqlStatement) {
+        Map<String, String> list = new HashMap<>();
+       sqlStatement.getTableElementList().forEach(item->{
+           SQLColumnDefinition columnDefinition = (SQLColumnDefinition) item;
+           String name = columnDefinition.getName().toString();
+           String type = columnDefinition.getDataType().getName();
+           list.put(name, type);
+       });
+        return list;
+    }
+
 
     /**
      * Gets .
@@ -79,7 +100,9 @@ public class MSQLutil {
      */
     public static void main(String[] args) {
 
-        System.out.println(gettablenamefileds("select *,rff from dd"));
-        System.out.println(gettablename("select * from dd"));
+        String sql = "create table t1(id int,name varchar);";
+        gettablenamefileds((MySqlCreateTableStatement) SQLUtils.parseStatements(sql, "mysql").get(0));
+//        System.out.println(gettablenamefileds("select *,rff from dd"));
+//        System.out.println(gettablename("select * from dd"));
     }
 }

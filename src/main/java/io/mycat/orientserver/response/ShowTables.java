@@ -3,19 +3,16 @@ package io.mycat.orientserver.response;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
-import io.mycat.databaseorient.adapter.DBadapter;
-import io.mycat.databaseorient.adapter.TableAdaptor;
+import io.mycat.databaseorient.adapter.MDBadapter;
+import io.mycat.databaseorient.adapter.MtableAdapter;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
 import io.mycat.net.mysql.ResultSetHeaderPacket;
 import io.mycat.net.mysql.RowDataPacket;
 import io.mycat.orientserver.OConnection;
-import io.mycat.orientserver.util.SchemaUtil;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * show tables impl
@@ -39,7 +36,7 @@ public class ShowTables {
      * @param c
      */
     public static void response(OConnection c, String stmt, int type) {
-        if (DBadapter.currentDB == null) {
+        if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!!");
             return;
         }
@@ -65,7 +62,7 @@ public class ShowTables {
         // write rows
         packetId = eof.packetId;
 
-        for (String name : TableAdaptor.getInstance().hashMapdb2table.get(DBadapter.currentDB)) {
+        for (String name : MtableAdapter.getalltable(MDBadapter.currentDB)) {
             RowDataPacket row = new RowDataPacket(FIELD_COUNT);
             row.add(StringUtil.encode(name.toLowerCase(), c.getCharset()));
             row.packetId = ++packetId;
