@@ -33,7 +33,6 @@ import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
 import io.mycat.databaseorient.adapter.MDBadapter;
 import io.mycat.databaseorient.adapter.MException;
-import io.mycat.databaseorient.adapter.MtableAdapter;
 import io.mycat.databaseorient.sqlhander.sqlutil.MSQLutil;
 import io.mycat.net.mysql.EOFPacket;
 import io.mycat.net.mysql.FieldPacket;
@@ -43,75 +42,72 @@ import io.mycat.orientserver.OConnection;
 import io.mycat.util.StringUtil;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author changhong 默认的响应
- * 调用orientdb的select
- * orientdb select
+ *         调用orientdb的select
+ *         orientdb select
  */
 public class MorientSelectResponse {
 
-    private static   int FIELD_COUNT = 1;
-    private static   ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
-    private static   FieldPacket[] fields = new FieldPacket[FIELD_COUNT];
-    private static   EOFPacket eof = new EOFPacket();
-    private static List<String> selects;
-    private static boolean inithead(List<ODocument> data, SQLSelectStatement stmt) {
-        OClass oClass = MtableAdapter.gettableclass(MSQLutil.gettablename(stmt));
-        if (oClass == null) {
-            return false;
+
+    /**
+     * Responseselect.
+     * statement====stmt
+     * stem可以是mysql的语句，也可以经过一定的变化
+     *
+     * @param c    the c
+     * @param stmt the stmt
+     */
+    public static void responseselect(OConnection c, String stmt, SQLSelectStatement statement) {
+        if (MDBadapter.currentDB == null) {
+            c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
+            return;
         }
+        int FIELD_COUNT;
+        ResultSetHeaderPacket header;
+        FieldPacket[] fields;
+        EOFPacket eof;
+        List<String> selects;
+        List<ODocument> data;
+        try {
+            data = MDBadapter.exequery(stmt);
+        } catch (MException e) {
+            e.printStackTrace();
+            c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
+            return;
+        }
+      ODatabaseDocumentTx  documentTx = MDBadapter.getCurrentDB();
+        OClass oClass = documentTx.getMetadata().getSchema().getClass(MSQLutil.gettablename(statement));
+        if (oClass == null) {
+            c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, "error");
+            documentTx.close();
+            return;
+        }
+        List<String> selectall = new ArrayList<>();
+        oClass.properties().forEach(a -> selectall.add(a.getName()));
         selects = MSQLutil.gettablenamefileds(stmt);
+        if (selects.contains("*")) {
+            selects = selectall;
+        }
         FIELD_COUNT = selects.size();
         header = PacketUtil.getHeader(FIELD_COUNT);
         fields = new FieldPacket[FIELD_COUNT];
         int i = 0;
         byte packetId = 0;
         header.packetId = ++packetId;
-        documentTx.activateOnCurrentThread();
         for (OProperty string : oClass.properties()) {
-            if (!oClass.existsProperty(string)) {
-                return false;
+            if (selects.contains(string.getName())) {
+                fields[i] = PacketUtil.getField(string.getName(), Fields.FIELD_TYPE_VAR_STRING);
+                fields[i++].packetId = ++packetId;
             }
-            fields[i] = PacketUtil.getField(string, Fields.FIELD_TYPE_VAR_STRING);
-            fields[i++].packetId = ++packetId;
         }
+        eof = new EOFPacket();
         eof.packetId = ++packetId;
-        return true;
-    }
-    private static void setrow(RowDataPacket row, ODocument name,OConnection connection) {
-        selects.forEach(a-> {
-            row.add(StringUtil.encode(name.field(a).toString(), connection.getCharset()));
-        });
-    }
 
-    private static ODatabaseDocumentTx documentTx = null;
 
-    /**
-     * Responseselect.
-     *stem可以是mysql的语句，也可以经过一定的变化
-     * @param c    the c
-     * @param stmt the stmt
-     */
-    public static void responseselect(OConnection c, String stmt) {
-        if (MDBadapter.currentDB == null) {
-            c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!");
-            return;
-        }
-        List<ODocument> data ;
-        try {
-         data=  MDBadapter.exequery(stmt.toString());
-        } catch (MException e) {
-            e.printStackTrace();
-            c.writeErrMessage(ErrorCode.ERR_HANDLE_DATA, e.getMessage());
-            return;
-        }
-        documentTx = MDBadapter.getdbtx();
-        if (!inithead(data, stmt)) {
-            c.writeNotSurrport();
-            return;
-        }
         ByteBuffer buffer = c.allocate();
         // write header
         buffer = header.write(buffer, c, true);
@@ -120,17 +116,17 @@ public class MorientSelectResponse {
         for (FieldPacket field : fields) {
             buffer = field.write(buffer, c, true);
         }
-
         // write eof
         buffer = eof.write(buffer, c, true);
         // write rows
-        byte packetId = eof.packetId;
-            for (ODocument name : data) {
-                RowDataPacket row = new RowDataPacket(FIELD_COUNT);
-                setrow(row, name,c);
-                row.packetId = ++packetId;
-                buffer = row.write(buffer, c, true);
-            }
+        for (ODocument name : data) {
+            RowDataPacket row = new RowDataPacket(FIELD_COUNT);
+            selects.forEach(a -> {
+                row.add(StringUtil.encode(name.field(a)==null?"null":name.field(a).toString(), c.getCharset()));
+            });
+            row.packetId = ++packetId;
+            buffer = row.write(buffer, c, true);
+        }
         // write last eof
         EOFPacket lastEof = new EOFPacket();
         lastEof.packetId = ++packetId;
@@ -139,8 +135,6 @@ public class MorientSelectResponse {
         c.write(buffer);
         documentTx.close();
     }
-
-
 
 
 }

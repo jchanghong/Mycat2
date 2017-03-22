@@ -1,6 +1,5 @@
 package io.mycat.databaseorient.adapter;
 
-import com.alibaba.druid.sql.ast.statement.SQLIfStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
@@ -24,19 +23,23 @@ public class MtableAdapter {
      * @return the boolean
      */
     public static void droptable(String dbname,String table) throws MException {
-      final   ODatabaseDocumentTx db ;
+        if (!MDBadapter.dbset.contains(dbname)) {
+            throw new MException("db不存在");
+        }
+      final   ODatabaseDocumentTx db  = MDBadapter.getCurrentDB(dbname);;
         try {
-            db = MDBadapter.getdbtx(dbname);
-            if (db == null) {
-                throw new MException("db不存在");
-            }
-            db.activateOnCurrentThread();
             OSchema oSchema = db.getMetadata().getSchema();
             if (oSchema.existsClass(table)) {
                 MDBadapter.executor.execute(() -> {
-                    db.activateOnCurrentThread();
-                    oSchema.dropClass(table);
-                    db.close();
+                    ODatabaseDocumentTx db2 = MDBadapter.getCurrentDB(dbname);
+                    try {
+                        db2.activateOnCurrentThread();
+                        db2.getMetadata().getSchema().dropClass(table);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        db2.close();
+                    }
                 });
             }
             else {
@@ -45,8 +48,8 @@ public class MtableAdapter {
         } catch (Exception e) {
             throw new MException(e.getMessage());
         }
-
         finally {
+            db.close();
         }
     }
     /**
@@ -60,62 +63,85 @@ public class MtableAdapter {
         if (!MDBadapter.dbset.contains(dbname)) {
             throw new MException("db不存在");
         }
-        ODatabaseDocumentTx db = MDBadapter.getdbtx(dbname);
-        db.activateOnCurrentThread();
+        ODatabaseDocumentTx db = MDBadapter.getCurrentDB(dbname);
+//        db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
         String table = createTableStatement.getTableSource().toString();
         if (oSchema.existsClass(table)) {
+            db.close();
             throw new MException("table已经存在");
         }
+        db.close();
         MDBadapter.executor.execute(()->{
-            db.activateOnCurrentThread();
-            OClass oClass = db.getMetadata().getSchema()
-                    .createClass(table);
-            oClass.setStrictMode(true);
-            Map<String, String> maps = MSQLutil.gettablenamefileds(createTableStatement);
-            maps.entrySet().forEach(e->{
-                if (e.getValue().toLowerCase().contains("int")) {
-                    oClass.createProperty(e.getKey(), OType.INTEGER );
-                }
-                else   if (e.getValue().toLowerCase().contains("varchar")) {
-                    oClass.createProperty(e.getKey(), OType.STRING );
-                }
-                else   if (e.getValue().toLowerCase().contains("datatime")) {
-                    oClass.createProperty(e.getKey(), OType.DATETIME );
-                }
-                else  if (e.getValue().toLowerCase().contains("times")) {
-                    oClass.createProperty(e.getKey(), OType.DATETIME );
-                }
-                else   { oClass.createProperty(e.getKey(), OType.STRING );}
-            });
-            db.close();
+          ODatabaseDocumentTx documentTx=MDBadapter.getCurrentDB(dbname);
+//            db.activateOnCurrentThread();
+            try {
+                OClass oClass = documentTx.getMetadata().getSchema()
+                        .createClass(table);
+                oClass.setStrictMode(true);
+                Map<String, String> maps = MSQLutil.gettablenamefileds(createTableStatement);
+                maps.entrySet().forEach(e->{
+                    if (e.getValue().toLowerCase().contains("int")) {
+                        oClass.createProperty(e.getKey(), OType.INTEGER );
+                    }
+                    else   if (e.getValue().toLowerCase().contains("varchar")) {
+                        oClass.createProperty(e.getKey(), OType.STRING );
+                    }
+                    else   if (e.getValue().toLowerCase().contains("datatime")) {
+                        oClass.createProperty(e.getKey(), OType.DATETIME );
+                    }
+                    else  if (e.getValue().toLowerCase().contains("times")) {
+                        oClass.createProperty(e.getKey(), OType.DATETIME );
+                    }
+                    else   { oClass.createProperty(e.getKey(), OType.STRING );}
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                documentTx.close();
+            }
         });
     }
 
-   static public Set<String> getalltable(String dbname) {
+    /**
+     * Gets .
+     *
+     * @param dbname the dbname
+     * @param db     the db不关闭
+     * @return the
+     */
+    static public Set<String> getalltable(ODatabaseDocumentTx db) {
        Set<String> strings = new HashSet<>();
-       ODatabaseDocumentTx db = MDBadapter.getdbpool(dbname).acquire();
        db.activateOnCurrentThread();
        OSchema oSchema = db.getMetadata().getSchema();
        oSchema.getClasses().forEach(a->strings.add(a.getName()));
-       db.close();
         return strings;
     }
-    public static OClass gettableclass(String tablename) {
-        ODatabaseDocumentTx db = MDBadapter.getdbpool(MDBadapter.currentDB).acquire();
+
+    /**
+     * Gets .
+     *
+     * @param tablename the tablename
+     * @param db        the db不关闭
+     * @return the
+     */
+    public static OClass gettableclass(String tablename,ODatabaseDocumentTx db) {
         db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
-        db.close();
         return oSchema.getClass(tablename);
     }
-    public static OClass gettableclass(String dbname,String tablename) {
-        if (!MDBadapter.dbset.contains(dbname)) {
-            return null;
-        }
-        ODatabaseDocumentTx db = MDBadapter.getdbpool(dbname).acquire();
+
+    /**
+     * Gets .
+     *
+     * @param dbname    the dbname
+     * @param tablename the tablename
+     * @param db        the db不关闭
+     * @return the
+     */
+    public static OClass gettableclass(String dbname,String tablename,ODatabaseDocumentTx db) {
         db.activateOnCurrentThread();
         OSchema oSchema = db.getMetadata().getSchema();
-        db.close();
         return oSchema.getClass(tablename);
     }
 

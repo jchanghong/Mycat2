@@ -59,6 +59,7 @@ public class OQueryHandler implements FrontendQueryHandler {
     }
     @Override
     public void query(String sql) {
+        System.out.println(Thread.currentThread().getName());
         OConnection c = this.source;
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(new StringBuilder().append(c).append(sql).toString());

@@ -18,21 +18,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by 长宏 on 2017/3/20 0020.
  */
 public class MDBadapter {
-    public static NameableExecutor executor;
-    public static Set<String> dbset = new HashSet<>();
+    public static final NameableExecutor executor;
+    public static final Set<String> dbset = new HashSet<>();
     static {
         executor = MycatServer.getInstance().getBusinessExecutor();
         loaddbset();
     }
 
-    public static ODatabaseDocumentTx getdbtx(String dbname) {
+    public static ODatabaseDocumentTx getCurrentDB(String dbname) {
         if (!dbset.contains(dbname)) {
             return null;
         }
         ODatabaseDocumentTx documentTx = getdbpool(dbname).acquire();
         return documentTx;
     }
-    public static ODatabaseDocumentTx getdbtx() {
+    public static ODatabaseDocumentTx getCurrentDB() {
         if (currentDB == null) {
             return null;
         }
@@ -65,13 +65,12 @@ public class MDBadapter {
     synchronized  public static void deletedb(String dbname) throws MException {
         if (dbset.contains(dbname)) {
             dbset.remove(dbname);
-            hashMap.remove(dbname);
             executor.execute(()->{
                 OPartitionedDatabasePool oDatabaseDocumentTx = getdbpool(dbname);
                 ODatabaseDocumentTx documentTx = oDatabaseDocumentTx.acquire();
-                documentTx.activateOnCurrentThread();
                 documentTx.drop();
-                documentTx.close();
+                getdbpool(dbname).close();
+                hashMap.remove(dbname);
             });
         }else {
             throw new MException("db 不存在");
@@ -84,19 +83,17 @@ public class MDBadapter {
      * @param dbname the dbname
      * @return the boolean
      */
-      static   public void createdb(String dbname) throws MException{
+      static synchronized  public void createdb(String dbname) throws MException{
         if (dbset.contains(dbname)) {
             throw new MException("db已经存在");
         }
         dbset.add(dbname);
         executor.execute(()->{
-            createdb1(dbname);
+            new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
+            OPartitionedDatabasePool pool = new OPartitionedDatabasePool(getlccalurl(dbname), "admin", "admin");
+            hashMap.put(dbname, pool);
         });
     }
-    synchronized  private static void createdb1(String dbname) {
-        new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
-    }
-
     /**
      * Gets .
      *

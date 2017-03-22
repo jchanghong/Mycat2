@@ -1,5 +1,6 @@
 package io.mycat.orientserver.response;
 
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
 import io.mycat.config.Fields;
@@ -61,8 +62,8 @@ public class ShowTables {
 
         // write rows
         packetId = eof.packetId;
-
-        for (String name : MtableAdapter.getalltable(MDBadapter.currentDB)) {
+        ODatabaseDocumentTx documentTx = MDBadapter.getCurrentDB();
+        for (String name : MtableAdapter.getalltable(documentTx)) {
             RowDataPacket row = new RowDataPacket(FIELD_COUNT);
             row.add(StringUtil.encode(name.toLowerCase(), c.getCharset()));
             row.packetId = ++packetId;
@@ -75,7 +76,7 @@ public class ShowTables {
 
         // post write
         c.write(buffer);
-
+        documentTx.close();
 
     }
 }

@@ -27,11 +27,11 @@ public class Mrepelace {
         if (MDBadapter.currentDB == null) {
             connection.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "没有选择数据库");
         }
+        ODatabaseDocumentTx getdbtx = MDBadapter.getCurrentDB();
         try {
             String table = x.getTableName().toString();
-            ODatabaseDocumentTx getdbtx = MDBadapter.getdbtx();
-            getdbtx.activateOnCurrentThread();
-            OClass oClass = MtableAdapter.gettableclass(table);
+//            getdbtx.activateOnCurrentThread();
+            OClass oClass = MtableAdapter.gettableclass(table,getdbtx);
             Set<String> sets = new HashSet<>();
             oClass.properties().forEach(a -> sets.add(a.getName()));
             StringBuilder builder = new StringBuilder();
@@ -42,7 +42,7 @@ public class Mrepelace {
             builder.deleteCharAt(builder.length() - 1);
             String sql = x.toString().replace(table, builder.toString());
             Object o = MDBadapter.exesql(sql);
-            getdbtx.close();
+//            getdbtx.close();
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();
                 okPacket.read(okPacket.OK);
@@ -54,6 +54,9 @@ public class Mrepelace {
         } catch (MException e) {
             e.printStackTrace();
             connection.writeErrMessage(e.getMessage());
+        }
+        finally {
+            getdbtx.close();
         }
     }
 }

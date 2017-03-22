@@ -47,7 +47,7 @@ public final class MSelectHandler {
 
         MySqlSelectQueryBlock queryBlock = (MySqlSelectQueryBlock) selectStatement.getSelect().getQuery();
         if (queryBlock.getFrom() != null) {
-            MorientSelectResponse.responseselect(c, selectStatement);
+            MorientSelectResponse.responseselect(c, selectStatement.toString(),selectStatement);
             return;
         }
         SQLSelectItem selectItem = queryBlock.getSelectList().get(0);
