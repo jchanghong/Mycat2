@@ -196,7 +196,7 @@ public final class MysqlDefs {
 	public static final int TIME = 15;
 
 	/**
-	 * Maps the given MySQL type to the correct JDBC type.
+	 * Maps the given MySQL type to the correct MJDBCtest type.
 	 */
 	public static int mysqlToJavaType(int mysqlType) {
 		int jdbcType;
@@ -432,7 +432,7 @@ public final class MysqlDefs {
 	}
 
 	/**
-	 * Maps the given MySQL type to the correct JDBC type.
+	 * Maps the given MySQL type to the correct MJDBCtest type.
 	 */
 	static int mysqlToJavaType(String mysqlType) {
 		if (mysqlType.equalsIgnoreCase("BIT")) {

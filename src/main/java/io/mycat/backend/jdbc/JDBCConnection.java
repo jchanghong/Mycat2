@@ -280,7 +280,7 @@ public class JDBCConnection implements BackendConnection {
 							boolean autocommit) throws IOException {
 		String orgin = rrn.getStatement();
 		// String sql = rrn.getStatement().toLowerCase();
-		// LOGGER.info("JDBC SQL:"+orgin+"|"+sc.toString());
+		// LOGGER.info("MJDBCtest SQL:"+orgin+"|"+sc.toString());
 		if (!modifiedSQLExecuted && rrn.isModifySQL()) {
 			modifiedSQLExecuted = true;
 		}
