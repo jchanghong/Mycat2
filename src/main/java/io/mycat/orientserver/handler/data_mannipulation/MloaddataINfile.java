@@ -17,7 +17,7 @@ public class MloaddataINfile {
             connection.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "没有选择数据库");
         }
         try {
-            MDBadapter.exesql(x.toString());
+            MDBadapter.exesql(x.toString(),MDBadapter.currentDB);
             connection.writeok();
         } catch (MException e) {
             e.printStackTrace();

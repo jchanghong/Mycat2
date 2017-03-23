@@ -22,7 +22,7 @@ public class Minsert {
             connection.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "没有选择数据库");
         }
         try {
-            Object o = MDBadapter.exesql(x.toString());
+            Object o = MDBadapter.exesql(x.toString(),MDBadapter.currentDB);
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();
                 okPacket.read(okPacket.OK);

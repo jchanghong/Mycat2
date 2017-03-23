@@ -59,6 +59,7 @@ public class OQueryHandler implements FrontendQueryHandler {
     }
     @Override
     public void query(String sql) {
+        System.out.println(sql);
 //        System.out.println(Thread.currentThread().getName());
         OConnection c = this.source;
         if (LOGGER.isDebugEnabled()) {
@@ -95,6 +96,10 @@ public class OQueryHandler implements FrontendQueryHandler {
         }
         if (AlterInstall.isme(sql)) {
             AlterInstall.handle(sql, c);
+            return;
+        }
+        if (AlterLOGfileGroup.isme(sql)) {
+            AlterLOGfileGroup.handle(sql, c);
             return;
         }
         if (AlterProcedure.isme(sql)) {

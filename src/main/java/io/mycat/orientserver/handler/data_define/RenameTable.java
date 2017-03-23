@@ -47,7 +47,7 @@ public class RenameTable {
         map.clear();
             MDBadapter.executor.execute(() -> {
                 try {
-                    MDBadapter.exesql(builder.toString());
+                    MDBadapter.exesql(builder.toString(),MDBadapter.currentDB);
                 } catch (MException e) {
                     e.printStackTrace();
                     map.put("k", e);

@@ -41,7 +41,7 @@ public class Mrepelace {
             });
             builder.deleteCharAt(builder.length() - 1);
             String sql = x.toString().replace(table, builder.toString());
-            Object o = MDBadapter.exesql(sql);
+            Object o = MDBadapter.exesql(sql,MDBadapter.currentDB);
 //            getdbtx.close();
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();

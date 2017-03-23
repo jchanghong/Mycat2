@@ -1,5 +1,6 @@
 package io.mycat.orientserver.handler.adminstatement;
 
+import com.alibaba.druid.sql.ast.statement.SQLSetStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetCharSetStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetNamesStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSetPasswordStatement;
@@ -13,18 +14,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  * SET 语句处理
- *
- * @author mycat
- * @author zhuam
+ *基本完成
+ * @author changhong
  */
-public final class SetHandler {
+public final class MSetHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(SetHandler.class);
+//    private static final Logger logger = LoggerFactory.getLogger(MSetHandler.class);
 
     private static final byte[] AC_OFF = new byte[]{7, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 
     public static void handle(String stmt, OConnection c, int offset) {
-        // System.out.println("SetHandler: "+stmt);
+        // System.out.println("MSetHandler: "+stmt);
 //        int rs = ServerParseSet.parse(stmt, offset);
 //        switch (rs & 0xff) {
 //            case AUTOCOMMIT_ON:
@@ -125,7 +125,7 @@ public final class SetHandler {
 //                c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
 //        }
     }
-
+/*SET character_set_results = NULL*/
     public static void handle(MySqlSetTransactionStatement x,OConnection c) {
         if (c.isAutocommit()) {
             c.writeErrMessage(ErrorCode.ERR_WRONG_USED,
@@ -145,6 +145,10 @@ public final class SetHandler {
     }
 
     public static void handle(MySqlSetCharSetStatement x,OConnection c) {
+        c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
+    }
+
+    public static void handle(SQLSetStatement x, OConnection c) {
         c.write(c.writeToBuffer(OkPacket.OK, c.allocate()));
     }
 }

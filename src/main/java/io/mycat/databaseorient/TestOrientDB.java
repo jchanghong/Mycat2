@@ -35,6 +35,8 @@ public class TestOrientDB {
 //                new OSQLSynchQuery<ODocument>(
 //                        sqlquery));
 //        result.forEach(a-> java.lang.System.out.println(a.field("id")+""));
+
+
     }
 
 }

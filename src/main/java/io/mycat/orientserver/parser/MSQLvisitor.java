@@ -8,6 +8,7 @@ import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlUserName;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlASTVisitorAdapter;
 import io.mycat.orientserver.OConnection;
+import io.mycat.orientserver.handler.adminstatement.MSetHandler;
 import io.mycat.orientserver.handler.adminstatement.ShowHandler;
 import io.mycat.orientserver.handler.data_define.*;
 import io.mycat.orientserver.handler.data_mannipulation.*;
@@ -27,25 +28,25 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlSelectQueryBlock.Limit x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlTableIndex x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlPrimaryKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -55,19 +56,19 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlPrepareStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlExecuteStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MysqlDeallocatePrepareStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -97,32 +98,31 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlReplaceStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlStartTransactionStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCommitStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlRollbackStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlShowColumnsStatement x) {
-        ShowHandler.showcolumn(x);
-
+        ShowHandler.showcolumn(x,connection);
         return false;
     }
 
@@ -146,56 +146,56 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(CobarShowStatus x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlKillStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlBinlogStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlResetStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCreateUserStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCreateUserStatement.UserSpecification x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlPartitionByKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSelectQueryBlock x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
 
     @Override
     public boolean visit(MySqlDescribeStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -207,19 +207,20 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlSetTransactionStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSetNamesStatement x) {
-        connection.writeNotSurrport();
+       
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSetCharSetStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -353,7 +354,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlUserName x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -453,6 +454,28 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
         return false;
     }
 
+    /*SHOW VARIABLES WHERE Variable_name = 'language'
+OR Variable_name = 'net_write_timeout'
+OR Variable_name = 'interactive_timeout'
+OR Variable_name = 'wait_timeout'
+OR Variable_name = 'character_set_client'
+OR Variable_name = 'character_set_connection'
+OR Variable_name = 'character_set'
+OR Variable_name = 'character_set_server'
+OR Variable_name = 'tx_isolation'
+OR Variable_name = 'transaction_isolation'
+OR Variable_name = 'character_set_results'
+OR Variable_name = 'timezone'
+OR Variable_name = 'time_zone'
+OR Variable_name = 'system_time_zone'
+OR Variable_name = 'lower_case_table_names'
+OR Variable_name = 'max_allowed_packet'
+OR Variable_name = 'net_buffer_length'
+OR Variable_name = 'sql_mode'
+OR Variable_name = 'query_cache_type'
+OR Variable_name = 'query_cache_size'
+OR Variable_name = 'license'
+OR Variable_name = 'init_connect'*/
     @Override
     public boolean visit(MySqlShowVariantsStatement x) {
         ShowHandler.showvatiants(x, connection);
@@ -461,7 +484,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlRenameTableStatement.Item x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -473,55 +496,55 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlUnionQuery x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlUseIndexHint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlIgnoreIndexHint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlLockTableStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlUnlockTablesStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlForceIndexHint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableChangeColumn x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableCharacter x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableOption x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -541,158 +564,158 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(MySqlUnique x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MysqlForeignKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableModifyColumn x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableDiscardTablespace x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableImportTablespace x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCreateTableStatement.TableSpaceOption x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAnalyzeStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterUserStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlOptimizeStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSetPasswordStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlHintStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
 
     @Override
     public boolean visit(MySqlWhileStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCaseStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlDeclareStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSelectIntoStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCaseStatement.MySqlWhenStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlLeaveStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlIterateStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlRepeatStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlCursorDeclareStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlUpdateTableSource x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlAlterTableAlterColumn x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSubPartitionByKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlSubPartitionByList x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlDeclareHandlerStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(MySqlDeclareConditionStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -710,19 +733,19 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLCreateTableStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLColumnDefinition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLColumnDefinition.Identity x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -736,13 +759,13 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLCreateViewStatement.Column x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAssignItem x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -754,25 +777,25 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLCommentStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableAddColumn x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDropColumnItem x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLCommentHint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -784,97 +807,97 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLAlterTableDropIndex x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLColumnPrimaryKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLColumnUniqueKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLWithSubqueryClause.Entry x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLCharacterDataType x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableAlterColumn x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLCheck x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDropForeignKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDropPrimaryKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDisableKeys x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableEnableKeys x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDisableConstraint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableEnableConstraint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLColumnCheck x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDropConstraint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -886,25 +909,25 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLAlterTableRenameColumn x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLColumnReference x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableAddIndex x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableAddConstraint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -918,7 +941,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLAlterTableRename x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -930,49 +953,49 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLAlterTableAddPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDropPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableRenamePartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableSetComment x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableSetLifecycle x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableEnableLifecycle x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDisableLifecycle x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableTouch x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -980,19 +1003,19 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLCloseStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLIfStatement.Else x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLIfStatement.ElseIf x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1004,13 +1027,13 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLBlockStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDropKey x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1022,85 +1045,85 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLAlterTableConvertCharSet x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableReOrganizePartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableCoalescePartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableTruncatePartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableDiscardPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableImportPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableAnalyzePartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableCheckPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableOptimizePartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableRebuildPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLAlterTableRepairPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLMergeStatement.MergeUpdateClause x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLMergeStatement.MergeInsertClause x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLCreateSequenceStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1113,25 +1136,25 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLSelectGroupByClause x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSelectItem x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSelect x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSelectQueryBlock x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1139,13 +1162,13 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLOrderBy x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSelectOrderByItem x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1157,7 +1180,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLDataType x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1175,7 +1198,7 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLUpdateSetItem x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1187,40 +1210,39 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLNotNullConstraint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLUnionQuery x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
 
-
     @Override
     public boolean visit(SQLSetStatement x) {
-        connection.writeNotSurrport();
+        MSetHandler.handle(x, connection);
         return false;
     }
 
     @Override
     public boolean visit(SQLJoinTableSource x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLInsertStatement.ValuesClause x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
 
     @Override
     public boolean visit(SQLSubqueryTableSource x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1252,37 +1274,37 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLSavePointStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLRollbackStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLReleaseSavePointStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLOver x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLKeep x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLWithSubqueryClause x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1290,25 +1312,25 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLUnique x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLPrimaryKeyImpl x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLForeignKeyImpl x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLDropSequenceStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1320,19 +1342,19 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLDropUserStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLExplainStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLGrantStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1356,20 +1378,20 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLDropProcedureStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLUnionQueryTableSource x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
 
     @Override
     public boolean visit(SQLRevokeStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1381,86 +1403,86 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLOpenStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLFetchStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
 
     @Override
     public boolean visit(SQLIfStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLLoopStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLParameter x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLDeclareItem x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLPartitionValue x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLPartitionByRange x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLPartitionByHash x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLPartitionByList x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSubPartition x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSubPartitionByHash x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLSubPartitionByList x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
@@ -1468,19 +1490,19 @@ public class MSQLvisitor extends MySqlASTVisitorAdapter {
 
     @Override
     public boolean visit(SQLMergeStatement x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLErrorLoggingClause x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 
     @Override
     public boolean visit(SQLNullConstraint x) {
-        connection.writeNotSurrport();
+        connection.writeok();
         return false;
     }
 

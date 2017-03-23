@@ -28,11 +28,17 @@ import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
+import com.orientechnologies.orient.core.record.impl.ODocument;
+import io.mycat.databaseorient.adapter.MDBadapter;
+import io.mycat.databaseorient.adapter.MException;
+import io.mycat.databaseorient.constant.Minformation_schama;
+import io.mycat.databaseorient.constant.MvariableTable;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.response.*;
 import io.mycat.orientserver.util.Mcomputer;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author changhong
@@ -66,7 +72,14 @@ public final class MSelectHandler {
             handleopexpr((SQLBinaryOpExpr) selectItem.getExpr(),c);
             return;
         }
+
         SQLExpr sqlExpr = selectItem.getExpr();
+        if (selectStatement.toString().contains("@") && selectStatement.toString().contains("AS")) {
+            List<String> column = MselectVariables.getcolumn(selectStatement);
+            List<String> value = MselectVariables.getbs(selectStatement,column);
+            MselectNResponse.response(c, column, value);
+            return;
+        }
         String what = sqlExpr.toString().toUpperCase();
         if (what.contains("VERSION_COMMENT")) {
             io.mycat.orientserver.response.SelectVersionComment.response(c);
@@ -74,6 +87,10 @@ public final class MSelectHandler {
         }
         if (what.contains("DATABASE")) {
             SelectDatabase.response(c);
+            return;
+        }
+        if (what.contains("CONNECTION_ID")) {
+            SelectConnnectID.response(c);
             return;
         }
         if (what.contains("USER")) {
@@ -84,11 +101,13 @@ public final class MSelectHandler {
             SelectVersion.response(c);
             return;
         }
-        if (what.contains("SESSION_INCREMENT")) {
+        //SESSION_INCREMENT
+        if (what.contains("INCREMENT")) {
             SessionIncrement.response(c);
             return;
         }
-        if (what.contains("SESSION_ISOLATION")) {
+        //SESSION_ISOLATION
+        if (what.contains("ISOLATION")) {
             SessionIsolation.response(c);
             return;
         }
@@ -105,9 +124,27 @@ public final class MSelectHandler {
             return;
 
         }
-        if (what.contains("SESSION_TX_READ_ONLY")) {
+        //SESSION_TX_READ_ONLY
+        if (what.contains("TX_READ_ONLY")) {
             SelectTxReadOnly.response(c);
             return;
+        }
+        what = sqlExpr.toString();
+        if (what.contains("@@")) {
+            int index = what.indexOf(".");
+            if (index != -1) {
+                what = what.substring(index + 1);
+                what = "select value from " + MvariableTable.tablename + "  where Variable_name='" + what + "';";
+                try {
+                    List<ODocument> documents = MDBadapter.exequery(what, Minformation_schama.dbname);
+                    Select1Response.response(c,what,Arrays.asList(documents.get(0).field("value")));
+                    return;
+                } catch (MException e) {
+                    e.printStackTrace();
+                    c.writeErrMessage(e.getMessage());
+                    return;
+                }
+            }
         }
         c.writeNotSurrport();
     }

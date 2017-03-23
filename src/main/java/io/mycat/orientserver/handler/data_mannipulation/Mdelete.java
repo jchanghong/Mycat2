@@ -19,7 +19,7 @@ public class Mdelete {
             return;
         }
         try {
-            Object o = MDBadapter.exesql(x.toString());
+            Object o = MDBadapter.exesql(x.toString(),MDBadapter.currentDB);
             if (o instanceof Number) {
                 OkPacket okPacket = new OkPacket();
                 okPacket.read(okPacket.OK);

@@ -95,6 +95,21 @@ public class MDBadapter {
         });
     }
     /**
+     * Createdb boolean.
+     *同步
+     * @param dbname the dbname
+     * @return the boolean
+     */
+      static synchronized  public void createdbsyn(String dbname) throws MException{
+        if (dbset.contains(dbname)) {
+            throw new MException("db已经存在");
+        }
+        dbset.add(dbname);
+            new ODatabaseDocumentTx(getlccalurl(dbname)).create().close();
+            OPartitionedDatabasePool pool = new OPartitionedDatabasePool(getlccalurl(dbname), "admin", "admin");
+            hashMap.put(dbname, pool);
+    }
+    /**
      * Gets .
      *
      * @return the
@@ -180,13 +195,13 @@ public class MDBadapter {
      * @return the string
      * @throws MException the orient exception
      */
-    public static Object exesql(String sql) throws MException {
+    public static Object exesql(String sql,String dbname) throws MException {
         ODatabaseDocumentTx documentTx = null;
-        if (currentDB == null) {
+        if (dbname == null) {
             throw new MException("db is null");
         }
         try {
-            documentTx= getdbpool(currentDB).acquire();
+            documentTx= getdbpool(dbname).acquire();
             documentTx.activateOnCurrentThread();
             Object object=documentTx.command(new OCommandSQL(sql)).execute();
             return object;
@@ -207,13 +222,13 @@ public class MDBadapter {
      * @return the list
      * @throws MException the orient exception
      */
-    public static List<ODocument> exequery(String sqlquery) throws MException {
+    public static List<ODocument> exequery(String sqlquery,String dbname) throws MException {
         ODatabaseDocumentTx documentTx = null;
-        if (currentDB == null) {
+        if (dbname == null) {
             throw new MException("db is null");
         }
         try {
-            documentTx = getdbpool(currentDB).acquire();
+            documentTx = getdbpool(dbname).acquire();
             documentTx.activateOnCurrentThread();
             List<ODocument> result = documentTx.query(
                     new OSQLSynchQuery<ODocument>(
