@@ -30,6 +30,7 @@ import io.mycat.config.ErrorCode;
 import io.mycat.net.handler.FrontendQueryHandler;
 import io.mycat.orientserver.handler.data_define.*;
 import io.mycat.orientserver.handler.data_mannipulation.*;
+import io.mycat.orientserver.handler.utilstatement.ExplainStatement;
 import io.mycat.orientserver.parser.MSQLvisitor;
 import io.mycat.orientserver.response.ShowTables;
 import org.slf4j.Logger;
@@ -144,6 +145,10 @@ public class OQueryHandler implements FrontendQueryHandler {
         }
         if (DropFunction.isme(sql)) {
             DropFunction.handle(sql, c);
+            return;
+        }
+        if(ExplainStatement.isme(sql,c)){
+            ExplainStatement.handle(sql,c);
             return;
         }
         if (DropLOGFILEGROUP.isme(sql)) {
