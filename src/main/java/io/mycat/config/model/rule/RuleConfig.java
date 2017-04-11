@@ -38,11 +38,11 @@ import java.lang.reflect.InvocationTargetException;
 public class RuleConfig implements Serializable {
 	private static final long serialVersionUID = -6605226933829917213L;
 	@NotNull
-	private  String column;
+	public   String column;
 	@NotNull
-	private  String functionName;
+	public   String functionName;
 	@JsonIgnore
-	private AbstractPartitionAlgorithm ruleAlgorithm;
+	public AbstractPartitionAlgorithm ruleAlgorithm;
 
 	public void setColumn(String column) {
 		this.column = column;

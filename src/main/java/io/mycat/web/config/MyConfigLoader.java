@@ -4,6 +4,7 @@ import io.mycat.config.loader.ConfigLoader;
 import io.mycat.config.model.*;
 import io.mycat.config.model.rule.RuleConfig;
 import io.mycat.config.model.rule.TableRuleConfig;
+import io.mycat.route.function.PartitionByMod;
 
 import java.util.*;
 
@@ -78,9 +79,16 @@ public class MyConfigLoader implements ConfigLoader {
         if (schemaConfigMap != null) {
             return schemaConfigMap.get(schema);
         }
+        RuleConfig ruleConfig = new RuleConfig();
+        ruleConfig.column = "id";
+        ruleConfig.functionName = "io.mycat.route.function.PartitionByMod";
+        PartitionByMod mod = new PartitionByMod();
+        mod.setCount(2);
+        ruleConfig.ruleAlgorithm = mod;
+
         TableConfig tableConfig = new TableConfig("PERSON", "id", false, false,
-                TableConfig.TYPE_GLOBAL_DEFAULT, "dn1", null,
-                null, false, null,
+                TableConfig.TYPE_GLOBAL_DEFAULT, "dn1,dn2", null,
+                ruleConfig, false, null,
                 false, null, null, null);
         Map<String, TableConfig> map = new HashMap<>();
         map.put("PERSON", tableConfig);
@@ -107,6 +115,8 @@ public class MyConfigLoader implements ConfigLoader {
         Map<String, DataNodeConfig> map = new HashMap<>();
         DataNodeConfig nodeConfig = new DataNodeConfig("dn1", "changhong", "localhost1");
         map.put("dn1", nodeConfig);
+        DataNodeConfig nodeConfig2 = new DataNodeConfig("dn2", "changhong2", "localhost1");
+        map.put("dn2", nodeConfig2);
         return map;
     }
 
