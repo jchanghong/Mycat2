@@ -14,7 +14,7 @@ import io.mycat.orientserver.handler.data_define.*;
 import io.mycat.orientserver.handler.data_mannipulation.*;
 import io.mycat.orientserver.handler.utilstatement.HelpStatement;
 import io.mycat.orientserver.handler.utilstatement.Usedatabase;
-import io.mycat.orientserver.response.ShowTables;
+import io.mycat.orientserver.response.MShowTables;
 
 /**
  * Created by 长宏 on 2017/3/19 0019.
@@ -1397,7 +1397,7 @@ OR Variable_name = 'init_connect'*/
 
     @Override
     public boolean visit(SQLShowTablesStatement x) {
-        ShowTables.response(connection, x.toString(), 1);
+        MShowTables.response(connection, x, 1);
         return false;
     }
 

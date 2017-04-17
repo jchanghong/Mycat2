@@ -1,5 +1,6 @@
 package io.mycat.orientserver.response;
 
+import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import io.mycat.backend.mysql.PacketUtil;
 import io.mycat.config.ErrorCode;
@@ -20,7 +21,7 @@ import java.nio.ByteBuffer;
  *
  * @author yanglixue
  */
-public class ShowTables {
+public class MShowTables {
 
     private static final int FIELD_COUNT = 1;
     private static final ResultSetHeaderPacket header = PacketUtil.getHeader(FIELD_COUNT);
@@ -35,8 +36,15 @@ public class ShowTables {
      * response method.
      *
      * @param c
+     * @param stmt
      */
-    public static void response(OConnection c, String stmt, int type) {
+    public static void response(OConnection c, SQLShowTablesStatement stmt, int type) {
+        if (stmt.getDatabase() != null) {
+            MDBadapter.currentDB = stmt.getDatabase().getSimpleName();
+            if (MDBadapter.currentDB.startsWith("`")||MDBadapter.currentDB.startsWith("'")) {
+                MDBadapter.currentDB = MDBadapter.currentDB.substring(1, MDBadapter.currentDB.length() - 1);
+            }
+        }
         if (MDBadapter.currentDB == null) {
             c.writeErrMessage(ErrorCode.ER_NO_DB_ERROR, "no database selected!!!");
             return;

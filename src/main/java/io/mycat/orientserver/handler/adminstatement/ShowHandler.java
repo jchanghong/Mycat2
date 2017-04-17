@@ -25,7 +25,6 @@ package io.mycat.orientserver.handler.adminstatement;
 
 import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.*;
-import io.mycat.databaseorient.constant.Mconstantvariables;
 import io.mycat.databaseorient.constant.MvariableTable;
 import io.mycat.orientserver.OConnection;
 import io.mycat.orientserver.handler.data_mannipulation.MselectVariables;
@@ -241,6 +240,6 @@ public final class ShowHandler {
     }
 
     public static void showtables(SQLShowTablesStatement x, OConnection connection) {
-        ShowTables.response(connection, x.toString(), 0);
+        MShowTables.response(connection, x, 0);
     }
 }

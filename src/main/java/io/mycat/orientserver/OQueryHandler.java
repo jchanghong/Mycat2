@@ -32,7 +32,6 @@ import io.mycat.orientserver.handler.data_define.*;
 import io.mycat.orientserver.handler.data_mannipulation.*;
 import io.mycat.orientserver.handler.utilstatement.ExplainStatement;
 import io.mycat.orientserver.parser.MSQLvisitor;
-import io.mycat.orientserver.response.ShowTables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
