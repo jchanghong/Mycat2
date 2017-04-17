@@ -1,5 +1,7 @@
 package io.mycat.databaseorient.adapter;
 
+import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;
+import com.alibaba.druid.sql.ast.statement.SQLTableElement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlCreateTableStatement;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
@@ -7,9 +9,8 @@ import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import io.mycat.databaseorient.sqlhander.sqlutil.MSQLutil;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 长宏 on 2017/3/20 0020.
@@ -79,21 +80,46 @@ public class MtableAdapter {
                 OClass oClass = documentTx.getMetadata().getSchema()
                         .createClass(table);
                 oClass.setStrictMode(true);
+                List<String> dstring = new ArrayList<>();
+                createTableStatement.getTableElementList().forEach(a->{
+                    if (a instanceof SQLColumnDefinition) {
+                        SQLColumnDefinition sqlColumnDefinition = (SQLColumnDefinition) a;
+                        if (sqlColumnDefinition.getConstraints() != null) {
+                            dstring.add(((SQLColumnDefinition) a).getName().toString());
+                        }
+                    }
+                });
                 Map<String, String> maps = MSQLutil.gettablenamefileds(createTableStatement);
                 maps.entrySet().forEach(e->{
                     if (e.getValue().toLowerCase().contains("int")) {
                         oClass.createProperty(e.getKey(), OType.INTEGER );
+                        if (dstring.contains(e.getKey())) {
+                            oClass.getProperty(e.getKey()).createIndex(OClass.INDEX_TYPE.NOTUNIQUE);
+                        }
                     }
                     else   if (e.getValue().toLowerCase().contains("varchar")) {
                         oClass.createProperty(e.getKey(), OType.STRING );
+                        if (dstring.contains(e.getKey())) {
+                            oClass.getProperty(e.getKey()).createIndex(OClass.INDEX_TYPE.NOTUNIQUE);
+                        }
                     }
                     else   if (e.getValue().toLowerCase().contains("datatime")) {
                         oClass.createProperty(e.getKey(), OType.DATETIME );
+                        if (dstring.contains(e.getKey())) {
+                            oClass.getProperty(e.getKey()).createIndex(OClass.INDEX_TYPE.NOTUNIQUE);
+                        }
                     }
                     else  if (e.getValue().toLowerCase().contains("times")) {
                         oClass.createProperty(e.getKey(), OType.DATETIME );
+                        if (dstring.contains(e.getKey())) {
+                            oClass.getProperty(e.getKey()).createIndex(OClass.INDEX_TYPE.NOTUNIQUE);
+                        }
                     }
-                    else   { oClass.createProperty(e.getKey(), OType.STRING );}
+                    else   { oClass.createProperty(e.getKey(), OType.STRING );
+                        if (dstring.contains(e.getKey())) {
+                            oClass.getProperty(e.getKey()).createIndex(OClass.INDEX_TYPE.NOTUNIQUE);
+                        }
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
